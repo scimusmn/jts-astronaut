@@ -1,0 +1,53 @@
+
+
+
+/* Video Booth Kiosk */
+body{
+  width:1280px;
+  height:1024px;
+}
+
+.screen{
+  position: absolute;
+  width:1280px;
+  height:1024px;
+}
+video{
+  width:100%;
+  height:100%;
+}
+#intake_screen video{
+  background: #383f3c;
+}
+#playback_screen video{
+  background: #181f1c;
+}
+
+#intake_screen{
+  top:0px;
+  left:0px;
+}
+#playback_screen{
+  top:0px;
+  left:1280px;
+}
+
+.dev-panel {
+  background-color: #292927;
+  border: 2px solid #292927;
+  border-radius: 10px;
+  color: #FF3B41;
+  margin:20px;
+  padding: 20px;
+  position: fixed;
+}
+
+.overlay {
+  position: absolute;
+}
+
+.overlay #record-video {
+  position: fixed;
+  bottom: 150px;
+  left: 550px;
+}

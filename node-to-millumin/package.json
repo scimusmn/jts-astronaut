@@ -1,0 +1,15 @@
+{
+  "name": "jts-astronaut",
+  "version": "1.0.0",
+  "description": "Display system for large astronaut.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "big",
+    "astronaut"
+  ],
+  "author": "SMM",
+  "license": "ISC"
+}

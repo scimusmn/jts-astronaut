@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>JTS ASTRONAUT</title>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Javascript -->
+    <script src="./node_modules/recordrtc/RecordRTC.js"></script>
+
+  </head>
+  <body>
+    <div id="intake_screen" class="screen">
+
+      <video id="intake_video" autoplay="" loop="" muted=""></video>
+
+      <div class="overlay">
+        <button id="record-video">Record</button>
+        <h1 id="count"></h1>
+        <ul id="video-url-preview"></ul>
+      </div>
+
+    </div>
+    <div id="playback_screen" class="screen">
+      <video id="playback_video" autoplay="" muted=""></video>
+    </div>
+
+    <div class="dev-panel" style="">
+      <label for='videoSource_booth'>Booth video source: </label><select id='videoSource_booth'></select>
+    </div>
+
+    <script type="text/javascript">
+
+      function getByID(id) {
+        return document.getElementById(id);
+      }
+
+      var numCaptures = 0;
+
+      var recordVideo = getByID('record-video');
+      var count = getByID('count');
+      var video = getByID('intake_video');
+      var videoOut = getByID('playback_video');
+      var videoSelector = getByID('videoSource_booth');
+
+      var cameraStream;
+      var recorder;
+      var countdown;
+      var blobURLs = [];
+      var countdownTimer;
+      var vidCaptureWidth = 1280;
+      var vidCaptureHeight = 1024;
+
+      var vidCaptureOptions = {
+                                  type: 'video',
+                                  video: video,
+                                  canvas: {
+                                      width: vidCaptureWidth,
+                                      height: vidCaptureHeight
+                                  }
+                              };
+
+
+      recordVideo.onclick = function() {
+          startVidRecording();
+      };
+
+      function startVidRecording() {
+
+        if (!cameraStream) {
+
+          var cameraSource = videoSelector.value;
+          var videoConstraints = {
+                                  audio: false,
+                                  video: {
+                                    mandatory: { },
+                                    optional: [{sourceId: cameraSource}]
+                                  }
+                                };
+
+          //Open camera stream
+          navigator.getUserMedia(videoConstraints, function(stream) {
+
+            //Success callback...
+            video.src = URL.createObjectURL(stream);
+
+            video.onloadedmetadata = function() {
+
+              cameraStream = stream;
+
+              video.width = vidCaptureWidth;
+              video.height = vidCaptureHeight;
+
+              recorder = window.RecordRTC(stream, vidCaptureOptions);
+              startTimedRecording();
+
+            };
+
+          }, function() {
+
+            //Error callback...
+            alert('Camera access was denied.');
+
+          });
+
+        } else {
+
+          startTimedRecording();
+
+        }
+
+        //Update buttons
+        recordVideo.disabled = true;
+
+      }
+
+      function startTimedRecording() {
+
+        countdown = 5;
+        count.innerHTML = ''+countdown;
+
+        recorder.startRecording();
+
+        countdownTimer = setInterval(function(){
+          countdown--;
+          count.innerHTML = ''+countdown;
+          if (countdown == 0) {
+            clearInterval(countdownTimer);
+            stopVidRecording();
+          }
+        }, 1000);
+
+      }
+
+      function stopVidRecording() {
+
+        if (recorder){
+            recorder.stopRecording(function(url) {
+                var urlList = document.getElementById('video-url-preview');
+                urlList.innerHTML = urlList.innerHTML + '<li><a href="' + url + '" target="_blank">Recorded Video URL</a></li>';
+
+                blobURLs.push(url);
+
+                askForName();
+
+                //for immediate playback
+                videoOut.src = url;
+                videoOut.play();
+                videoOut.onended = function(e) {
+                  clearPlaybackVideo();
+                };
+
+                numCaptures++;
+                console.log('numCaptures',numCaptures);
+
+                //Slow down playback
+                videoOut.playbackRate = 0.5;
+
+            });
+
+        }
+
+        //Update buttons
+        recordVideo.disabled = false;
+
+      };
+
+      function askForName() {
+        // var nameEntered = prompt("Please enter your name", "");
+        // console.log("name entered:", nameEntered);
+      }
+
+
+      MediaStreamTrack.getSources(listVideoSources);
+      videoSelector.onchange = resetCamera;
+
+
+      //TEMP FOR OVERNIGHT TESTING
+      // setInterval(function(){
+      //   startVidRecording();
+      // }, (40*1000));
+      //TEMP FOR OVERNIGHT TESTING
+
+
+      function resetCamera() {
+        if (cameraStream) {
+          cameraStream.stop();
+          cameraStream = null;
+        }
+      }
+
+      function listVideoSources(sourceInfos) {
+
+        for (var i = 0; i != sourceInfos.length; ++i) {
+          var sourceInfo = sourceInfos[i];
+          var option = document.createElement("option");
+          option.value = sourceInfo.id;
+
+          if (sourceInfo.kind === 'video') {
+
+            option.text = sourceInfo.label || 'camera ' + (videoSelector.length + 1);
+            videoSelector.appendChild(option);
+
+          } else {
+
+            // console.log('Some other kind of source: ', sourceInfo);
+
+          }
+
+        }
+
+        //Default to last option
+        // videoSelector.options[videoSelector.length-1].selected = true;
+
+      }
+
+      function clearPlaybackVideo() {
+
+        //Remove video from Blob memory
+        videoOut.src = '';
+        URL.revokeObjectURL(blobURLs[0]);
+        blobURLs.shift();
+
+      }
+
+    </script>
+
+
+  </body>
+</html>
