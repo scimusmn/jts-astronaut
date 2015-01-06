@@ -1,6 +1,6 @@
 {
   "name": "jts_astronaut",
   "dependencies": {
-
+    "jquery": "~2.1.3"
   }
 }

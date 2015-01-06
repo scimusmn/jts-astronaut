@@ -51,3 +51,9 @@ video{
   bottom: 150px;
   left: 550px;
 }
+
+
+/* NAME TAG */
+#nametag_screen h1{
+  font-size: 96px;
+}

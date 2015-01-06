@@ -6,23 +6,21 @@ var MIRROR_MASK = 'mirror_mask';
 var BG_LOOP = 'bg_loop';
 
 //SETUP NODE
-var dgram, osc, outport, udp;
+var dgram, osc, outport_millumin, outport_nametag, udp;
 osc = require('osc-min');
 dgram = require("dgram");
 
 udp = dgram.createSocket("udp4");
 
-if (process.argv[2] != null) {
-  outport = parseInt(process.argv[2]);
-} else {
-  outport = 7000;
-}
+outport_millumin = 7000;
+outport_nametag = 7005;
 
-console.log("sending OSC messages to http://localhost:" + outport);
+console.log("sending Millumin OSC messages to http://localhost:" + outport_millumin);
+console.log("sending nametag OSC messages to http://localhost:" + outport_nametag);
 
 launchColumn = function(column) {
 
-  oscMessage('/millumin/action/launchColumn', column);
+  sendOSC('/millumin/action/launchColumn', column);
 
 };
 
@@ -33,10 +31,10 @@ showBoothVideo = function() {
     videoState = BOOTH_VIDEO;
 
     //show booth stream
-    oscMessage('/millumin/layer/opacity/2', 100.0);
+    sendOSC('/millumin/layer/opacity/2', 100.0);
 
     //hide background loop
-    oscMessage('/millumin/layer/opacity/1', 0.01);
+    sendOSC('/millumin/layer/opacity/1', 0.01);
 
     liftMask();
 
@@ -54,10 +52,10 @@ showBackgroundLoop = function() {
     videoState = BG_LOOP;
 
     //hide booth stream
-    oscMessage('/millumin/layer/opacity/2', 0.01);
+    sendOSC('/millumin/layer/opacity/2', 0.01);
 
     //show background loop
-    oscMessage('/millumin/layer/opacity/1', 100.0);
+    sendOSC('/millumin/layer/opacity/1', 100.0);
 
     liftMask();
 
@@ -71,9 +69,9 @@ liftMask = function() {
 
     console.log('--> liftMask');
 
-    oscMessage('/millumin/action/selectLayerWithName', 'Mask');
-    oscMessage('/millumin/layer/media/timeInSeconds/0', 0.01);
-    oscMessage('/millumin/action/composition/start');
+    sendOSC('/millumin/action/selectLayerWithName', 'Mask');
+    sendOSC('/millumin/layer/media/timeInSeconds/0', 0.01);
+    sendOSC('/millumin/action/composition/start');
 
 };
 
@@ -81,13 +79,13 @@ lowerMask = function() {
 
     console.log('--> lowerMask');
 
-    oscMessage('/millumin/action/selectLayerWithName', 'Mask');
-    oscMessage('/millumin/layer/media/timeInSeconds/0', 595);
-    oscMessage('/millumin/action/composition/start');
+    sendOSC('/millumin/action/selectLayerWithName', 'Mask');
+    sendOSC('/millumin/layer/media/timeInSeconds/0', 595);
+    sendOSC('/millumin/action/composition/start');
 
 };
 
-oscMessage = function (oscAddress, val) {
+toMillumin = function (oscAddress, val) {
 
     var buf;
 
@@ -104,7 +102,8 @@ oscMessage = function (oscAddress, val) {
     }
 
     console.log('sending OSC message:', oscAddress, val);
-    return udp.send(buf, 0, buf.length, outport, "localhost");
+
+    return udp.send(buf, 0, buf.length, outport_millumin, "localhost");
 
 }
 
@@ -120,4 +119,22 @@ setInterval(function(){
     }
 
 }, 30000);
+
+setInterval(function(){
+
+    var nameTxt = 'Tragvar the annihilator';
+    var displaySeconds = 7.5;
+
+    var buf;
+    buf = osc.toBuffer({
+        address: "/nametag",
+        args: [
+            nameTxt,
+            displaySeconds
+        ]
+    });
+
+    udp.send(buf, 0, buf.length, outport_nametag, "localhost");
+
+}, 5000);
 

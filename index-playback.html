@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Playback Window</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+  </head>
+  <body>
+    <div id="playback_screen" class="screen">
+      <video id="playback_video" autoplay="" muted=""></video>
+    </div>
+
+    <script type="text/javascript">
+
+      function getByID(id) {
+        return document.getElementById(id);
+      }
+
+      var videoOut = getByID('playback_video');
+
+      function startVideoPlayback(videoURL) {
+
+        //for immediate playback
+        videoOut.src = videoURL;
+        videoOut.play();
+
+        //Slow down playback
+        videoOut.playbackRate = 0.25;
+
+        videoOut.onended = function(e) {
+          clearPlaybackVideo(videoURL);
+        };
+
+      };
+
+      function clearPlaybackVideo(videoURL) {
+
+        //Remove video from Blob memory
+        console.log("clearPlaybackVideo:", videoURL);
+        videoOut.src = '';
+        URL.revokeObjectURL(videoURL);
+
+      }
+
+      setTimeout(function(){
+        startVideoPlayback();
+      }, 2222);
+
+    </script>
+
+  </body>
+</html>

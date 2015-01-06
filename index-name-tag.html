@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Nametag Display</title>
+
+    <!-- CSS -->
+    <!--<link rel="stylesheet" type="text/css" href="css/main.css">-->
+    <!-- JS -->
+    <!--<script src="js/vendor/jquery/jquery.min.js"></script>-->
+    <script src="/socket.io/socket.io.js"></script>
+
+  </head>
+  <body>
+    <div id="nametag_screen" class="screen">
+      <h1 id="name">Your Name Here</h1>
+    </div>
+
+    <script type="text/javascript">
+
+      function getByID(id) {
+        return document.getElementById(id);
+      }
+
+      var nameDisplay = getByID('name');
+
+      var address = '//localhost:7770';
+      var socket = io.connect(address);
+
+      socket.on('handshake', function(data) {
+          socket.emit('handshake-response', {clientId: 'nametag'});
+      });
+
+      socket.on('new-name', function(data) {
+          console.log('new-name', data);
+          displayName(""+data.name);
+      });
+
+      socket.on('error', function() { console.error(arguments) });
+      socket.on('message', function() { console.log(arguments) });
+
+      function displayName(nameStr) {
+        nameDisplay.innerHTML = nameStr;
+
+        //TODO: Any fancy animation for name starts here
+
+      }
+
+    </script>
+
+
+  </body>
+</html>
