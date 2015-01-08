@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Video Booth</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <!-- JS -->
+    <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+  </head>
+  <body>
+    <div id="intake_screen" class="screen">
+
+      <video id="intake_video" autoplay="" loop="" muted=""></video>
+
+      <div class="overlay">
+        <button id="record-video">Record</button>
+        <h1 id="count"></h1>
+      </div>
+
+    </div>
+
+    <div class="dev-panel" style="">
+      <label for='videoSource_booth'>Booth video source: </label><select id='videoSource_booth'></select>
+    </div>
+
+    <script type="text/javascript">
+
+      /* Set up Socket.IO */
+      var address = '//localhost:7770';
+      var socket = io.connect(address);
+
+      socket.on('handshake', function(data) {
+          socket.emit('handshake-response', {clientId: 'booth'});
+      });
+
+      socket.on('set-timer', function(data) {
+          startVideoPlayback(data.videoURL);
+      });
+
+      socket.on('error', function() { console.error(arguments) });
+      socket.on('message', function() { console.log(arguments) });
+
+      /* Record Video */
+      $("#record-video").click( function(){
+          askForName();
+      });
+
+      function askForName() {
+        var nameEntered = prompt("Please enter your name", "");
+
+        console.log("name entered:", nameEntered);
+        sendVisitor(nameEntered, 'http://techslides.com/demos/sample-videos/small.mp4');
+
+
+      }
+
+      setInterval(function(){
+        sendVisitor('sally sue', 'http://techslides.com/demos/sample-videos/small.mp4');
+      }, 30000);
+
+      function sendVisitor(visitorName, visitorVideoURL) {
+        socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
+      }
+
+    </script>
+
+
+  </body>
+</html>
