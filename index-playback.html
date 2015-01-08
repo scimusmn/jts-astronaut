@@ -3,10 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Playback Window</title>
+    <title>Playback</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <!-- JS -->
+    <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
   </head>
   <body>
@@ -16,15 +19,30 @@
 
     <script type="text/javascript">
 
-      function getByID(id) {
-        return document.getElementById(id);
-      }
+      /* Set up Socket.IO */
+      var address = '//localhost:7770';
+      var socket = io.connect(address);
 
-      var videoOut = getByID('playback_video');
+      socket.on('handshake', function(data) {
+          socket.emit('handshake-response', {clientId: 'playback'});
+      });
+
+      socket.on('video-playback', function(data) {
+          startVideoPlayback(data.videoURL);
+      });
+
+      socket.on('error', function() { console.error(arguments) });
+      socket.on('message', function() { console.log(arguments) });
+
+
+      /* Video Playback */
+      var videoOut = document.getElementById('playback_video');
 
       function startVideoPlayback(videoURL) {
 
-        //for immediate playback
+        console.log('startVideoPlayback', videoURL);
+
+        //For immediate playback
         videoOut.src = videoURL;
         videoOut.play();
 
@@ -45,10 +63,6 @@
         URL.revokeObjectURL(videoURL);
 
       }
-
-      setTimeout(function(){
-        startVideoPlayback();
-      }, 2222);
 
     </script>
 

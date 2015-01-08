@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>Video Booth</title>
-    <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <!-- Javascript -->
-    <script src="./node_modules/recordrtc/RecordRTC.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <!-- JS -->
+    <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
   </head>
   <body>
@@ -18,12 +20,8 @@
       <div class="overlay">
         <button id="record-video">Record</button>
         <h1 id="count"></h1>
-        <ul id="video-url-preview"></ul>
       </div>
 
-    </div>
-    <div id="playback_screen" class="screen">
-      <video id="playback_video" autoplay="" muted=""></video>
     </div>
 
     <div class="dev-panel" style="">
@@ -49,6 +47,7 @@
       var countdown;
       var blobURLs = [];
       var countdownTimer;
+      var recordingLength = 5;
       var vidCaptureWidth = 1280;
       var vidCaptureHeight = 1024;
 
@@ -117,7 +116,7 @@
 
       function startTimedRecording() {
 
-        countdown = 5;
+        countdown = recordingLength;
         count.innerHTML = ''+countdown;
 
         recorder.startRecording();
@@ -137,8 +136,6 @@
 
         if (recorder){
             recorder.stopRecording(function(url) {
-                var urlList = document.getElementById('video-url-preview');
-                urlList.innerHTML = urlList.innerHTML + '<li><a href="' + url + '" target="_blank">Recorded Video URL</a></li>';
 
                 blobURLs.push(url);
 
@@ -176,11 +173,10 @@
       videoSelector.onchange = resetCamera;
 
 
-      //TEMP FOR OVERNIGHT TESTING
+      //UNCOMMENT FOR OVERNIGHT TESTING
       // setInterval(function(){
       //   startVidRecording();
       // }, (40*1000));
-      //TEMP FOR OVERNIGHT TESTING
 
 
       function resetCamera() {
@@ -212,15 +208,6 @@
 
         //Default to last option
         // videoSelector.options[videoSelector.length-1].selected = true;
-
-      }
-
-      function clearPlaybackVideo() {
-
-        //Remove video from Blob memory
-        videoOut.src = '';
-        URL.revokeObjectURL(blobURLs[0]);
-        blobURLs.shift();
 
       }
 
