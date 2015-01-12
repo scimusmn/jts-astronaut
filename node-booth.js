@@ -6,6 +6,7 @@ var io = require('socket.io')(http);
 
 app.set('port', 7770);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 //Serve client-side files
 app.get('/booth', function (request, response){

@@ -9,7 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!-- JS -->
     <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/recordrtc/RecordRTC.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+
 
   </head>
   <body>
@@ -36,7 +38,7 @@
 
       var numCaptures = 0;
 
-      var recordVideo = getByID('record-video');
+      var recordVideo = getByID('record-video');d
       var count = getByID('count');
       var video = getByID('intake_video');
       var videoOut = getByID('playback_video');

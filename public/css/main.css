@@ -29,6 +29,8 @@ video{
 
 .overlay {
   position: absolute;
+  top:0px;
+  left:0px;
 }
 
 /* - Booth - */
@@ -41,6 +43,12 @@ video{
 }
 
 #record-video {
+  position: fixed;
+  bottom: 150px;
+  left: 350px;
+}
+
+#circle {
   position: fixed;
   bottom: 150px;
   left: 550px;

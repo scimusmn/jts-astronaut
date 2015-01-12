@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!-- JS -->
     <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="../js/vendor/recordrtc/RecordRTC.js"></script>
+    <script src="../js/vendor/jquery-circle-progress/dist/circle-progress.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
   </head>
@@ -20,12 +22,13 @@
       <div class="overlay">
         <button id="record-video">Record</button>
         <h1 id="count"></h1>
+        <div id="circle"></div>
       </div>
 
     </div>
 
     <div class="dev-panel" style="">
-      <label for='videoSource_booth'>Booth video source: </label><select id='videoSource_booth'></select>
+      <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
     </div>
 
     <script type="text/javascript">
@@ -38,33 +41,225 @@
           socket.emit('handshake-response', {clientId: 'booth'});
       });
 
-      socket.on('set-timer', function(data) {
-          startVideoPlayback(data.videoURL);
+      function playbackVisitor(visitorName, visitorVideoURL) {
+        socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
+      }
+
+      socket.on('report-playback-schedule', function(data) {
+
+        startGetReadyCountdown(data.startDelay);
+        clearBlobAfterDelay(data.videoURL, data.finishDelay);
+
       });
 
       socket.on('error', function() { console.error(arguments) });
       socket.on('message', function() { console.log(arguments) });
 
+      /* ------------ */
       /* Record Video */
+      /* ------------ */
+
+      var recordVideo = $('#record-video')[0];
+      var countdown = $('#count')[0];
+      var video = $('#intake_video')[0];
+      var camSelector = $('#camSource_booth')[0];
+
+      var blobURLs = [];
+      var cameraStream;
+      var recorder;
+      var countdownCount;
+      var countdownTimer;
+      var captureLength = 5;
+      var captureWidth = 1280;
+      var captureHeight = 1024;
+      var captureOptions = {
+                                type: 'video',
+                                video: video,
+                                canvas: {
+                                    width: captureWidth,
+                                    height: captureHeight
+                                }
+                            };
+
       $("#record-video").click( function(){
-          askForName();
+          startVidRecording();
+
+          //Temp - Move into own function
+          $('#circle').circleProgress({
+            value: 1,
+            animation: {  duration: (captureLength*1000),
+                          easing: "linear"
+                        },
+            startAngle: -Math.PI/2,
+            size: 180,
+            thickness: 30,
+            reverse: false,
+            fill: {
+                gradient: ["#FF3B41", "#FF3B41"]
+            },
+            emptyFill: "rgba(40, 40, 40, .3)"
+          });
+
       });
 
-      function askForName() {
-        var nameEntered = prompt("Please enter your name", "");
+      //Get camera sources
+      MediaStreamTrack.getSources(listcamSources);
+      camSelector.onchange = resetCamera;
 
-        console.log("name entered:", nameEntered);
-        sendVisitor(nameEntered, 'http://techslides.com/demos/sample-videos/small.mp4');
+      function listcamSources(sourceInfos) {
 
+        for (var i = 0; i != sourceInfos.length; ++i) {
+          var sourceInfo = sourceInfos[i];
+          var option = document.createElement("option");
+          option.value = sourceInfo.id;
+
+          if (sourceInfo.kind === 'video') {
+
+            option.text = sourceInfo.label || 'camera ' + (camSelector.length + 1);
+            camSelector.appendChild(option);
+
+          }
+
+        }
+
+        //Preselect last option
+        // camSelector.options[camSelector.length-1].selected = true;
 
       }
 
-      setInterval(function(){
-        sendVisitor('sally sue', 'http://techslides.com/demos/sample-videos/small.mp4');
-      }, 30000);
+      function resetCamera() {
+        if (cameraStream) {
+          cameraStream.stop();
+          cameraStream = null;
+        }
+      }
 
-      function sendVisitor(visitorName, visitorVideoURL) {
-        socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
+
+      function startVidRecording() {
+
+        if (!cameraStream) {
+
+          var cameraSource = camSelector.value;
+          var videoConstraints = {
+                                  audio: false,
+                                  video: {
+                                    mandatory: { },
+                                    optional: [{sourceId: cameraSource}]
+                                  }
+                                };
+
+          openCameraStream(videoConstraints);
+
+        } else {
+
+          startTimedRecording();
+
+        }
+
+        //Update buttons
+        recordVideo.disabled = true;
+
+      }
+
+      function openCameraStream(videoConstraints) {
+
+        navigator.getUserMedia(videoConstraints, function(stream) {
+
+          //Success callback...
+          video.src = URL.createObjectURL(stream);
+
+          video.onloadedmetadata = function() {
+
+            cameraStream = stream;
+            video.width = captureWidth;
+            video.height = captureHeight;
+            recorder = window.RecordRTC(stream, captureOptions);
+            startTimedRecording();
+
+          };
+
+        }, function() {
+
+          //Error callback...
+          alert('Camera access denied.');
+
+        });
+
+      }
+
+      function startTimedRecording() {
+
+        countdownCount = captureLength;
+        countdown.innerHTML = ''+countdownCount;
+        recorder.startRecording();
+
+        countdownTimer = setInterval( function() {
+
+          countdownCount--;
+          countdown.innerHTML = ''+countdownCount;
+          if (countdownCount == 0) {
+            clearInterval(countdownTimer);
+            stopVidRecording();
+          }
+
+        }, 1000);
+
+      }
+
+      function stopVidRecording() {
+
+        if (recorder){
+
+            recorder.stopRecording(function(url) {
+
+                askForName(url);
+
+            });
+
+        }
+
+        //Update buttons
+        recordVideo.disabled = false;
+
+      };
+
+      function clearBlobAfterDelay(blobURL, seconds) {
+
+        setTimeout(function(){
+
+          //Remove video from Blob memory
+          console.log("Cleared video blob: ", blobURL);
+          URL.revokeObjectURL(blobURL);
+
+        }, seconds * 1000);
+
+      };
+
+      /* -- */
+      /* UI */
+      /* -- */
+
+      function askForName(vidURL) {
+
+        var nameEntered = prompt("Please enter your name", "");
+        playbackVisitor(nameEntered, vidURL);
+
+      }
+
+      function startGetReadyCountdown(countstart) {
+        // $('#get_ready').show();
+        // $('#get_ready #countdown').html(''+data.startDelay);
+
+        // getReadyTimer = setInterval( function() {
+
+        //   getReadyCount--;
+        //   $('#get_ready #countdown').html(''+getReadyCount);
+        //   if (getReadyCount == 0) {
+        //     clearInterval(getReadyTimer);
+        //   }
+
+        // }, 1000);
+
       }
 
     </script>
