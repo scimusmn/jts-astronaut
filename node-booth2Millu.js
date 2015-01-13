@@ -11,12 +11,12 @@ console.log("sending Millumin OSC messages to http://localhost:" + outport_millu
 
 function initMillumin() {
 
-    //Tell Millumin to launch all media of column one
+    //Ensure all video and camera streams are initialized
     toOSC('/millumin/action/launchColumn', 1);
 
 };
 
-showBoothVideo = function() {
+function showBoothVideo() {
 
     console.log('--> showBoothVideo');
     toOSC('/millumin/layer/opacity/2', 100.0); //show booth stream
@@ -77,9 +77,6 @@ function toOSC(oscAddress, val) {
 
 }
 
-// - INIT - //
-
-//ensure all video and streams are initialized
 initMillumin();
 
 setInterval(function(){
@@ -90,6 +87,6 @@ setInterval(function(){
         showBoothVideo();
     }
 
-}, 35000);
+}, 30000);
 
 
