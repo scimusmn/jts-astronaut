@@ -41,14 +41,14 @@
           socket.emit('handshake-response', {clientId: 'booth'});
       });
 
-      function playbackVisitor(visitorName, visitorVideoURL) {
+      function sendVisitor(visitorName, visitorVideoURL) {
         socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
       }
 
       socket.on('report-playback-schedule', function(data) {
 
         startGetReadyCountdown(data.startDelay);
-        clearBlobAfterDelay(data.videoURL, data.finishDelay);
+        clearVisitorAfterDelay(data.videoURL, data.finishDelay);
 
       });
 
@@ -64,7 +64,7 @@
       var video = $('#intake_video')[0];
       var camSelector = $('#camSource_booth')[0];
 
-      var blobURLs = [];
+      var visitorQueue = [];
       var cameraStream;
       var recorder;
       var countdownCount;
@@ -223,13 +223,20 @@
 
       };
 
-      function clearBlobAfterDelay(blobURL, seconds) {
+      function clearVisitorAfterDelay(blobURL, seconds) {
 
         setTimeout(function(){
 
           //Remove video from Blob memory
-          console.log("Cleared video blob: ", blobURL);
           URL.revokeObjectURL(blobURL);
+
+          //Remove visitor from queue
+          visitorQueue.shift();
+
+          //If any visitorQueue waiting in queue, send it out.
+          if (visitorQueue.length > 0){
+            sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
+          }
 
         }, seconds * 1000);
 
@@ -242,7 +249,11 @@
       function askForName(vidURL) {
 
         var nameEntered = prompt("Please enter your name", "");
-        playbackVisitor(nameEntered, vidURL);
+        visitorQueue.push({nameString:nameEntered, videoURL:vidURL});
+
+        if (visitorQueue.length==1){
+          sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
+        }
 
       }
 

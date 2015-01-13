@@ -3,6 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io')(http);
+var profanity = require('profanity-util');
 
 app.set('port', 7770);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -43,14 +44,25 @@ io.sockets.on('connection', function(socket) {
     socket.on('play-visitor-video', function(data){
 
         console.log('play-visitor-video: ', data);
-        sendName(data.nameString);
+        var cleanName = scrapeProfanities(data.nameString);
+        sendName(cleanName);
         sendVideoURL(data.videoURL);
 
         //TODO - tell Millumin to show booth layer
 
+        //Report the schedule for playback
+        var startDelay = 15;
+        var finishDelay = 25;
+        socket.emit('report-playback-schedule', { videoURL: data.videoURL, startDelay: startDelay, finishDelay: finishDelay });
+
     });
 
 });
+
+function scrapeProfanities(str) {
+    str = profanity.purify(str, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
+    return str;
+}
 
 http.listen(app.get('port'), function(){
 
