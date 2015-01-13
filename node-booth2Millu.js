@@ -1,10 +1,3 @@
-
-//VIDEO STATES
-var videoState = '';
-var BOOTH_VIDEO = 'booth_video';
-var MIRROR_MASK = 'mirror_mask';
-var BG_LOOP = 'bg_loop';
-
 //SETUP NODE
 var dgram, osc, outport_millumin, outport_nametag, udp;
 osc = require('osc-min');
@@ -13,49 +6,36 @@ dgram = require("dgram");
 udp = dgram.createSocket("udp4");
 
 outport_millumin = 7000;
-outport_nametag = 7005;
 
 console.log("sending Millumin OSC messages to http://localhost:" + outport_millumin);
-console.log("sending nametag OSC messages to http://localhost:" + outport_nametag);
 
-launchColumn = function(column) {
+function initMillumin() {
 
-  sendOSC('/millumin/action/launchColumn', column);
+    //Tell Millumin to launch all media of column one
+    toOSC('/millumin/action/launchColumn', 1);
 
 };
 
 showBoothVideo = function() {
 
-    console.log('->showBoothVideo');
-
-    videoState = BOOTH_VIDEO;
-
-    //show booth stream
-    sendOSC('/millumin/layer/opacity/2', 100.0);
-
-    //hide background loop
-    sendOSC('/millumin/layer/opacity/1', 0.01);
+    console.log('--> showBoothVideo');
+    toOSC('/millumin/layer/opacity/2', 100.0); //show booth stream
+    toOSC('/millumin/layer/opacity/1', 0.01); //hide background loop
 
     liftMask();
 
-    //timeout delay should be slightly shorter than length of booth videos
+    //timeout should be slightly faster than booth video
     setTimeout(function(){
         lowerMask();
     }, 10000);
 
 };
 
-showBackgroundLoop = function() {
+function showBackgroundLoop() {
 
-    console.log('->showBackgroundLoop');
-
-    videoState = BG_LOOP;
-
-    //hide booth stream
-    sendOSC('/millumin/layer/opacity/2', 0.01);
-
-    //show background loop
-    sendOSC('/millumin/layer/opacity/1', 100.0);
+    console.log('--> showBackgroundLoop');
+    toOSC('/millumin/layer/opacity/2', 0.01); //hide booth stream
+    toOSC('/millumin/layer/opacity/1', 100.0); //show background loop
 
     liftMask();
 
@@ -65,76 +45,51 @@ showBackgroundLoop = function() {
 
 };
 
-liftMask = function() {
+function liftMask() {
 
     console.log('--> liftMask');
-
-    sendOSC('/millumin/action/selectLayerWithName', 'Mask');
-    sendOSC('/millumin/layer/media/timeInSeconds/0', 0.01);
-    sendOSC('/millumin/action/composition/start');
+    toOSC('/millumin/action/selectLayerWithName', 'Mask');
+    toOSC('/millumin/layer/media/timeInSeconds/0', 0.01);
+    toOSC('/millumin/action/composition/start');
 
 };
 
-lowerMask = function() {
+function lowerMask() {
 
     console.log('--> lowerMask');
-
-    sendOSC('/millumin/action/selectLayerWithName', 'Mask');
-    sendOSC('/millumin/layer/media/timeInSeconds/0', 595);
-    sendOSC('/millumin/action/composition/start');
+    toOSC('/millumin/action/selectLayerWithName', 'Mask');
+    toOSC('/millumin/layer/media/timeInSeconds/0', 595);
+    toOSC('/millumin/action/composition/start');
 
 };
 
-toMillumin = function (oscAddress, val) {
+function toOSC(oscAddress, val) {
 
-    var buf;
+    if (!val) val = 'NA';
 
-    if(val){
-        buf = osc.toBuffer({
-            address: oscAddress,
-            args: [val]
-        });
-    } else {
-        buf = osc.toBuffer({
-            address: oscAddress,
-            args: []
-        });
-    }
+    var buf = osc.toBuffer({
+        address: oscAddress,
+        args: [val]
+    });
 
     console.log('sending OSC message:', oscAddress, val);
-
     return udp.send(buf, 0, buf.length, outport_millumin, "localhost");
 
 }
 
+// - INIT - //
+
 //ensure all video and streams are initialized
-launchColumn(1);
+initMillumin();
 
 setInterval(function(){
 
-    if (videoState == BOOTH_VIDEO) {
+    if (Math.random()<.5) {
         showBackgroundLoop();
     } else {
         showBoothVideo();
     }
 
-}, 30000);
+}, 35000);
 
-setInterval(function(){
-
-    var nameTxt = 'Tragvar the annihilator';
-    var displaySeconds = 7.5;
-
-    var buf;
-    buf = osc.toBuffer({
-        address: "/nametag",
-        args: [
-            nameTxt,
-            displaySeconds
-        ]
-    });
-
-    udp.send(buf, 0, buf.length, outport_nametag, "localhost");
-
-}, 5000);
 
