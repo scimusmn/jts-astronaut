@@ -1,6 +1,9 @@
 /* - Global - */
 body{
-  font-family: sans-serif;
+  font-family: 'allerregular';
+}
+h1,h3,h3{
+  font-family: 'allerregular';
 }
 
 .screen {
@@ -34,25 +37,97 @@ video{
 }
 
 /* - Booth - */
-#intake_screen video{
-}
-
 #intake_screen{
   top:0px;
   left:0px;
+  overflow: hidden;
 }
 
-#record-video {
-  position: fixed;
-  bottom: 150px;
-  left: 350px;
+#intake_screen #count{
+  font-size: 5em;
+  color: white;
+  z-index: 3;
+  left: -1px;
+  top: -10px;
+}
+
+.button {
+  cursor:pointer !important;
+}
+
+.centered {
+  margin: 0;
+  position: absolute;
+  top: 88.5%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
 
 #circle {
-  position: fixed;
-  bottom: 150px;
-  left: 550px;
+  position: absolute;
+  top: -6px;
+  left: 0px;
 }
+
+#redbtn {
+  position: absolute;
+}
+
+#face {
+  top:-475px;
+}
+
+.popup {
+  background: rgba(0,111,444, 0.4);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.popup-content {
+
+  width: 66%;
+  height: 33%;
+  border-radius: 12px;
+  background: #ded9da;
+
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+
+}
+
+#enter-name .popup-content{
+  width: 76%;
+  height: 20%;
+  text-align: center;
+}
+
+#enter-name #nameinput{
+  width: 66%;
+  height: 80%;
+  font-size: 3em;
+}
+
+#btn_submitname{
+  background: #aaa;
+  width: 20%;
+  margin: 0px auto;
+}
+
+.effect-blur {
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  filter: blur(3px);
+}
+
+
 
 /* - Playback Window - */
 #playback_screen{

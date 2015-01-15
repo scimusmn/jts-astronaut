@@ -7,10 +7,12 @@
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" href="../css/fonts/Aller/stylesheet.css">
     <!-- JS -->
     <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
     <script src="../js/vendor/recordrtc/RecordRTC.js"></script>
     <script src="../js/vendor/jquery-circle-progress/dist/circle-progress.js"></script>
+    <script src="../js/vendor/gsap/src/minified/TweenMax.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
   </head>
@@ -19,10 +21,25 @@
 
       <video id="intake_video" autoplay="" loop="" muted=""></video>
 
-      <div class="overlay">
-        <button id="record-video">Record</button>
-        <h1 id="count"></h1>
-        <div id="circle"></div>
+      <div id="feed-overlay" class="overlay centered">
+
+        <img id="face" src="../img/face-outline.png" class="centered"/>
+
+        <div id="record-video" class="button">
+          <h1 id="count" class="centered"></h1>
+          <div id="circle" class="centered"></div>
+          <img id="redbtn" src="../img/record-red.png" class="centered"/>
+        </div>
+      </div>
+
+      <div id="enter-name" class="popup" style="display:none">
+        <div class="popup-content">
+          <h3>Enter name</h3>
+          <div>
+            <input id="nameinput" size="16" type="text" placeholder="Your name here">
+            <div id="btn_submitname" class="button"><h2>SUBMIT</h2></div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -43,11 +60,12 @@
 
       function sendVisitor(visitorName, visitorVideoURL) {
         socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
+        var d = currentPlaybackDelay();
       }
 
       socket.on('report-playback-schedule', function(data) {
 
-        startGetReadyCountdown(data.startDelay);
+        getReadyCountdown(data.startDelay);
         clearVisitorAfterDelay(data.videoURL, data.finishDelay);
 
       });
@@ -64,7 +82,6 @@
       var video = $('#intake_video')[0];
       var camSelector = $('#camSource_booth')[0];
 
-      var visitorQueue = [];
       var cameraStream;
       var recorder;
       var countdownCount;
@@ -81,24 +98,18 @@
                                 }
                             };
 
-      $("#record-video").click( function(){
-          startVidRecording();
+      var visitorQueue = [];
+      var currentRecordingURL = '';
+      var delayPerVisitor = captureLength*2; //Assume half-speed playback.
+      var delayIfFirst = 10; //Extra time given if none in queue.
 
-          //Temp - Move into own function
-          $('#circle').circleProgress({
-            value: 1,
-            animation: {  duration: (captureLength*1000),
-                          easing: "linear"
-                        },
-            startAngle: -Math.PI/2,
-            size: 180,
-            thickness: 30,
-            reverse: false,
-            fill: {
-                gradient: ["#FF3B41", "#FF3B41"]
-            },
-            emptyFill: "rgba(40, 40, 40, .3)"
-          });
+      $("#record-video").click( function(){
+
+          //TODO: Disable record button to avoid double click
+
+          startRecordButtonTween();
+
+          setTimeout(startVidRecording, 250);
 
       });
 
@@ -207,12 +218,13 @@
       }
 
       function stopVidRecording() {
-
         if (recorder){
 
             recorder.stopRecording(function(url) {
 
-                askForName(url);
+                currentRecordingURL = url;
+                closeRecordButtonTween();
+                askForName();
 
             });
 
@@ -242,22 +254,100 @@
 
       };
 
+      function currentPlaybackDelay() {
+        var delay = delayPerVisitor * visitorQueue.length;
+
+        if(visitorQueue.length == 1){
+          delay += delayIfFirst;
+        }
+
+        return delay;
+      }
+
       /* -- */
       /* UI */
       /* -- */
 
-      function askForName(vidURL) {
+      function startRecordButtonTween() {
 
-        var nameEntered = prompt("Please enter your name", "");
-        visitorQueue.push({nameString:nameEntered, videoURL:vidURL});
+        $( "#count" ).html(''+captureLength);
+        TweenMax.set( $( "#count" ), { css: { scale:0.4, opacity:0  } } );
+        TweenMax.to( $( "#count" ), 0.4, { css: { opacity:1, scale:1 }, delay:0.25, ease:Power2.easeOut});
+        TweenMax.set( $( "#record-video" ), { css: { scale:1  } } );
+        TweenMax.to( $( "#record-video" ), 0.5, { css: { scale:0.8 }, delay:0.0, ease:Power2.easeOut});
 
+        $('#circle').circleProgress({
+          value: 1,
+          animation: {  duration: (captureLength*1000)+500,
+                        easing: "linear"
+                      },
+          startAngle: -Math.PI/2,
+          size: 220,
+          thickness: 40,
+          reverse: false,
+          fill: {
+              gradient: ["#B41418 ", "#B41418"]
+          },
+          emptyFill: "rgba(240, 240, 240, .3)"
+        });
+
+        TweenMax.set( $( "#circle" ), { css: { scale:0.5 } } );
+        TweenMax.to( $( "#circle" ), 0.5, { css: { scale:1 }, delay:0.2, ease:Power2.easeOut});
+
+      }
+
+      function closeRecordButtonTween() {
+
+        TweenMax.to( $( "#count" ), 0.4, { css: { opacity:0 }, delay:0.0, ease:Power2.easeOut});
+        TweenMax.to( $( "#record-video" ), 0.5, { css: { scale:1 }, delay:0.1, ease:Power2.easeOut});
+        TweenMax.to( $( "#circle" ), 0.5, { css: { scale:0.5 }, delay:0.0, ease:Power2.easeIn});
+
+      }
+
+      function askForName() {
+
+        //Reset fields
+        $("#nameinput").val('');
+
+        //Show popup
+        $( "#enter-name" ).show();
+        TweenMax.set( $( "#enter-name" ), { css: { scale:0.7, opacity:0  } } );
+        TweenMax.to( $( "#enter-name" ), 0.5, { css: { scale:1, opacity:1 }, ease:Power2.easeIn, onComplete:function(){
+          $("#nameinput").focus();
+        }});
+
+      }
+
+      $("#btn_submitname").click( function(){
+        nameSubmitted();
+      });
+      $("#nameinput").keyup(function (e) {
+        if (e.keyCode == 13) { //capture return key
+          nameSubmitted();
+        }
+      });
+
+      function nameSubmitted(){
+        var nameEntered = $("#nameinput").val();
+
+        //Push into visitor queue
+        visitorQueue.push({nameString:nameEntered, videoURL:currentRecordingURL});
         if (visitorQueue.length==1){
           sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
         }
 
+        //Hide name popup
+        TweenMax.to( $( "#enter-name" ), 0.3, { css: { scale:0.7, opacity:0 }, ease:Power2.easeIn, onComplete:function(){
+          //Reset fields
+          $("#nameinput").val('');
+        }});
+
       }
 
-      function startGetReadyCountdown(countstart) {
+      function getReadyCountdown(countstart) {
+
+        console.log("Get Ready! Your video will play in "+countstart+" seconds! #BIGASTRONAUT");
+
         // $('#get_ready').show();
         // $('#get_ready #countdown').html(''+data.startDelay);
 

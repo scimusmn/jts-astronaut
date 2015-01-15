@@ -24,7 +24,7 @@ app.get('/playback', function (request, response){
 // Send user's name to all connected clients
 function sendName(nameStr) {
     console.log("sendName:", nameStr);
-    io.sockets.emit('new-name', { name: nameStr, duration:7});
+    io.sockets.emit('new-name', { name: nameStr, duration:15});
 }
 
 // Send video url to all connected clients
@@ -44,25 +44,23 @@ io.sockets.on('connection', function(socket) {
     socket.on('play-visitor-video', function(data){
 
         console.log('play-visitor-video: ', data);
-        var cleanName = scrapeProfanities(data.nameString);
+
+        //Calculate schedule for playback
+        var startDelay = 15;
+        var finishDelay = 25;
+
+        var cleanName = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
         sendName(cleanName);
         sendVideoURL(data.videoURL);
 
         //TODO - tell Millumin to show booth layer
 
-        //Report the schedule for playback
-        var startDelay = 15;
-        var finishDelay = 25;
+        //Report playback schedule
         socket.emit('report-playback-schedule', { videoURL: data.videoURL, startDelay: startDelay, finishDelay: finishDelay });
 
     });
 
 });
-
-function scrapeProfanities(str) {
-    str = profanity.purify(str, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
-    return str;
-}
 
 http.listen(app.get('port'), function(){
 
