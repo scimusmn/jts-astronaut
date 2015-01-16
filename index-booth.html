@@ -32,13 +32,19 @@
         </div>
       </div>
 
-      <div id="enter-name" class="popup" style="display:none">
-        <div class="popup-content">
-          <h3>Enter name</h3>
+      <div id="enter-name" class="popup" >
+        <div class="popup-content front">
+          <h3>What's your astronaut name?</h3>
           <div>
-            <input id="nameinput" size="16" type="text" placeholder="Your name here">
-            <div id="btn_submitname" class="button"><h2>SUBMIT</h2></div>
+            <input id="nameinput" size="16" type="text" placeholder="Enter name here">
+            <div id="btn_submitname" class="button"><h2>GO</h2></div>
           </div>
+        </div>
+        <div class="popup-content back">
+          <h1>Thank you!</h1>
+          <h3>Your video will play in <span id="getready-count">XXX</span> seconds.</h3>
+          <h3>#BIGASTRONAUT</h3>
+          <!-- <img src="../img/get-ready.png" width="240"/> -->
         </div>
       </div>
 
@@ -59,13 +65,17 @@
       });
 
       function sendVisitor(visitorName, visitorVideoURL) {
+
         socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
+
         var d = currentPlaybackDelay();
+        getReadyCountdown(d);
+
       }
 
       socket.on('report-playback-schedule', function(data) {
 
-        getReadyCountdown(data.startDelay);
+        // getReadyCountdown(data.startDelay);
         clearVisitorAfterDelay(data.videoURL, data.finishDelay);
 
       });
@@ -261,6 +271,8 @@
           delay += delayIfFirst;
         }
 
+        delay = Math.ceil(Math.random()*90) + 20;
+
         return delay;
       }
 
@@ -268,11 +280,24 @@
       /* UI */
       /* -- */
 
+      initUI();
+
+      function initUI(){
+
+        TweenLite.set($("#enter-name").parent(), {perspective:1100});
+        TweenLite.set($("#enter-name .popup-content"), {transformStyle:"preserve-3d"});
+        TweenLite.set($(".back"), {rotationY:-180, rotationZ:180});
+        TweenLite.set([$(".back"), $(".front")], {backfaceVisibility:"hidden"});
+
+        $("#enter-name").hide();
+
+      }
+
       function startRecordButtonTween() {
 
         $( "#count" ).html(''+captureLength);
         TweenMax.set( $( "#count" ), { css: { scale:0.4, opacity:0  } } );
-        TweenMax.to( $( "#count" ), 0.4, { css: { opacity:1, scale:1 }, delay:0.25, ease:Power2.easeOut});
+        // TweenMax.to( $( "#count" ), 0.4, { css: { opacity:1, scale:1 }, delay:0.25, ease:Power2.easeOut});
         TweenMax.set( $( "#record-video" ), { css: { scale:1  } } );
         TweenMax.to( $( "#record-video" ), 0.5, { css: { scale:0.8 }, delay:0.0, ease:Power2.easeOut});
 
@@ -311,8 +336,10 @@
 
         //Show popup
         $( "#enter-name" ).show();
-        TweenMax.set( $( "#enter-name" ), { css: { scale:0.7, opacity:0  } } );
-        TweenMax.to( $( "#enter-name" ), 0.5, { css: { scale:1, opacity:1 }, ease:Power2.easeIn, onComplete:function(){
+        $( "#intake_video" ).addClass('effect-blur');
+        TweenMax.set( $( "#enter-name" ), { css: { opacity:0  } } );
+        TweenMax.set( $( "#enter-name .popup-content" ), { css: { scale:0.7, opacity:0  } } );
+        TweenMax.to( [$( "#enter-name" ), $( "#enter-name .popup-content" )], 0.5, { css: { scale:1, opacity:1 }, ease:Power2.easeIn, onComplete:function(){
           $("#nameinput").focus();
         }});
 
@@ -326,6 +353,9 @@
           nameSubmitted();
         }
       });
+      $("#btn_return").click( function(){
+        returnToCameraView();
+      });
 
       function nameSubmitted(){
         var nameEntered = $("#nameinput").val();
@@ -336,32 +366,62 @@
           sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
         }
 
-        //Hide name popup
-        TweenMax.to( $( "#enter-name" ), 0.3, { css: { scale:0.7, opacity:0 }, ease:Power2.easeIn, onComplete:function(){
-          //Reset fields
-          $("#nameinput").val('');
-        }});
+        TweenLite.set($( "#getready-count" ), {opacity:0});
+
+        flipPopup();
+
+        setTimeout(returnToCameraView, 8500);
+
+      }
+
+      function flipPopup() {
+
+        TweenLite.to($( "#enter-name .popup-content" ), 0.8, {delay:0.1, rotationX:-180, ease:Power2.easeOut});
 
       }
 
       function getReadyCountdown(countstart) {
 
-        console.log("Get Ready! Your video will play in "+countstart+" seconds! #BIGASTRONAUT");
+        console.log('getReadyCountdown');
 
-        // $('#get_ready').show();
-        // $('#get_ready #countdown').html(''+data.startDelay);
+        getReadyCount = countstart;
 
-        // getReadyTimer = setInterval( function() {
+        $( "#getready-count" ).html(''+getReadyCount);
 
-        //   getReadyCount--;
-        //   $('#get_ready #countdown').html(''+getReadyCount);
-        //   if (getReadyCount == 0) {
-        //     clearInterval(getReadyTimer);
-        //   }
+        TweenMax.to( $( "#getready-count" ), 0.5, { css: { opacity:1 }, delay:1, ease:Power2.easeIn});
 
-        // }, 1000);
+        getReadyTimer = setInterval( function() {
+
+          getReadyCount--;
+          $( "#getready-count" ).html(''+getReadyCount);
+          if (getReadyCount == 0) {
+            clearInterval(getReadyTimer);
+          }
+
+        }, 1000);
 
       }
+
+      function returnToCameraView(){
+
+        //Hide name popup
+        TweenMax.to( $( "#enter-name" ), 0.5, { css: { opacity:0 }, delay:0.2, ease:Power2.easeIn});
+        TweenMax.to( $( "#enter-name .popup-content" ), 0.7, { css: { scale:0.7, opacity:0 }, ease:Power2.easeIn, onComplete:function(){
+          //Reset fields
+          $("#nameinput").val('');
+          $( "#enter-name" ).hide();
+          //Reset flipped state
+          TweenLite.set($( "#enter-name .popup-content" ), {rotationX:0});
+          //Clear get ready timer
+          clearInterval(getReadyTimer);
+
+
+        }});
+        $( "#intake_video" ).removeClass('effect-blur');
+
+      }
+
+
 
     </script>
 

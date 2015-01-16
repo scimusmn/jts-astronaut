@@ -75,11 +75,11 @@ video{
 }
 
 #face {
-  top:-475px;
+  top:-500px;
 }
 
 .popup {
-  background: rgba(0,111,444, 0.4);
+  background: rgba(0,0,0,0.25);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -103,11 +103,33 @@ video{
 
 }
 
-#enter-name .popup-content{
-  width: 76%;
+.popup-content.front {
   height: 20%;
+  width: 76%;
   text-align: center;
 }
+
+.popup-content.back {
+  height: 20%;
+  width: 76%;
+  text-align: center;
+}
+
+.popup-content.back #getready_1,
+.popup-content.back #getready_2 {
+  /*position: absolute;*/
+}
+
+.popup-content.back #getready-count{
+  font-size: 1.5em;
+}
+
+.popup-content .button{
+  background: #aaa;
+  width: 20%;
+  margin: 0px auto;
+}
+
 
 #enter-name #nameinput{
   width: 66%;
@@ -115,19 +137,11 @@ video{
   font-size: 3em;
 }
 
-#btn_submitname{
-  background: #aaa;
-  width: 20%;
-  margin: 0px auto;
-}
-
 .effect-blur {
-  -webkit-filter: blur(3px);
-  -moz-filter: blur(3px);
-  filter: blur(3px);
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  filter: blur(5px);
 }
-
-
 
 /* - Playback Window - */
 #playback_screen{
