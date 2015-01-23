@@ -46,8 +46,11 @@
         videoOut.src = videoURL;
         videoOut.play();
 
-        //Slow down playback
-        videoOut.playbackRate = 0.5;
+        // Slow down playback
+        //
+        // Disabled for now. We'll look at whether to slow the video down
+        // in the future.
+        // videoOut.playbackRate = 0.5;
 
         videoOut.onended = function(e) {
           clearPlaybackVideo(videoURL);
