@@ -3,7 +3,7 @@ body{
   font-family: 'allerregular';
 }
 h1,h3,h3{
-  font-family: 'allerregular';
+  font-family: 'Courier';
 }
 
 .screen {
@@ -150,6 +150,9 @@ video{
 
 /* - Name Tag - */
 #nametag_screen h1{
-  font-size: 96px;
+font-size: 763px;
+line-height: 500px;
+padding: 0;
+margin: 0;
 }
 

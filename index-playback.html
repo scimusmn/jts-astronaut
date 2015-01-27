@@ -20,7 +20,7 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//localhost:7770';
+      var address = '//172.17.68.12:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -47,7 +47,7 @@
         videoOut.play();
 
         //Slow down playback
-        videoOut.playbackRate = 0.5;
+        // videoOut.playbackRate = 0.5;
 
         videoOut.onended = function(e) {
           clearPlaybackVideo(videoURL);

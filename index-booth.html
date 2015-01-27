@@ -57,7 +57,7 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//localhost:7770';
+      var address = '//172.17.68.12:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -96,7 +96,7 @@
       var recorder;
       var countdownCount;
       var countdownTimer;
-      var captureLength = 5;
+      var captureLength = 15;
       var captureWidth = 1280;
       var captureHeight = 1024;
       var captureOptions = {
@@ -386,7 +386,7 @@
 
         getReadyCount = countstart;
 
-        $( "#getready-count" ).html(''+getReadyCount);
+        $( "#getready-count" ).html('XX');
 
         TweenMax.to( $( "#getready-count" ), 0.5, { css: { opacity:1 }, delay:1, ease:Power2.easeIn});
 
@@ -394,6 +394,7 @@
 
           getReadyCount--;
           $( "#getready-count" ).html(''+getReadyCount);
+          $( "#getready-count" ).html('XX');
           if (getReadyCount == 0) {
             clearInterval(getReadyTimer);
           }
