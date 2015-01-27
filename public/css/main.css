@@ -1,6 +1,7 @@
 /* - Global - */
 body{
   font-family: 'allerregular';
+  background: black;
 }
 h1,h3,h3{
   font-family: 'Courier';
@@ -142,7 +143,6 @@ video{
 #playback_screen{
   width:1280px;
   height:1024px;
-  background: black;
 }
 
 /* - Name Tag - */
@@ -153,12 +153,7 @@ video{
 }
 
 #nametag_screen h1{
-<<<<<<< HEAD
-font-size: 763px;
-line-height: 500px;
-padding: 0;
-margin: 0;
-=======
+
   font-size: 905px;
   line-height: 872px;
   font-family: 'm_1mbold';
@@ -173,6 +168,5 @@ margin: 0;
 #nametag_screen h1.fit4{
   font-size: 677px;
   line-height: 845px;
->>>>>>> FETCH_HEAD
 }
 
