@@ -5,7 +5,7 @@ dgram = require("dgram");
 
 udp = dgram.createSocket("udp4");
 
-outport_millumin = 7000;
+outport_millumin = 7770;
 
 console.log("sending Millumin OSC messages to http://localhost:" + outport_millumin);
 
@@ -65,7 +65,7 @@ function lowerMask() {
 
 function toOSC(oscAddress, val) {
 
-    if (!val) val = 'NA';
+    if (val!=0&&!val) val = 'NA';
 
     var buf = osc.toBuffer({
         address: oscAddress,
@@ -77,16 +77,23 @@ function toOSC(oscAddress, val) {
 
 }
 
-initMillumin();
+// initMillumin();
 
 setInterval(function(){
 
-    if (Math.random()<.5) {
-        showBackgroundLoop();
+    //To set Position Y Timeline:
+    // Use 3 floating point values (to set the in point, current value and out point). 0.0 is the start of the clip. 1.0 is the end.
+    // /layer2/video/positiony/values, (Float 0.0 - 1.0) range (-16384.0 - 16384.0)
+
+    //To set Timeline speed:
+    // /layer2/video/positiony/speed, (Float 0.0 - 1.0) range (0.0 - 10.0)
+
+    if (Math.random() < .5) {
+        toOSC('/layer2/video/positiony/direction', 0); //Lower mask
     } else {
-        showBoothVideo();
+        toOSC('/layer2/video/positiony/direction', 1); //Raise mask
     }
 
-}, 30000);
+}, 3500);
 
 

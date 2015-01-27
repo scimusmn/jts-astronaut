@@ -10,8 +10,6 @@ h1,h3,h3{
   position: absolute;
   top:0px;
   left:0px;
-  width:1280px;
-  height:1024px;
 }
 
 video{
@@ -41,6 +39,8 @@ video{
   top:0px;
   left:0px;
   overflow: hidden;
+  width:1280px;
+  height:1024px;
 }
 
 #intake_screen #count{
@@ -115,11 +115,6 @@ video{
   text-align: center;
 }
 
-.popup-content.back #getready_1,
-.popup-content.back #getready_2 {
-  /*position: absolute;*/
-}
-
 .popup-content.back #getready-count{
   font-size: 1.5em;
 }
@@ -138,21 +133,39 @@ video{
 }
 
 .effect-blur {
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  filter: blur(5px);
+  -webkit-filter: blur(7px);
+  -moz-filter: blur(7px);
+  filter: blur(7px);
 }
 
 /* - Playback Window - */
 #playback_screen{
-
+  width:1280px;
+  height:1024px;
+  background: black;
 }
 
 /* - Name Tag - */
+#nametag_screen{
+  width:4080px;
+  height:768px;
+  overflow: hidden;
+}
+
 #nametag_screen h1{
-font-size: 763px;
-line-height: 500px;
-padding: 0;
-margin: 0;
+  font-size: 905px;
+  line-height: 872px;
+  font-family: 'm_1mbold';
+  text-transform:uppercase;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#nametag_screen h1.fit4{
+  font-size: 677px;
+  line-height: 845px;
 }
 
