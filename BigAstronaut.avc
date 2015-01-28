@@ -38,8 +38,8 @@
   </composition>
   <layer layerIndex="0">
     <settings>
-      <name value="Loop_Layer"/>
-      <bypassed value="0"/>
+      <name value="Loop_Layer_1"/>
+      <bypassed value="1"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -58,12 +58,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="2.40023357e+09" duration="5000">
+          <parameter>
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="75117.2757" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="138370.248" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -130,7 +130,7 @@
   </layer>
   <layer layerIndex="1">
     <settings>
-      <name value="Booth_Layer"/>
+      <name value="Booth_Layer_2"/>
       <bypassed value="0"/>
       <solo value="0"/>
       <group value="-1"/>
@@ -154,7 +154,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -236,8 +236,8 @@
   </layer>
   <layer layerIndex="2">
     <settings>
-      <name value="Mask_Layer"/>
-      <bypassed value="0"/>
+      <name value="Mask_Layer_3"/>
+      <bypassed value="1"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -260,7 +260,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -315,7 +315,8 @@
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
             <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
           </parameter>
-          <parameter paramSubType="2" paramControlType="2" duration="93.3609959">
+          <parameter paramSubType="2" paramControlType="2" orgDuration="5000.00001"
+                     duration="93.3609959">
             <name value="Position Y"/>
             <nameGiven value="Position Y"/>
             <textValue value=""/>
@@ -519,7 +520,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="75110.1294" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="138364.553" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -572,7 +573,7 @@
               <parameter paramType="110">
                 <name value="Alpha Type"/>
                 <nameGiven value="Alpha Type"/>
-                <choices value="2"/>
+                <choices value="1"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
@@ -594,7 +595,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="663.376747" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="3914.70511" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -643,11 +644,12 @@
               <parameter paramType="110">
                 <name value="Alpha Type"/>
                 <nameGiven value="Alpha Type"/>
-                <choices value="2"/>
+                <choices value="1"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
                 <nameGiven value="Duration"/>
+                <values curValue="5000" defaultValue="5000" startValue="0" stopValue="2.0736e+09"/>
               </parameter>
             </settings>
           </provider>
@@ -665,7 +667,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2065.36627" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4480.56407" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>

@@ -88,10 +88,20 @@ setInterval(function(){
     //To set Timeline speed:
     // /layer2/video/positiony/speed, (Float 0.0 - 1.0) range (0.0 - 10.0)
 
-    if (Math.random() < .5) {
-        toOSC('/layer2/video/positiony/direction', 0); //Lower mask
+    // if (Math.random() < .5) {
+    //     toOSC('/layer2/video/positiony/direction', 0); //Lower mask
+    // } else {
+    //     toOSC('/layer2/video/positiony/direction', 1); //Raise mask
+    // }
+
+    if ((Math.random() < .5)){
+        console.log('CATS, lyr 2');
+        toOSC('/layer1/bypassed', 1);
+        toOSC('/layer2/bypassed', 0);
     } else {
-        toOSC('/layer2/video/positiony/direction', 1); //Raise mask
+        console.log('SPACE, lyr 1');
+        toOSC('/layer1/bypassed', 0);
+        toOSC('/layer2/bypassed', 1);
     }
 
 }, 3500);

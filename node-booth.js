@@ -5,7 +5,10 @@ var path = require('path');
 var io = require('socket.io')(http);
 var profanity = require('profanity-util');
 
-app.set('port', 7770);
+var port_node = 7770;
+var port_osc = 7770;
+
+app.set('port', port_node);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
@@ -67,3 +70,53 @@ http.listen(app.get('port'), function(){
     console.log('Listening to Node server..');
 
 });
+
+
+/* - Resolume Communication - */
+/*
+var dgram, osc, outport_millumin, outport_nametag, udp;
+osc = require('osc-min');
+dgram = require("dgram");
+udp = dgram.createSocket("udp4");
+
+function initResolume() {
+
+    //TODO:
+    //Ensure all video and camera streams are initialized
+    //Set any initial settings that the project file doesn't store
+
+};
+
+function raiseMask() {
+    toOSC('/layer2/video/positiony/direction', 1);
+};
+
+function lowerMask() {
+    toOSC('/layer2/video/positiony/direction', 0);
+};
+
+function toggleUnderMaskSource(showBooth) {
+    if (showBooth){
+        toOSC('/layer1/bypassed', 1);
+        toOSC('/layer2/bypassed', 0);
+    } else {
+        toOSC('/layer1/bypassed', 0);
+        toOSC('/layer2/bypassed', 1);
+    }
+};
+
+function toOSC(oscAddress, val) {
+
+    if (val!=0&&!val) val = 'NA';
+
+    var buf = osc.toBuffer({
+        address: oscAddress,
+        args: [val]
+    });
+
+    console.log('sending OSC message:', oscAddress, val);
+    return udp.send(buf, 0, buf.length, port_osc, "localhost");
+
+}
+*/
+
