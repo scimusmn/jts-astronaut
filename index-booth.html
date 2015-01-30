@@ -76,7 +76,7 @@
       function exportVisitor() {
 
         console.log('exportVisitor');
-        socket.emit('play-visitor-video', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL });
+        socket.emit('play-visitor-video', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL, captureLength:captureLength, playbackRate:playbackRate });
 
       }
 
@@ -101,10 +101,10 @@
       var recorder;
       var countdownCount;
       var countdownTimer;
-      var playbackRate = 1;
       var visorTransition = 6; //Time visor requires to raise or lower
-      var guaranteedTravelTime = 16; //Time guaranteed to visitor to get ready to watch their video.
-      var captureLength = 15;
+      var guaranteedTravelTime = 11; //Time guaranteed to visitor to get ready to watch their video.
+      var playbackRate = 0.25;
+      var captureLength = 4;
       var captureWidth = 1280;
       var captureHeight = 1024;
       var captureOptions = {
@@ -118,6 +118,7 @@
 
       var visitorQueue = [];
       var currentRecordingURL = '';
+      var nameEntryTimeout = {};
       var getReadyTimer = {};
       var getReadyCount = 0;
 
@@ -267,26 +268,33 @@
       /* ------------- */
 
       var delay_visor = visorTransition; //Should match duration of visor transition
-      var delay_playback1 = (captureLength*playbackRate) - visorTransition;
+      var delay_playback1 = (captureLength/playbackRate) - visorTransition;
       var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
       var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Enough time to close visor
+      var secsSinceLastPlayback = 0;
+      setInterval(function() { secsSinceLastPlayback++; }, 1000);
+
 
       function newVisitor(nameEntered, recordedURL){
 
+        var queueDelay = 0;
         visitorQueue.push({nameString:nameEntered, videoURL:recordedURL });
 
-        var waitTime = (delay_totalSequence * (visitorQueue.length-1));
-        if (waitTime < guaranteedTravelTime) waitTime = guaranteedTravelTime;
+        var wait = delay_totalSequence * (visitorQueue.length-1);
+        if (wait < guaranteedTravelTime) wait = guaranteedTravelTime;
 
-        console.log('newVisitor(). visitorQueue.length:', visitorQueue.length, '. waitTime:', waitTime);
+        var lastEnding = secsSinceLastPlayback+delay_totalSequence;
+
+
+        console.log('New Visitor(). visitorQueue.length:', visitorQueue.length, '. wait:', wait);
 
         if (visitorQueue.length == 1) {
-          cueVisitorSequence(waitTime);
+          cueVisitorSequence(wait);
         } else {
           //Will wait turn in queue
         }
 
-        getReadyCountdown(Math.ceil(waitTime));
+        getReadyCountdown(Math.ceil(wait));
 
       }
 
@@ -302,6 +310,7 @@
 
             resolumeControl('toggle-booth');
             exportVisitor();
+            secsSinceLastPlayback = 0;
             resolumeControl('raise');
 
             setTimeout(function() { //Wait for visitor video to almost finish, then lower visor.
@@ -329,7 +338,7 @@
 
         if (visitorQueue.length > 0){
 
-            cueVisitorSequence(0);
+            cueVisitorSequence(visitorQueue[0].queueDelay);
 
         } else {
 
@@ -337,7 +346,7 @@
           if (Math.random() < 0.5) {
             //Stay on mirror mode
           } else {
-            //Rise visor with looping video
+            //Raise visor with looping video
             resolumeControl('toggle-loop');
             resolumeControl('raise');
           }
@@ -412,9 +421,16 @@
           $("#nameinput").focus();
         }});
 
+        //Timeout if no name submitted within 30 seconds
+        nameEntryTimeout = setTimeout(function() {
+          nameSubmitted();
+        }, 30000)
+
       }
 
       function nameSubmitted(){
+
+        clearInterval(nameEntryTimeout);
 
         //Push into visitor queue
         var nameEntered = $("#nameinput").val();
@@ -459,7 +475,6 @@
           TweenLite.set($( "#enter-name .popup-content" ), {rotationX:0});
           //Clear get ready timer
           clearInterval(getReadyTimer);
-
 
         }});
         $( "#intake_video" ).removeClass('effect-blur');

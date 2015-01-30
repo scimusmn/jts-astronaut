@@ -24,16 +24,23 @@ app.get('/playback', function (request, response){
 });
 
 
-// Send user's name to all connected clients
-function sendName(nameStr) {
-    console.log("sendName:", nameStr);
-    io.sockets.emit('new-name', { name: nameStr, duration:15});
+function sendName(data) {
+
+    // check that string is not empty or full of spaces
+    if (/\S/.test(data.nameString)) {
+        data.nameString = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
+    } else {
+        data.nameString = "I&hearts;SCIENCE";
+    }
+
+    io.sockets.emit('new-name', data);
+
 }
 
-// Send video url to all connected clients
-function sendVideoURL(videoURL) {
-    console.log("sendVideoURL:", videoURL);
-    io.sockets.emit('video-playback', { videoURL: videoURL});
+function sendVideo(data) {
+
+    io.sockets.emit('video-playback', data);
+
 }
 
 io.sockets.on('connection', function(socket) {
@@ -46,10 +53,8 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('play-visitor-video', function(data){
 
-        console.log('play-visitor-video: ', data);
-        var cleanName = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
-        sendName(cleanName);
-        sendVideoURL(data.videoURL);
+        sendName(data);
+        sendVideo(data);
 
     });
 

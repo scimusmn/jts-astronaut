@@ -15,13 +15,14 @@
   </head>
   <body>
     <div id="nametag_screen" class="screen">
-      <h1 id="name">JOHN SMITH</h1>
+      <h1 id="name">ABCDEFGLM</h1>
     </div>
 
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//172.17.68.12:7770';
+      // var address = '//172.17.68.12:7770';
+      var address = '//localhost:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -30,7 +31,8 @@
 
       socket.on('new-name', function(data) {
           console.log('new-name', data);
-          displayName(""+data.name, data.duration);
+          visitorMode = true;
+          displayName(""+data.nameString, data.captureLength/data.playbackRate);
       });
 
       socket.on('error', function() { console.error(arguments) });
@@ -38,45 +40,61 @@
 
 
       /* Display Name */
+
+      var SCREENSAVER_STRINGS = ['#BIGASTRONAUT', 'I<3SPACE', '#GRVTYRLZ'];
+
       function displayName(nameStr, displayDuration) {
 
         $("#name").html(nameStr);
+
+        if (nameStr.length > 9) {
+          $("#name").addClass('fit4');
+        }else{
+          $("#name").removeClass('fit4');
+        }
+
         $("#name").stop().fadeTo("fast",1);
 
         setTimeout(function(){
 
           $("#name").stop().fadeTo("slow",0);
 
-        }, displayDuration*1000);
-
+        }, Math.ceil(displayDuration*1000));
 
         //TEMP
         colorizeCharacters();
+
+      }
+
+      function screensaverName(){
+
+        var randomName = SCREENSAVER_STRINGS[ Math.floor(Math.random()*SCREENSAVER_STRINGS.length) ];
+        displayName(randomName, 0);
+
       }
 
       //TEMP
-      var myColors = ["#625673", "#1C8C81", "#9EF291", "#DCF28C", "#F2AF5C"]; // YOU CAN ADD MORE COLORS!
+      var myColors = ["#625673", "#1C8C81", "#9EF291", "#DCF28C", "#F2AF5C"];
       colorizeCharacters();
       function colorizeCharacters(){
 
         $('h1').each(function(){
 
-        var $el = $(this),
-        text = $el.text(),
-        len = text.length,
-        coLen = myColors.length,
-        newCont = '';
+          var $el = $(this),
+          text = $el.text(),
+          len = text.length,
+          coLen = myColors.length,
+          newCont = '';
 
-        for(var i=0; i<len; i++){
-          newCont += '<span style="background:'+ myColors[i%coLen] +'">'+ text.charAt(i) +'</span>';
-        }
+          for(var i=0; i<len; i++){
+            newCont += '<span style="background:'+ myColors[i%coLen] +'">'+ text.charAt(i) +'</span>';
+          }
 
-        $el.html(newCont);
+          $el.html(newCont);
 
-      });
+        });
 
       }
-
 
     </script>
 

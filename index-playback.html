@@ -20,7 +20,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//172.17.68.12:7770';
+      // var address = '//172.17.68.12:7770';
+      var address = '//localhost:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -28,7 +29,7 @@
       });
 
       socket.on('video-playback', function(data) {
-          startVideoPlayback(data.videoURL);
+          startVideoPlayback(data.videoURL, data.playbackRate);
       });
 
       socket.on('error', function() { console.error(arguments) });
@@ -38,16 +39,16 @@
       /* Video Playback */
       var videoOut = document.getElementById('playback_video');
 
-      function startVideoPlayback(videoURL) {
+      function startVideoPlayback(videoURL, rate) {
 
-        console.log('startVideoPlayback', videoURL);
+        console.log('startVideoPlayback', videoURL, rate);
 
         //For immediate playback
         videoOut.src = videoURL;
         videoOut.play();
 
         //Slow down playback
-        // videoOut.playbackRate = 0.5;
+        videoOut.playbackRate = rate;
 
         videoOut.onended = function(e) {
           clearPlaybackVideo(videoURL);
