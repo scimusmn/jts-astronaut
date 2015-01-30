@@ -38,8 +38,8 @@
   </composition>
   <layer layerIndex="0">
     <settings>
-      <name value="Loop_Layer_1"/>
-      <bypassed value="1"/>
+      <name value="UnderMask_Layer_1"/>
+      <bypassed value="0"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -58,12 +58,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter>
+          <parameter orgDuration="25000000" duration="5000">
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="138370.248" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="37690.7097" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -237,7 +237,7 @@
   <layer layerIndex="2">
     <settings>
       <name value="Mask_Layer_3"/>
-      <bypassed value="1"/>
+      <bypassed value="0"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -328,7 +328,7 @@
                          stopValue="10"/>
             <direction value="0"/>
             <playmode value="0"/>
-            <playmodeAway value="0"/>
+            <playmodeAway value="1"/>
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
             <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
           </parameter>
@@ -520,7 +520,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="138364.553" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="37685.0462" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -552,24 +552,20 @@
         </videoClip>
         <audioClip/>
       </clip>
-      <clip uniqueId="293952943" layerIndex="1" trackIndex="0">
-        <settings fileId="1944059594">
-          <name value="Syphoner"/>
-          <nameGiven value="Syphoner"/>
+      <clip uniqueId="340190836" layerIndex="0" trackIndex="1">
+        <settings fileId="-417303873">
+          <name value="face-hadfield"/>
+          <nameGiven value="face-hadfield"/>
           <desc value="empty clip"/>
           <autoPilot>
             <action value="-1"/>
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="syphon" couldContainVideo="1" name="Syphoner" uiid="info.v002.Syphon.40DAE52B-621C-43F5-8610-A8ED42CBB1A5"
-                  shortName="Syphoner" description="syphon server"/>
-          <provider transparent="1" newlyCreated="0" width="2776" height="1660">
+          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/img/face-hadfield.jpg"
+                  shortName="face-hadfield.jpg" ext=".jpg"/>
+          <provider transparent="1">
             <settings>
-              <parameter paramType="110">
-                <name value="Server"/>
-                <nameGiven value="Server"/>
-              </parameter>
               <parameter paramType="110">
                 <name value="Alpha Type"/>
                 <nameGiven value="Alpha Type"/>
@@ -578,11 +574,12 @@
               <parameter paramControlType="2">
                 <name value="Duration"/>
                 <nameGiven value="Duration"/>
+                <values curValue="5000" defaultValue="5000" startValue="0" stopValue="2.0736e+09"/>
               </parameter>
             </settings>
           </provider>
-          <settings name="Syphoner" desc="Syphon&#13;&#10;&#13;&#10;" fileId="1944059594"
-                    renderPassOrder="0,1,2">
+          <settings name="face-hadfield" desc="JPG&#13;&#10;1323x1277&#13;&#10;"
+                    fileId="-417303873" renderPassOrder="0,1,2">
             <SMPTEOffsetMilliseconds value="00:00:00.00"/>
             <playbackSettings>
               <timelineMode value="3"/>
@@ -595,7 +592,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="3914.70511" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="101.852865" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -614,6 +611,11 @@
                   </modifier>
                 </modifiers>
               </parameter>
+              <parameter>
+                <name value="Scale"/>
+                <nameGiven value="Scale"/>
+                <values curValue="45.4545455" defaultValue="100" startValue="0" stopValue="1000"/>
+              </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
                 <nameGiven value="Position X"/>
@@ -622,12 +624,17 @@
                 <name value="Position Y"/>
                 <nameGiven value="Position Y"/>
               </parameter>
+              <parameter>
+                <name value="Anchor Y"/>
+                <nameGiven value="Anchor Y"/>
+                <values curValue="24" defaultValue="0" startValue="-8192" stopValue="8192"/>
+              </parameter>
             </parameters>
           </settings>
         </videoClip>
         <audioClip/>
       </clip>
-      <clip uniqueId="293952947" layerIndex="2" trackIndex="1">
+      <clip uniqueId="293952947" layerIndex="2" trackIndex="0">
         <settings fileId="103144406">
           <name value="lobby"/>
           <nameGiven value="lobby"/>
@@ -667,7 +674,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4480.56407" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="2693.56934" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
