@@ -30,6 +30,7 @@
           <div id="circle" class="centered"></div>
           <img id="redbtn" src="../img/record-red.png" class="centered"/>
         </div>
+
       </div>
 
       <div id="enter-name" class="popup" >
@@ -42,6 +43,7 @@
         </div>
         <div class="popup-content back">
           <h1>Thank you!</h1>
+          <!-- <h3>Your video will play shortly.</h3> -->
           <h3>Your video will play in <span id="getready-count">XXX</span> seconds.</h3>
           <h3>#BIGASTRONAUT</h3>
           <!-- <img src="../img/get-ready.png" width="240"/> -->
@@ -52,36 +54,39 @@
 
     <div class="dev-panel" style="">
       <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
+      <br/><br/>
+      <label for='resolume'>Resolume: </label>
+      <button id="raise">Raise Visor</button>
+      <button id="lower">Lower Visor</button>
+      <button id="toggle-booth">Show Booth</button>
+      <button id="toggle-loop">Show Loop</button>
     </div>
 
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//172.17.68.12:7770';
+      var address = '//localhost:7770';
+      // var address = '//172.17.68.12:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
           socket.emit('handshake-response', {clientId: 'booth'});
       });
 
-      function sendVisitor(visitorName, visitorVideoURL) {
+      function exportVisitor() {
 
-        socket.emit('play-visitor-video', {nameString: visitorName, videoURL: visitorVideoURL });
-
-        var d = currentPlaybackDelay();
-        getReadyCountdown(d);
+        console.log('exportVisitor');
+        socket.emit('play-visitor-video', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL });
 
       }
 
-      socket.on('report-playback-schedule', function(data) {
-
-        // getReadyCountdown(data.startDelay);
-        clearVisitorAfterDelay(data.videoURL, data.finishDelay);
-
-      });
+      function resolumeControl(controlStr){
+        socket.emit('resolume-control', {control: controlStr});
+      }
 
       socket.on('error', function() { console.error(arguments) });
       socket.on('message', function() { console.log(arguments) });
+
 
       /* ------------ */
       /* Record Video */
@@ -96,6 +101,9 @@
       var recorder;
       var countdownCount;
       var countdownTimer;
+      var playbackRate = 1;
+      var visorTransition = 6; //Time visor requires to raise or lower
+      var guaranteedTravelTime = 16; //Time guaranteed to visitor to get ready to watch their video.
       var captureLength = 15;
       var captureWidth = 1280;
       var captureHeight = 1024;
@@ -110,17 +118,29 @@
 
       var visitorQueue = [];
       var currentRecordingURL = '';
-      var delayPerVisitor = captureLength*2; //Assume half-speed playback.
-      var delayIfFirst = 10; //Extra time given if none in queue.
+      var getReadyTimer = {};
+      var getReadyCount = 0;
+
 
       $("#record-video").click( function(){
 
-          //TODO: Disable record button to avoid double click
-
           startRecordButtonTween();
-
           setTimeout(startVidRecording, 250);
 
+      });
+      $("#btn_submitname").click( function(){
+        nameSubmitted();
+      });
+      $("#nameinput").keyup(function (e) {
+        if (e.keyCode == 13) { //capture return key
+          nameSubmitted();
+        }
+      });
+      $("#btn_return").click( function(){
+        returnToCameraView();
+      });
+      $(".dev-panel button").click( function(){
+          resolumeControl( $(this).attr('id') );
       });
 
       //Get camera sources
@@ -143,9 +163,6 @@
 
         }
 
-        //Preselect last option
-        // camSelector.options[camSelector.length-1].selected = true;
-
       }
 
       function resetCamera() {
@@ -154,7 +171,6 @@
           cameraStream = null;
         }
       }
-
 
       function startVidRecording() {
 
@@ -245,40 +261,95 @@
 
       };
 
-      function clearVisitorAfterDelay(blobURL, seconds) {
 
-        setTimeout(function(){
+      /* ------------- */
+      /* --- QUEUE --- */
+      /* ------------- */
 
-          //Remove video from Blob memory
-          URL.revokeObjectURL(blobURL);
+      var delay_visor = visorTransition; //Should match duration of visor transition
+      var delay_playback1 = (captureLength*playbackRate) - visorTransition;
+      var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
+      var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Enough time to close visor
 
-          //Remove visitor from queue
-          visitorQueue.shift();
+      function newVisitor(nameEntered, recordedURL){
 
-          //If any visitorQueue waiting in queue, send it out.
-          if (visitorQueue.length > 0){
-            sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
+        visitorQueue.push({nameString:nameEntered, videoURL:recordedURL });
+
+        var waitTime = (delay_totalSequence * (visitorQueue.length-1));
+        if (waitTime < guaranteedTravelTime) waitTime = guaranteedTravelTime;
+
+        console.log('newVisitor(). visitorQueue.length:', visitorQueue.length, '. waitTime:', waitTime);
+
+        if (visitorQueue.length == 1) {
+          cueVisitorSequence(waitTime);
+        } else {
+          //Will wait turn in queue
+        }
+
+        getReadyCountdown(Math.ceil(waitTime));
+
+      }
+
+      function cueVisitorSequence(delay_begin){
+
+        console.log('cueVisitorSequence. delay_begin:', delay_begin);
+
+        setTimeout(function(){ //Tell Resolume to lower visor.
+
+          resolumeControl('lower');
+
+          setTimeout(function() { //Once visor is lowered, turn on booth stream.
+
+            resolumeControl('toggle-booth');
+            exportVisitor();
+            resolumeControl('raise');
+
+            setTimeout(function() { //Wait for visitor video to almost finish, then lower visor.
+
+              resolumeControl('lower');
+
+              setTimeout(function() { //After visor is hiding video, switch back to loop, clear the visitor video, and check queue.
+
+                resolumeControl('toggle-loop');
+                visitorSequenceFinished();
+
+              }, delay_playback2*1000);
+            }, delay_playback1*1000);
+          }, delay_visor*1000);
+        }, delay_begin*1000);
+
+      }
+
+      function visitorSequenceFinished() {
+
+        URL.revokeObjectURL(visitorQueue[0].videoURL);
+        visitorQueue.shift();
+
+        console.log('visitorSequenceFinished. queue length:',visitorQueue.length);
+
+        if (visitorQueue.length > 0){
+
+            cueVisitorSequence(0);
+
+        } else {
+
+          //Either stay on "Mirror" mode, or rise visor with Loop
+          if (Math.random() < 0.5) {
+            //Stay on mirror mode
+          } else {
+            //Rise visor with looping video
+            resolumeControl('toggle-loop');
+            resolumeControl('raise');
           }
 
-        }, seconds * 1000);
+        }
 
       };
 
-      function currentPlaybackDelay() {
-        var delay = delayPerVisitor * visitorQueue.length;
 
-        if(visitorQueue.length == 1){
-          delay += delayIfFirst;
-        }
-
-        delay = Math.ceil(Math.random()*90) + 20;
-
-        return delay;
-      }
-
-      /* -- */
-      /* UI */
-      /* -- */
+      /* ---------- */
+      /* --- UI --- */
+      /* ---------- */
 
       initUI();
 
@@ -331,10 +402,8 @@
 
       function askForName() {
 
-        //Reset fields
-        $("#nameinput").val('');
-
         //Show popup
+        $( "#nameinput" ).val('');
         $( "#enter-name" ).show();
         $( "#intake_video" ).addClass('effect-blur');
         TweenMax.set( $( "#enter-name" ), { css: { opacity:0  } } );
@@ -345,61 +414,36 @@
 
       }
 
-      $("#btn_submitname").click( function(){
-        nameSubmitted();
-      });
-      $("#nameinput").keyup(function (e) {
-        if (e.keyCode == 13) { //capture return key
-          nameSubmitted();
-        }
-      });
-      $("#btn_return").click( function(){
-        returnToCameraView();
-      });
-
       function nameSubmitted(){
-        var nameEntered = $("#nameinput").val();
 
         //Push into visitor queue
-        visitorQueue.push({nameString:nameEntered, videoURL:currentRecordingURL});
-        if (visitorQueue.length==1){
-          sendVisitor(visitorQueue[0].nameString, visitorQueue[0].videoURL);
-        }
+        var nameEntered = $("#nameinput").val();
+        newVisitor(nameEntered, currentRecordingURL);
 
+        //Flip Popup
         TweenLite.set($( "#getready-count" ), {opacity:0});
-
-        flipPopup();
-
-        setTimeout(returnToCameraView, 8500);
-
-      }
-
-      function flipPopup() {
-
         TweenLite.to($( "#enter-name .popup-content" ), 0.8, {delay:0.1, rotationX:-180, ease:Power2.easeOut});
+        setTimeout(returnToCameraView, 8500);
 
       }
 
       function getReadyCountdown(countstart) {
 
-        console.log('getReadyCountdown');
-
         getReadyCount = countstart;
-
-        $( "#getready-count" ).html('XX');
-
         TweenMax.to( $( "#getready-count" ), 0.5, { css: { opacity:1 }, delay:1, ease:Power2.easeIn});
 
+        $("#getready-count").html(''+getReadyCount);
         getReadyTimer = setInterval( function() {
 
           getReadyCount--;
-          $( "#getready-count" ).html(''+getReadyCount);
-          $( "#getready-count" ).html('XX');
-          if (getReadyCount == 0) {
-            clearInterval(getReadyTimer);
-          }
+          $("#getready-count").html(''+getReadyCount);
 
         }, 1000);
+
+        setTimeout(function() {
+          TweenMax.to( $( "#getready-count" ), 4.5, { css: { opacity:0 }, ease:Power2.easeIn});
+        }, 4000)
+
 
       }
 

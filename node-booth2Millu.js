@@ -95,13 +95,11 @@ setInterval(function(){
     // }
 
     if ((Math.random() < .5)){
-        console.log('CATS, lyr 2');
-        toOSC('/layer1/bypassed', 1);
-        toOSC('/layer2/bypassed', 0);
+        console.log('22222');
+        toOSC('/layer1/clip2/connect', 1);
     } else {
-        console.log('SPACE, lyr 1');
-        toOSC('/layer1/bypassed', 0);
-        toOSC('/layer2/bypassed', 1);
+        console.log('11111');
+        toOSC('/layer1/clip1/connect', 1);
     }
 
 }, 3500);

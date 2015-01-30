@@ -47,19 +47,28 @@ io.sockets.on('connection', function(socket) {
     socket.on('play-visitor-video', function(data){
 
         console.log('play-visitor-video: ', data);
-
-        //Calculate schedule for playback
-        var startDelay = 15;
-        var finishDelay = 25;
-
         var cleanName = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
         sendName(cleanName);
         sendVideoURL(data.videoURL);
 
-        //TODO - tell Millumin to show booth layer
+    });
 
-        //Report playback schedule
-        socket.emit('report-playback-schedule', { videoURL: data.videoURL, startDelay: startDelay, finishDelay: finishDelay });
+    socket.on('resolume-control', function(data){
+
+        switch(data.control) {
+            case 'raise':
+                raiseMask();
+                break;
+            case 'lower':
+                lowerMask();
+                break;
+            case 'toggle-booth':
+                toggleUnderMaskSource(true);
+                break;
+            case 'toggle-loop':
+                toggleUnderMaskSource(false);
+                break;
+        }
 
     });
 
@@ -72,37 +81,50 @@ http.listen(app.get('port'), function(){
 });
 
 
-/* - Resolume Communication - */
-/*
-var dgram, osc, outport_millumin, outport_nametag, udp;
+/**
+* Resolume OSC Communication
+*/
+var dgram, osc, udp, maskRising;
 osc = require('osc-min');
 dgram = require("dgram");
 udp = dgram.createSocket("udp4");
+maskRising = false;
+
+initResolume();
 
 function initResolume() {
 
-    //TODO:
     //Ensure all video and camera streams are initialized
     //Set any initial settings that the project file doesn't store
+    toOSC('/layer1/clip1/connect', 1);
+    toOSC('/layer2/clip1/connect', 1);
+    toOSC('/layer3/clip1/connect', 1);
+
+    raiseMask();
 
 };
 
 function raiseMask() {
-    toOSC('/layer2/video/positiony/direction', 1);
+    if(maskRising == false) {
+        toOSC('/layer3/video/positiony/direction', 0);
+        maskRising = true;
+    }
 };
-
 function lowerMask() {
-    toOSC('/layer2/video/positiony/direction', 0);
+    if(maskRising == true) {
+        toOSC('/layer3/video/positiony/direction', 1);
+        maskRising = false;
+    }
 };
 
 function toggleUnderMaskSource(showBooth) {
-    if (showBooth){
-        toOSC('/layer1/bypassed', 1);
-        toOSC('/layer2/bypassed', 0);
+
+    if (!showBooth){
+        toOSC('/layer1/clip1/connect', 1);
     } else {
-        toOSC('/layer1/bypassed', 0);
-        toOSC('/layer2/bypassed', 1);
+        toOSC('/layer1/clip2/connect', 1);
     }
+
 };
 
 function toOSC(oscAddress, val) {
@@ -118,5 +140,5 @@ function toOSC(oscAddress, val) {
     return udp.send(buf, 0, buf.length, port_osc, "localhost");
 
 }
-*/
+
 
