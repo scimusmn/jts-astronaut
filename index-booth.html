@@ -23,6 +23,7 @@
 
       <div id="feed-overlay" class="overlay centered">
 
+        <img id="facemask" src="../img/face-mask.png" class="centered"/>
         <img id="face" src="../img/face-outline.png" class="centered"/>
 
         <div id="record-video" class="button">
@@ -43,8 +44,8 @@
         </div>
         <div class="popup-content back">
           <h1>Thank you!</h1>
-          <!-- <h3>Your video will play shortly.</h3> -->
-          <h3>Your video will play in <span id="getready-count">XXX</span> seconds.</h3>
+          <h3>Your video will play shortly.</h3>
+          <!-- <h3>Your video will play in <span id="getready-count">XXX</span> seconds.</h3> -->
           <h3>#BIGASTRONAUT</h3>
           <!-- <img src="../img/get-ready.png" width="240"/> -->
         </div>
@@ -101,10 +102,9 @@
       var recorder;
       var countdownCount;
       var countdownTimer;
-      var visorTransition = 6; //Time visor requires to raise or lower
-      var guaranteedTravelTime = 11; //Time guaranteed to visitor to get ready to watch their video.
-      var playbackRate = 0.25;
-      var captureLength = 4;
+      var visorTransition = 5.5; //Time visor requires to raise or lower
+      var playbackRate = 0.75;
+      var captureLength = 15;
       var captureWidth = 1280;
       var captureHeight = 1024;
       var captureOptions = {
@@ -270,31 +270,21 @@
       var delay_visor = visorTransition; //Should match duration of visor transition
       var delay_playback1 = (captureLength/playbackRate) - visorTransition;
       var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
-      var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Enough time to close visor
-      var secsSinceLastPlayback = 0;
-      setInterval(function() { secsSinceLastPlayback++; }, 1000);
-
+      var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Total of visor open/close sequence
+      var minWaitTime = 45;
 
       function newVisitor(nameEntered, recordedURL){
 
-        var queueDelay = 0;
-        visitorQueue.push({nameString:nameEntered, videoURL:recordedURL });
-
-        var wait = delay_totalSequence * (visitorQueue.length-1);
-        if (wait < guaranteedTravelTime) wait = guaranteedTravelTime;
-
-        var lastEnding = secsSinceLastPlayback+delay_totalSequence;
-
-
-        console.log('New Visitor(). visitorQueue.length:', visitorQueue.length, '. wait:', wait);
+        var now = new Date();
+        visitorQueue.push({nameString:nameEntered, videoURL:recordedURL, timestamp:now });
 
         if (visitorQueue.length == 1) {
-          cueVisitorSequence(wait);
-        } else {
-          //Will wait turn in queue
+          cueVisitorSequence(minWaitTime);
         }
 
-        getReadyCountdown(Math.ceil(wait));
+        //NOTE: This is not a highly accurate wait estimation, but good enough for now.
+        var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
+        getReadyCountdown(wait);
 
       }
 
@@ -310,7 +300,6 @@
 
             resolumeControl('toggle-booth');
             exportVisitor();
-            secsSinceLastPlayback = 0;
             resolumeControl('raise');
 
             setTimeout(function() { //Wait for visitor video to almost finish, then lower visor.
@@ -319,7 +308,6 @@
 
               setTimeout(function() { //After visor is hiding video, switch back to loop, clear the visitor video, and check queue.
 
-                resolumeControl('toggle-loop');
                 visitorSequenceFinished();
 
               }, delay_playback2*1000);
@@ -338,22 +326,24 @@
 
         if (visitorQueue.length > 0){
 
-            cueVisitorSequence(visitorQueue[0].queueDelay);
+          //Add delay if visitor has not had time to get ready.
+          var untilMinWaitTime = minWaitTime - secDiff(visitorQueue[0].timestamp, new Date());
+          cueVisitorSequence( Math.max(0, untilMinWaitTime) );
 
         } else {
 
-          //Either stay on "Mirror" mode, or rise visor with Loop
-          if (Math.random() < 0.5) {
-            //Stay on mirror mode
-          } else {
-            //Raise visor with looping video
-            resolumeControl('toggle-loop');
-            resolumeControl('raise');
-          }
+          //Raise visor with looping video
+          resolumeControl('toggle-loop');
+          resolumeControl('raise');
 
         }
 
       };
+
+      function secDiff(date1, date2){
+        var seconds = (date2.getTime() - date1.getTime())/1000;
+        return seconds;
+      }
 
 
       /* ---------- */
@@ -377,9 +367,9 @@
 
         $( "#count" ).html(''+captureLength);
         TweenMax.set( $( "#count" ), { css: { scale:0.4, opacity:0  } } );
-        // TweenMax.to( $( "#count" ), 0.4, { css: { opacity:1, scale:1 }, delay:0.25, ease:Power2.easeOut});
         TweenMax.set( $( "#record-video" ), { css: { scale:1  } } );
         TweenMax.to( $( "#record-video" ), 0.5, { css: { scale:0.8 }, delay:0.0, ease:Power2.easeOut});
+        TweenMax.to( $( "#facemask" ), 1, { css: { opacity:0.8 }, delay:0.5, ease:Power2.easeOut});
 
         $('#circle').circleProgress({
           value: 1,
@@ -415,6 +405,7 @@
         $( "#nameinput" ).val('');
         $( "#enter-name" ).show();
         $( "#intake_video" ).addClass('effect-blur');
+        TweenMax.to( $( "#facemask" ), 1, { css: { opacity:0 }, ease:Power2.easeOut});
         TweenMax.set( $( "#enter-name" ), { css: { opacity:0  } } );
         TweenMax.set( $( "#enter-name .popup-content" ), { css: { scale:0.7, opacity:0  } } );
         TweenMax.to( [$( "#enter-name" ), $( "#enter-name .popup-content" )], 0.5, { css: { scale:1, opacity:1 }, ease:Power2.easeIn, onComplete:function(){
@@ -458,8 +449,7 @@
 
         setTimeout(function() {
           TweenMax.to( $( "#getready-count" ), 4.5, { css: { opacity:0 }, ease:Power2.easeIn});
-        }, 4000)
-
+        }, 4000);
 
       }
 

@@ -79,6 +79,10 @@ video{
   top:-500px;
 }
 
+#facemask{
+  top:-400px;
+}
+
 .popup {
   background: rgba(0,0,0,0.25);
   width: 100%;
