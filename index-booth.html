@@ -19,7 +19,7 @@
   <body>
     <div id="intake_screen" class="screen">
 
-      <video id="intake_video" autoplay="" loop="" muted=""></video>
+      <video id="intake_video" class="mirrored" autoplay="" loop="" muted=""></video>
 
       <div id="feed-overlay" class="overlay centered">
 
@@ -38,7 +38,7 @@
         <div class="popup-content front">
           <h3>What's your astronaut name?</h3>
           <div>
-            <input id="nameinput" size="16" type="text" placeholder="Enter name here" maxlength="12">
+            <input id="nameinput" size="16" type="text" placeholder="Enter name here" maxlength="15">
             <div id="btn_submitname" class="button"><h2>GO</h2></div>
           </div>
         </div>
@@ -53,7 +53,7 @@
 
     </div>
 
-    <div class="dev-panel" style="">
+    <div class="dev-panel" style="display:none;">
       <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
       <br/><br/>
       <label for='resolume'>Resolume: </label>
@@ -66,8 +66,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//localhost:7770';
-      // var address = '//172.17.68.12:7770';
+      // var address = '//localhost:7770';
+      var address = '//172.17.68.12:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -104,10 +104,11 @@
       var countdownTimer;
       var recordLockout = false;
       var visorTransition = 5.5; //Time visor requires to raise or lower
-      var playbackRate = 0.75;
+      var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
+      var playbackRate = 0.5;
       var captureLength = 15;
-      var captureWidth = 1280;
-      var captureHeight = 1024;
+      var captureWidth = 960;//1280;
+      var captureHeight = 768;//1024;
       var captureOptions = {
                                 type: 'video',
                                 video: video,
@@ -275,7 +276,6 @@
       var delay_playback1 = (captureLength/playbackRate) - visorTransition;
       var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
       var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Total of visor open/close sequence
-      var minWaitTime = 45;
 
       function newVisitor(nameEntered, recordedURL){
 

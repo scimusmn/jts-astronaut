@@ -30,7 +30,7 @@ function sendName(data) {
     if (/\S/.test(data.nameString)) {
         data.nameString = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
     } else {
-        data.nameString = "I&hearts;SCIENCE";
+        data.nameString = "I<3SPACE!";
     }
 
     io.sockets.emit('new-name', data);
@@ -105,6 +105,7 @@ function initResolume() {
     toOSC('/layer2/clip1/connect', 1);
     toOSC('/layer3/clip1/connect', 1);
 
+    toggleUnderMaskSource(false);
     raiseMask();
 
 };
@@ -126,8 +127,10 @@ function toggleUnderMaskSource(showBooth) {
 
     if (!showBooth){
         toOSC('/layer1/clip1/connect', 1);
+        toOSC('/layer2/bypassed', 1);
     } else {
         toOSC('/layer1/clip2/connect', 1);
+        toOSC('/layer2/bypassed', 0);
     }
 
 };

@@ -21,8 +21,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      // var address = '//172.17.68.12:7770';
-      var address = '//localhost:7770';
+      var address = '//172.17.68.12:7770';
+      // var address = '//localhost:7770';
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -47,10 +47,14 @@
 
         $("#name").html(nameStr);
 
+        $("#name").removeClass('fit4').removeClass('fit5');
+
         if (nameStr.length > 9) {
-          $("#name").addClass('fit4');
-        }else{
-          $("#name").removeClass('fit4');
+          if (nameStr.length > 12){
+            $("#name").addClass('fit5');
+          } else {
+            $("#name").addClass('fit4');
+          }
         }
 
         $("#name").stop().fadeTo("fast",1);
@@ -60,9 +64,6 @@
           $("#name").stop().fadeTo("slow",0);
 
         }, Math.ceil(displayDuration*1000));
-
-        //TEMP
-        colorizeCharacters();
 
       }
 
