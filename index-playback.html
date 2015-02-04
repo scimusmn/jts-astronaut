@@ -20,8 +20,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//172.17.68.12:7770';
-      // var address = '//localhost:7770';
+      var host = document.URL.split('/')[2];
+      var address = '//'+host;
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {

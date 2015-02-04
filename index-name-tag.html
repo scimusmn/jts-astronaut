@@ -21,8 +21,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var address = '//172.17.68.12:7770';
-      // var address = '//localhost:7770';
+      var host = document.URL.split('/')[2];
+      var address = '//'+host;
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
@@ -40,14 +40,10 @@
 
 
       /* Display Name */
-
-      var SCREENSAVER_STRINGS = ['#BIGASTRONAUT', 'I<3SPACE', '#GRVTYRLZ'];
-
       function displayName(nameStr, displayDuration) {
 
-        $("#name").html(nameStr);
-
         $("#name").removeClass('fit4').removeClass('fit5');
+        $("#name").html(nameStr);
 
         if (nameStr.length > 9) {
           if (nameStr.length > 12){
@@ -67,16 +63,8 @@
 
       }
 
-      function screensaverName(){
-
-        var randomName = SCREENSAVER_STRINGS[ Math.floor(Math.random()*SCREENSAVER_STRINGS.length) ];
-        displayName(randomName, 0);
-
-      }
-
-      //TEMP
+      //Individual coloring to assist screen alignment
       var myColors = ["#625673", "#1C8C81", "#9EF291", "#DCF28C", "#F2AF5C"];
-      colorizeCharacters();
       function colorizeCharacters(){
 
         $('h1').each(function(){
@@ -94,6 +82,7 @@
           $el.html(newCont);
 
         });
+        colorizeCharacters();
 
       }
 
