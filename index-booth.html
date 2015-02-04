@@ -102,6 +102,7 @@
       var recorder;
       var countdownCount;
       var countdownTimer;
+      var recordLockout = false;
       var visorTransition = 5.5; //Time visor requires to raise or lower
       var playbackRate = 0.75;
       var captureLength = 15;
@@ -124,6 +125,9 @@
 
 
       $("#record-video").click( function(){
+
+          if (recordLockout==true) return;
+          recordLockout = true;
 
           startRecordButtonTween();
           setTimeout(startVidRecording, 250);
@@ -468,6 +472,8 @@
 
         }});
         $( "#intake_video" ).removeClass('effect-blur');
+
+        recordLockout = false;
 
       }
 
