@@ -22,23 +22,6 @@
       <target value="2"/>
       <triggerStyle value="2"/>
       <bypassed value="0"/>
-      <parameters>
-        <parameter>
-          <name value="cross"/>
-          <nameGiven value="cross"/>
-          <textValue value=""/>
-          <extended value="0"/>
-          <values/>
-          <pointsOfInterest value="-1"/>
-          <jumpToPointsOfInterest value="-1"/>
-          <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-          <direction value="3"/>
-          <playmode value="1"/>
-          <playmodeAway value="0"/>
-          <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-          <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-        </parameter>
-      </parameters>
       <direction value="-1"/>
       <speed curValue="1" defaultValue="1" startValue="0" stopValue="10"/>
     </settings>
@@ -75,12 +58,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="25000000" duration="5000">
+          <parameter>
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="62740.7283" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="275511.943" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -163,7 +146,7 @@
   <layer layerIndex="1">
     <settings>
       <name value="Shadow_Layer_2"/>
-      <bypassed value="0"/>
+      <bypassed value="1"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -181,21 +164,6 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="25000000" duration="5000">
-            <name value="Position"/>
-            <nameGiven value="Position"/>
-            <textValue value=""/>
-            <extended value="0"/>
-            <values curValue="1" defaultValue="1" startValue="0" stopValue="1"/>
-            <pointsOfInterest value="0"/>
-            <jumpToPointsOfInterest value="-1"/>
-            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-            <direction value="0"/>
-            <playmode value="1"/>
-            <playmodeAway value="0"/>
-            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-          </parameter>
           <parameter>
             <name value="Opacity"/>
             <nameGiven value="Opacity"/>
@@ -381,7 +349,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="395.37265" defaultValue="0" startValue="0" stopValue="5000"/>
+            <values curValue="4330.79272" defaultValue="0" startValue="0" stopValue="5000"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -430,7 +398,7 @@
             <pointsOfInterest value="-16384"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-            <direction value="3"/>
+            <direction value="1"/>
             <playmode value="1"/>
             <playmodeAway value="0"/>
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
@@ -439,7 +407,17 @@
           <parameter>
             <name value="Anchor Y"/>
             <nameGiven value="Anchor Y"/>
+            <textValue value=""/>
+            <extended value="0"/>
             <values curValue="-54.6133333" defaultValue="0" startValue="-8192" stopValue="8192"/>
+            <pointsOfInterest value="-8192"/>
+            <jumpToPointsOfInterest value="-1"/>
+            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <direction value="3"/>
+            <playmode value="1"/>
+            <playmodeAway value="0"/>
+            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
+            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
           </parameter>
         </parameters>
       </settings>
@@ -456,7 +434,7 @@
             <nameGiven value="Opacity"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0.975265018" defaultValue="1" startValue="0" stopValue="1"/>
+            <values curValue="0.77037037" defaultValue="1" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -471,7 +449,7 @@
             <nameGiven value="R"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0.660777385" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.654320988" defaultValue="0.5" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -486,7 +464,7 @@
             <nameGiven value="G"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0.544169611" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.550617284" defaultValue="0.5" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -514,6 +492,7 @@
         </effect>
         <effect uniquePresetId="10000" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLBrightnessContrast.bundle/Contents/MacOS/AVFFGLBrightnessContrast"
                 uniqueId="A102" name="Bright.Contrast">
+          <bypassed value="0"/>
           <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
                        revision="5588" id="1"/>
           <parameter>
@@ -523,12 +502,12 @@
           <parameter>
             <name value="param1"/>
             <nameGiven value="Brightness"/>
-            <values curValue="0.459363958" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.50617284" defaultValue="0.5" startValue="0" stopValue="1"/>
           </parameter>
           <parameter>
             <name value="param2"/>
             <nameGiven value="Contrast"/>
-            <values curValue="0.513333333" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.538271605" defaultValue="0.5" startValue="0" stopValue="1"/>
           </parameter>
         </effect>
       </effects>
@@ -562,6 +541,7 @@
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
+      <transitionTime curValue="0.831319412" defaultValue="0" startValue="0" stopValue="10"/>
       <autoPilot>
         <action value="3"/>
       </autoPilot>
@@ -581,7 +561,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="827.66613" defaultValue="0" startValue="0" stopValue="5000"/>
+            <values curValue="4097.55183" defaultValue="0" startValue="0" stopValue="5000"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -786,7 +766,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="62726.695" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="275506.551" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -846,7 +826,7 @@
               <parameter paramType="110">
                 <name value="Alpha Type"/>
                 <nameGiven value="Alpha Type"/>
-                <choices value="2"/>
+                <choices value="1"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
@@ -1017,7 +997,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2662.47319" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="2765.47661" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1060,32 +1040,42 @@
         <audioClip/>
       </clip>
       <clip uniqueId="388128585" layerIndex="2" trackIndex="1">
-        <settings fileId="-1128336526">
-          <name value="Logitech Webcam C930e"/>
-          <nameGiven value="Logitech Webcam C930e"/>
+        <settings fileId="-346222698">
+          <name value="Intensity Shuttle Thunderbolt 1"/>
+          <nameGiven value="Intensity Shuttle Thunderbolt 1"/>
           <desc value="empty clip"/>
           <autoPilot>
             <action value="-1"/>
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="captureDevice" couldContainVideo="1" name="Logitech Webcam C930e"
-                  shortName="Logitech Webcam C930e" id="Logitech Webcam C930e"/>
+          <source type="captureDevice" couldContainVideo="1" name="Intensity Shuttle Thunderbolt 1"
+                  shortName="Intensity Shuttle Thunderbolt 1" id="Intensity Shuttle Thunderbolt 1"/>
           <provider transparent="1">
             <settings>
               <parameter paramType="0">
                 <name value="Deinterlace"/>
                 <nameGiven value="Deinterlace"/>
               </parameter>
+              <parameter paramType="110">
+                <name value="Connection"/>
+                <nameGiven value="Connection"/>
+                <choices value="2"/>
+              </parameter>
+              <parameter paramType="110">
+                <name value="Format"/>
+                <nameGiven value="Format"/>
+                <values curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+                <choices value="0"/>
+              </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
                 <nameGiven value="Duration"/>
-                <values curValue="5000" defaultValue="5000" startValue="0" stopValue="2.0736e+09"/>
               </parameter>
             </settings>
           </provider>
-          <settings name="Logitech Webcam C930e" desc="Live Feed&#13;&#10;640x480&#13;&#10;"
-                    fileId="-1128336526" renderPassOrder="0,1,2">
+          <settings name="Intensity Shuttle Thunderbolt 1" desc="Live Feed&#13;&#10;720x486&#13;&#10;"
+                    fileId="-346222698" renderPassOrder="0,1,2">
             <aScale value="0"/>
             <SMPTEOffsetMilliseconds value="00:00:00.00"/>
             <playbackSettings>
@@ -1099,7 +1089,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1845.61538" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="2270.17309" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1118,6 +1108,11 @@
                   </modifier>
                 </modifiers>
               </parameter>
+              <parameter>
+                <name value="Scale"/>
+                <nameGiven value="Scale"/>
+                <values curValue="70" defaultValue="100" startValue="0" stopValue="1000"/>
+              </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
                 <nameGiven value="Position X"/>
@@ -1125,6 +1120,17 @@
               <parameter paramControlType="2">
                 <name value="Position Y"/>
                 <nameGiven value="Position Y"/>
+                <values curValue="0" defaultValue="0" startValue="-16384" stopValue="16384"/>
+              </parameter>
+              <parameter>
+                <name value="Rotate Y"/>
+                <nameGiven value="Rotate Y"/>
+                <values curValue="-180" defaultValue="0" startValue="-180" stopValue="180"/>
+              </parameter>
+              <parameter>
+                <name value="Anchor Y"/>
+                <nameGiven value="Anchor Y"/>
+                <values curValue="36" defaultValue="0" startValue="-8192" stopValue="8192"/>
               </parameter>
             </parameters>
           </settings>
@@ -1171,7 +1177,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4519.02433" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4674.98015" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
