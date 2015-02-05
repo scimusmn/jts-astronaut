@@ -66,8 +66,8 @@
     <script type="text/javascript">
 
       /* Set up Socket.IO */
-      var host = document.URL.split('/')[2];
-      var address = '//'+host;
+      var urlSplit = document.URL.split('/');
+      var address = '//'+urlSplit[2]; // Same address that served this file. e.g. '//123.456.78:8080'
       var socket = io.connect(address);
 
       socket.on('handshake', function(data) {
