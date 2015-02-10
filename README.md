@@ -3,9 +3,9 @@
 Video system for the Big Astronaut at the Science Museum of Minnesota
 
 ## Installation
-To ensure that the camera works in the kiosk browser, we server the photobooth pages from a HTTPS connection with self-signed certificates.
+To ensure that the camera works in the kiosk browser, we server the photobooth pages from a HTTPS connection with self-signed certificates. These are not included in this public repository.
 
-These are not included in this public repository. To create the certificates:
+To create the certificates:
 
     openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout cert/key.pem -out cert/cert.pem
 
