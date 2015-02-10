@@ -1,14 +1,38 @@
+// Load the HTTPS module
+// We require HTTPS so that we can save the camera settings
+var https = require('https');
+
+// Load Self Signed certificate
+var fs = require('fs');
+var options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+// Init app with the Express framework
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
-var path = require('path');
-var io = require('socket.io')(http);
+
+// Load a HTTPS server at port 7771
+var node_port = 7771;
+var httpsServer = https.createServer(options, app);
+httpsServer.listen(node_port);
+
+// Setup socket.io communication for sending messages
+// between the display devices
+var socket = require('socket.io');
+var io = socket.listen(httpsServer, {
+    "log level" : 3,
+    "match origin protocol" : true,
+});
+
 var profanity = require('profanity-util');
 
-var port_node = 7770;
 var port_osc = 7770;
 
-app.set('port', port_node);
+app.set('port', node_port);
+
+var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
@@ -45,6 +69,7 @@ function sendVideo(data) {
 
 io.sockets.on('connection', function(socket) {
 
+    console.log('Before handshake');
     socket.emit('handshake', { message: '' });
 
     socket.on('handshake-response', function(data){
@@ -78,13 +103,6 @@ io.sockets.on('connection', function(socket) {
     });
 
 });
-
-http.listen(app.get('port'), function(){
-
-    console.log('Listening to Node server..');
-
-});
-
 
 /**
 * Resolume OSC Communication
