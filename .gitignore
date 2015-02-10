@@ -2,3 +2,5 @@ node_modules/
 public/js/vendor/*
 public/video/*
 work/
+# Ignore certificate files
+*.pem

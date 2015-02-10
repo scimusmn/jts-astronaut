@@ -5,8 +5,8 @@ var https = require('https');
 // Load Self Signed certificate
 var fs = require('fs');
 var options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
+  key: fs.readFileSync('cert/key.pem'),
+  cert: fs.readFileSync('cert/cert.pem')
 };
 
 // Init app with the Express framework
