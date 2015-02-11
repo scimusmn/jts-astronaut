@@ -70,23 +70,33 @@
       var address = '//'+urlSplit[2]; // Same address that served this file. e.g. '//123.456.78:8080'
       var socket = io.connect(address);
 
+      //Incoming...
       socket.on('handshake', function(data) {
           socket.emit('handshake-response', {clientId: 'booth'});
       });
 
+      socket.on('video-file-ready', function(fileName) {
+          onVideoFileReady(fileName);
+      });
+
+      socket.on('error', function() { console.error(arguments) });
+      socket.on('message', function() { console.log(arguments) });
+
+      //Outgoing...
       function exportVisitor() {
 
         console.log('exportVisitor');
-        socket.emit('play-visitor-video', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL, captureLength:captureLength, playbackRate:playbackRate });
+        socket.emit('play-visitor', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL, captureLength:captureLength, playbackRate:playbackRate });
 
+      }
+
+      function deleteVideoFile(fileName){
+        socket.emit('delete-video-file', {fileName:fileName});
       }
 
       function resolumeControl(controlStr){
         socket.emit('resolume-control', {control: controlStr});
       }
-
-      socket.on('error', function() { console.error(arguments) });
-      socket.on('message', function() { console.log(arguments) });
 
 
       /* ------------ */
@@ -107,8 +117,8 @@
       var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 0.5;
       var captureLength = 15;
-      var captureWidth = 960;//1280;
-      var captureHeight = 768;//1024;
+      var captureWidth = 960;
+      var captureHeight = 768;
       var captureOptions = {
                                 type: 'video',
                                 video: video,
@@ -119,7 +129,8 @@
                             };
 
       var visitorQueue = [];
-      var currentRecordingURL = '';
+      var recordedVideoPath = '';
+      var recordedFileName = '';
       var nameEntryTimeout = {};
       var getReadyTimer = {};
       var getReadyCount = 0;
@@ -254,9 +265,21 @@
 
             recorder.stopRecording(function(url) {
 
-                currentRecordingURL = url;
-                closeRecordButtonTween();
-                askForName();
+                recorder.getDataURL(function(videoDataURL) {
+
+                    var data = {
+                        video: {
+                            type: recorder.getBlob().type || 'video/webm',
+                            dataURL: videoDataURL
+                        }
+                    };
+
+                    socket.emit('create-video-file', data);
+
+                    //Wait to hear back from node that file was created...
+                    //TODO: Show spinner until we hear back?
+
+                });
 
             });
 
@@ -266,6 +289,25 @@
         recordVideo.disabled = false;
 
       };
+
+      function onVideoFileReady(fileName){
+
+        console.log('onVideoFileReady', fileName);
+
+        //base url
+        var href = location.href.replace( location.href.split('/').pop(), '' );
+        href = href.replace( href.split('/')[3], '' );
+        href = href.slice(0, - 1);
+        href = href + 'uploads/' + fileName;
+
+        console.log('Video file path: ' + href);
+
+        recordedVideoPath = href;
+        recordedFileName = fileName;
+        closeRecordButtonTween();
+        askForName();
+
+      }
 
 
       /* ------------- */
@@ -277,10 +319,10 @@
       var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
       var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Total of visor open/close sequence
 
-      function newVisitor(nameEntered, recordedURL){
+      function newVisitor(nameEntered, recordedURL, recordedFilename){
 
         var now = new Date();
-        visitorQueue.push({nameString:nameEntered, videoURL:recordedURL, timestamp:now });
+        visitorQueue.push({nameString:nameEntered, videoURL:recordedURL, fileName:recordedFilename, timestamp:now });
 
         if (visitorQueue.length == 1) {
           cueVisitorSequence(minWaitTime);
@@ -323,6 +365,7 @@
 
       function visitorSequenceFinished() {
 
+        deleteVideoFile(visitorQueue[0].fileName);
         URL.revokeObjectURL(visitorQueue[0].videoURL);
         visitorQueue.shift();
 
@@ -429,7 +472,7 @@
 
         //Push into visitor queue
         var nameEntered = $("#nameinput").val();
-        newVisitor(nameEntered, currentRecordingURL);
+        newVisitor(nameEntered, recordedVideoPath, recordedFileName);
 
         //Flip Popup
         TweenLite.set($( "#getready-count" ), {opacity:0});

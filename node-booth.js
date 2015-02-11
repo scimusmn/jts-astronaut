@@ -3,6 +3,8 @@ var app = express();
 var http = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io')(http);
+var fs = require("fs");
+var uuid = require('node-uuid');
 var profanity = require('profanity-util');
 
 var port_node = 7770;
@@ -43,6 +45,31 @@ function sendVideo(data) {
 
 }
 
+function writeToDisk(dataURL, fileName) {
+
+    var filePath = './public/uploads/' + fileName;
+
+    //Write Blob data into file
+    dataURL = dataURL.split(',').pop();
+    fileBuffer = new Buffer(dataURL, 'base64');
+
+    //TODO: Should this be asynchronous? Let's see if this stalls UI
+    fs.writeFileSync(filePath, fileBuffer);
+
+    console.log('written to disk. filePath', filePath);
+}
+
+function deleteFromDisk(fileName) {
+
+    var fullPath = './public/uploads/' + fileName;
+
+    fs.unlink(fullPath, function (err) {
+        if (err) throw err;
+        console.log('successfully deleted '+fileName);
+    });
+
+}
+
 io.sockets.on('connection', function(socket) {
 
     socket.emit('handshake', { message: '' });
@@ -51,10 +78,28 @@ io.sockets.on('connection', function(socket) {
         console.log('handshake complete with client: ', data.clientId);
     });
 
-    socket.on('play-visitor-video', function(data){
+    socket.on('play-visitor', function(data){
 
         sendName(data);
         sendVideo(data);
+
+    });
+
+    socket.on('create-video-file', function (data) {
+
+        console.log('create video!');
+
+        //Generate universally unique identifier for filename
+        var fileName = uuid.v4();
+
+        writeToDisk(data.video.dataURL, fileName + '.webm');
+        socket.emit('video-file-ready', fileName + '.webm');
+
+    });
+
+    socket.on('delete-video-file', function (data) {
+
+        deleteFromDisk(data.fileName);
 
     });
 
