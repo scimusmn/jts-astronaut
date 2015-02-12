@@ -64,8 +64,13 @@ function deleteFromDisk(fileName) {
     var fullPath = './public/uploads/' + fileName;
 
     fs.unlink(fullPath, function (err) {
-        if (err) throw err;
-        console.log('successfully deleted '+fileName);
+        // if (err) throw err;
+        if (err){
+            console.log('ERROR! Could not delete video '+fileName+',  '+err);
+        }else{
+            console.log('successfully deleted '+fileName);
+        }
+
     });
 
 }

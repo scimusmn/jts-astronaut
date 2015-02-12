@@ -54,7 +54,7 @@
 
     </div>
 
-    <div class="dev-panel" style="">
+    <div class="dev-panel" style="display:none">
       <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
       <br/><br/>
       <label for='resolume'>Resolume: </label>
@@ -122,8 +122,8 @@
       var visorTransition = 5.5; //Time visor requires to raise or lower
       var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 0.5;
-      var captureLength = 15;
-      var ssTimeoutDelay = 180;
+      var captureLength = 10;
+      var ssTimeoutDelay = 60*5;
       var ssTimeout = {};
       var captureWidth = 960;
       var captureHeight = 768;
@@ -159,9 +159,6 @@
         if (e.keyCode == 13) { //capture return key
           nameSubmitted();
         }
-      });
-      $("#btn_return").click( function(){
-        returnToCameraView();
       });
       $(".dev-panel button").click( function(){
           resolumeControl( $(this).attr('id') );
@@ -336,11 +333,11 @@
           cueVisitorSequence(minWaitTime);
         }
 
-        //NOTE: This is not a highly accurate wait estimation, but good enough for now.
-        var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
-        getReadyCountdown(wait);
-
         clearSS();
+
+        //NOTE: This is not a highly accurate wait estimation, just using "Will be ready shortly" for now.
+        // var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
+        // getReadyCountdown(wait);
 
       }
 
@@ -353,24 +350,21 @@
         }
 
         setTimeout(function(){
-          resolumeControl('lower');
+          resolumeControl('raise');
           setTimeout(function() {
-            resolumeControl('raise');
+            vidSource('booth');
             setTimeout(function() {
-              vidSource('booth');
+              exportVisitor();
               setTimeout(function() {
-                exportVisitor();
+                vidSource('visor');
                 setTimeout(function() {
-                  vidSource('visor');
+                  resolumeControl('lower');
                   setTimeout(function() {
-                    resolumeControl('lower');
-                    setTimeout(function() {
-                      visitorSequenceFinished();
-                    }, delay_visor*1000);
-                  }, delay_fade*1000);
-                }, delay_playback*1000);
-              }, delay_fade*1000);
-            }, delay_visor*1000);
+                    visitorSequenceFinished();
+                  }, delay_visor*1000);
+                }, delay_fade*1000);
+              }, delay_playback*1000);
+            }, delay_fade*1000);
           }, delay_visor*1000);
         }, delay_begin*1000);
 
@@ -526,7 +520,7 @@
         //Flip Popup
         TweenLite.set($( "#getready-count" ), {opacity:0});
         TweenLite.to($( "#enter-name .popup-content" ), 0.8, {delay:0.1, rotationX:-180, ease:Power2.easeOut});
-        setTimeout(returnToCameraView, 8500);
+        setTimeout(returnToCameraView, 5000);
 
       }
 

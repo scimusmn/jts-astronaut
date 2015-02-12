@@ -5,7 +5,7 @@
   <generalInfo name="BigAstronaut" desc="Display comp for astronaut helmet projection."
                width="640" height="480" deckCount="1" decksClosed="0" filePathType="0"/>
   <deckInfo>
-    <deck id="294065094" orderId="0" name="video" numClips="6" closed="0">
+    <deck id="294065094" orderId="0" name="video" numClips="5" closed="0">
       <settings id="294065094">
         <name value="video"/>
       </settings>
@@ -51,28 +51,20 @@
               </modifier>
             </modifiers>
           </parameter>
-          <parameter paramSubType="2" duration="75">
+          <parameter paramSubType="2" duration="50">
             <name value="Scale"/>
             <nameGiven value="Scale"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="100" defaultValue="100" startValue="85" stopValue="100"/>
+            <values curValue="100" defaultValue="100" startValue="90" stopValue="100"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
-            <speedFactor curValue="0.07" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <speedFactor curValue="0.05" defaultValue="1" startValue="0.0001" stopValue="10"/>
             <direction value="0"/>
             <playmode value="0"/>
             <playmodeAway value="1"/>
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
             <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-            <modifiers>
-              <modifier type="4" index="1000">
-                <properties>
-                  <easeIn value="0.34375"/>
-                  <easeOut value="0.822916667"/>
-                </properties>
-              </modifier>
-            </modifiers>
           </parameter>
         </parameters>
         <bypassed value="0"/>
@@ -105,7 +97,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="289349.051" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="154715.93" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -271,7 +263,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="719.173727" defaultValue="0" startValue="0" stopValue="5000"/>
+            <values curValue="0" defaultValue="0" startValue="0" stopValue="5000"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -551,7 +543,7 @@
   <track/>
   <track/>
   <decks>
-    <deck id="294065094" orderId="0" name="video" numClips="6" closed="0">
+    <deck id="294065094" orderId="0" name="video" numClips="5" closed="0">
       <clip uniqueId="74597193" layerIndex="0" trackIndex="0">
         <settings fileId="3327652">
           <name value="loop"/>
@@ -578,7 +570,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="289338.652" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="154710.705" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -654,7 +646,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4385.36522" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="269.552037" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -696,84 +688,7 @@
         </videoClip>
         <audioClip/>
       </clip>
-      <clip uniqueId="388128514" layerIndex="1" trackIndex="1">
-        <settings fileId="-417303873">
-          <name value="face-hadfield"/>
-          <nameGiven value="face-hadfield"/>
-          <desc value="empty clip"/>
-          <autoPilot>
-            <action value="-1"/>
-          </autoPilot>
-        </settings>
-        <videoClip>
-          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/img/face-hadfield.jpg"
-                  shortName="face-hadfield.jpg" ext=".jpg"/>
-          <provider transparent="1">
-            <settings>
-              <parameter paramType="110">
-                <name value="Alpha Type"/>
-                <nameGiven value="Alpha Type"/>
-                <choices value="1"/>
-              </parameter>
-              <parameter paramControlType="2">
-                <name value="Duration"/>
-                <nameGiven value="Duration"/>
-                <values curValue="5000" defaultValue="5000" startValue="0" stopValue="2.0736e+09"/>
-              </parameter>
-            </settings>
-          </provider>
-          <settings name="face-hadfield" desc="JPG&#13;&#10;1323x1277&#13;&#10;"
-                    fileId="-417303873" renderPassOrder="0,1,2">
-            <SMPTEOffsetMilliseconds value="00:00:00.00"/>
-            <playbackSettings>
-              <timelineMode value="3"/>
-              <beats curValue="8" defaultValue="4" startValue="1" stopValue="10000"/>
-            </playbackSettings>
-            <parameters>
-              <parameter paramType="10" paramSubType="2" paramControlType="1" orgDuration="5000"
-                         duration="5000">
-                <name value="Position"/>
-                <nameGiven value="Position"/>
-                <textValue value=""/>
-                <extended value="0"/>
-                <values curValue="1835.55258" defaultValue="0" startValue="0" stopValue="5000"/>
-                <pointsOfInterest value="0"/>
-                <jumpToPointsOfInterest value="-1"/>
-                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-                <direction value="0"/>
-                <playmode value="1"/>
-                <playmodeAway value="0"/>
-                <linkMultiplier curValue="8" defaultValue="1" startValue="1" stopValue="4096"/>
-                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-                <modifiers>
-                  <modifier type="4" index="1000">
-                    <properties>
-                      <easeIn value="0"/>
-                      <easeOut value="1"/>
-                      <option value="2"/>
-                    </properties>
-                  </modifier>
-                </modifiers>
-              </parameter>
-              <parameter>
-                <name value="Scale"/>
-                <nameGiven value="Scale"/>
-                <values curValue="54.1176471" defaultValue="100" startValue="0" stopValue="1000"/>
-              </parameter>
-              <parameter paramControlType="2">
-                <name value="Position X"/>
-                <nameGiven value="Position X"/>
-              </parameter>
-              <parameter paramControlType="2">
-                <name value="Position Y"/>
-                <nameGiven value="Position Y"/>
-              </parameter>
-            </parameters>
-          </settings>
-        </videoClip>
-        <audioClip/>
-      </clip>
-      <clip uniqueId="74597134" layerIndex="2" trackIndex="0">
+      <clip uniqueId="74597259" layerIndex="2" trackIndex="0">
         <settings fileId="1272814224">
           <name value="face-shadow"/>
           <nameGiven value="face-shadow"/>
@@ -790,12 +705,11 @@
               <parameter paramType="110">
                 <name value="Alpha Type"/>
                 <nameGiven value="Alpha Type"/>
-                <choices value="1"/>
+                <choices value="2"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
                 <nameGiven value="Duration"/>
-                <values curValue="5000" defaultValue="5000" startValue="0" stopValue="2.0736e+09"/>
               </parameter>
             </settings>
           </provider>
@@ -813,7 +727,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1413.74298" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -835,7 +749,7 @@
               <parameter>
                 <name value="Scale"/>
                 <nameGiven value="Scale"/>
-                <values curValue="60" defaultValue="100" startValue="0" stopValue="1000"/>
+                <values curValue="70" defaultValue="100" startValue="0" stopValue="1000"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
@@ -895,7 +809,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="269.552037" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1060,7 +974,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="274.776944" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
