@@ -105,7 +105,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="335573.528" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="289349.051" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -505,8 +505,7 @@
             <nameGiven value="Position Y"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="-91.5243957" defaultValue="0" startValue="-611.850622"
-                    stopValue="0"/>
+            <values curValue="0" defaultValue="0" startValue="-611.850622" stopValue="0"/>
             <pointsOfInterest value="-16384"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="0.0165151529" defaultValue="1" startValue="0.0001"
@@ -579,7 +578,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="335567.838" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="289338.652" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -655,7 +654,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="3609.9374" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4385.36522" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -814,7 +813,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4406.30082" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -896,7 +895,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="620.240874" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1061,7 +1060,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="3846.49789" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4390.60352" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
