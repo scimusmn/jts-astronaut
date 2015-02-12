@@ -36,9 +36,10 @@
 
       <div id="enter-name" class="popup" >
         <div class="popup-content front">
-          <h3>What's your astronaut name?</h3>
+          <h3>What is your astronaut name?</h3>
           <div>
-            <input id="nameinput" size="16" type="text" placeholder="Enter name here" maxlength="15">
+
+            <input id="nameinput" size="16" type="text" placeholder="Your name here" maxlength="15">
             <div id="btn_submitname" class="button"><h2>GO</h2></div>
           </div>
         </div>
@@ -53,12 +54,17 @@
 
     </div>
 
-    <div class="dev-panel" style="display:none;">
+    <div class="dev-panel" style="">
       <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
       <br/><br/>
       <label for='resolume'>Resolume: </label>
       <button id="raise">Raise Visor</button>
       <button id="lower">Lower Visor</button>
+      <br>
+      <button id="fade-out">Fade Out</button>
+      <button id="fade-in">Fade In</button>
+      <br>
+      <button id="toggle-visor">Show Visor</button>
       <button id="toggle-booth">Show Booth</button>
       <button id="toggle-loop">Show Loop</button>
     </div>
@@ -117,6 +123,8 @@
       var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 0.5;
       var captureLength = 15;
+      var ssTimeoutDelay = 180;
+      var ssTimeout = {};
       var captureWidth = 960;
       var captureHeight = 768;
       var captureOptions = {
@@ -134,7 +142,6 @@
       var nameEntryTimeout = {};
       var getReadyTimer = {};
       var getReadyCount = 0;
-
 
       $("#record-video").click( function(){
 
@@ -315,9 +322,10 @@
       /* ------------- */
 
       var delay_visor = visorTransition; //Should match duration of visor transition
-      var delay_playback1 = (captureLength/playbackRate) - visorTransition;
-      var delay_playback2 = visorTransition + 0.1; //Enough time to close visor
-      var delay_totalSequence = delay_visor+delay_playback1+delay_playback2; //Total of visor open/close sequence
+      var delay_fade = 0.9; //Time to fade in/out comp
+      var delay_playback = (captureLength/playbackRate) - (delay_fade*2);
+      var delay_totalSequence = delay_visor+delay_playback+(delay_fade*4); //Total of visor open/close sequence
+      var cur_source = 'visor';
 
       function newVisitor(nameEntered, recordedURL, recordedFilename){
 
@@ -332,35 +340,49 @@
         var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
         getReadyCountdown(wait);
 
+        clearSS();
+
       }
 
       function cueVisitorSequence(delay_begin){
 
         console.log('cueVisitorSequence. delay_begin:', delay_begin);
 
-        setTimeout(function(){ //Tell Resolume to lower visor.
+        if (cur_source != 'visor') {
+          vidSource('visor');
+        }
 
+        setTimeout(function(){
           resolumeControl('lower');
-
-          setTimeout(function() { //Once visor is lowered, turn on booth stream.
-
-            resolumeControl('toggle-booth');
-            exportVisitor();
+          setTimeout(function() {
             resolumeControl('raise');
-
-            setTimeout(function() { //Wait for visitor video to almost finish, then lower visor.
-
-              resolumeControl('lower');
-
-              setTimeout(function() { //After visor is hiding video, switch back to loop, clear the visitor video, and check queue.
-
-                visitorSequenceFinished();
-
-              }, delay_playback2*1000);
-            }, delay_playback1*1000);
+            setTimeout(function() {
+              vidSource('booth');
+              setTimeout(function() {
+                exportVisitor();
+                setTimeout(function() {
+                  vidSource('visor');
+                  setTimeout(function() {
+                    resolumeControl('lower');
+                    setTimeout(function() {
+                      visitorSequenceFinished();
+                    }, delay_visor*1000);
+                  }, delay_fade*1000);
+                }, delay_playback*1000);
+              }, delay_fade*1000);
+            }, delay_visor*1000);
           }, delay_visor*1000);
         }, delay_begin*1000);
 
+      }
+
+      function vidSource(src) {
+        cur_source = src;
+        resolumeControl('fade-out');
+        setTimeout(function(){
+          resolumeControl('toggle-'+src);
+          resolumeControl('fade-in');
+        }, delay_fade*1000);
       }
 
       function visitorSequenceFinished() {
@@ -379,13 +401,40 @@
 
         } else {
 
-          //Raise visor with looping video
-          resolumeControl('toggle-loop');
-          resolumeControl('raise');
+          //No one in queue, keep visor down until timeout occurs.
+          resetSS();
 
         }
 
       };
+
+      function resetSS() {
+
+        clearSS();
+
+        ssTimeout = setTimeout(function() {
+
+          if (cur_source == 'visor'){
+            //Raise visor with looping video
+            vidSource('loop');
+          } else {
+            clearSS();
+          }
+
+        }, ssTimeoutDelay*1000)
+
+      }
+
+      function clearSS() {
+
+        if(ssTimeout) clearTimeout(ssTimeout);
+
+        if (cur_source == 'loop'){
+          vidSource('visor');
+          resolumeControl('lower');
+        }
+
+      }
 
       function secDiff(date1, date2){
         var seconds = (date2.getTime() - date1.getTime())/1000;

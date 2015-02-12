@@ -112,11 +112,20 @@ io.sockets.on('connection', function(socket) {
             case 'lower':
                 lowerMask();
                 break;
+            case 'fade-out':
+                fadeOutComp();
+                break;
+            case 'fade-in':
+                fadeInComp();
+                break;
+            case 'toggle-visor':
+                toggleLayers([4,5], [1,2,3]);
+                break;
             case 'toggle-booth':
-                toggleUnderMaskSource(true);
+                toggleLayers([2,3], [1,4,5]);
                 break;
             case 'toggle-loop':
-                toggleUnderMaskSource(false);
+                toggleLayers([1], [2,3,4,5]);
                 break;
         }
 
@@ -134,11 +143,12 @@ http.listen(app.get('port'), function(){
 /**
 * Resolume OSC Communication
 */
-var dgram, osc, udp, maskRising;
+var dgram, osc, udp, maskRising, compFadingOut;
 osc = require('osc-min');
 dgram = require("dgram");
 udp = dgram.createSocket("udp4");
 maskRising = false;
+compFadingOut = false;
 
 initResolume();
 
@@ -149,34 +159,54 @@ function initResolume() {
     toOSC('/layer1/clip1/connect', 1);
     toOSC('/layer2/clip1/connect', 1);
     toOSC('/layer3/clip1/connect', 1);
+    toOSC('/layer4/clip1/connect', 1);
+    toOSC('/layer5/clip1/connect', 1);
 
-    toggleUnderMaskSource(false);
     raiseMask();
+    fadeInComp();
 
 };
 
 function raiseMask() {
     if(maskRising == false) {
-        toOSC('/layer3/video/positiony/direction', 0);
+        toOSC('/layer5/video/positiony/direction', 0);
         maskRising = true;
     }
 };
 function lowerMask() {
     if(maskRising == true) {
-        toOSC('/layer3/video/positiony/direction', 1);
+        toOSC('/layer5/video/positiony/direction', 1);
         maskRising = false;
     }
 };
-
-function toggleUnderMaskSource(showBooth) {
-
-    if (!showBooth){
-        toOSC('/layer1/clip1/connect', 1);
-        toOSC('/layer2/bypassed', 1);
-    } else {
-        toOSC('/layer1/clip2/connect', 1);
-        toOSC('/layer2/bypassed', 0);
+function fadeOutComp(){
+    if(compFadingOut == false) {
+        toOSC('/composition/video/fadeout/direction', 0);
+        toOSC('/composition/video/scale/direction', 0); //optional scale down
+        compFadingOut = true;
     }
+}
+function fadeInComp(){
+    if(compFadingOut == true) {
+        toOSC('/composition/video/fadeout/direction', 1);
+        toOSC('/composition/video/scale/direction', 1); //optional scale up
+        compFadingOut = false;
+    }
+}
+function deckColumn(colNum) {
+    toOSC('/track'+colNum+'/connect', 1);
+};
+function toggleLayers(shows, hides) {
+
+    //show these layers
+    for (var i = 0; i < shows.length; i++) {
+        toOSC('/layer'+shows[i]+'/bypassed', 0);
+    };
+
+    //hide these layers
+    for (var i = 0; i < hides.length; i++) {
+        toOSC('/layer'+hides[i]+'/bypassed', 1);
+    };
 
 };
 
