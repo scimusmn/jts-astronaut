@@ -167,7 +167,9 @@ function initResolume() {
     toOSC('/layer4/clip1/connect', 1);
     toOSC('/layer5/clip1/connect', 1);
 
-    raiseMask();
+    //Start with visor down
+    lowerMask();
+    toggleLayers([4,5], [1,2,3]);
     fadeInComp();
 
 };
@@ -207,7 +209,6 @@ function toggleLayers(shows, hides) {
     for (var i = 0; i < shows.length; i++) {
         toOSC('/layer'+shows[i]+'/bypassed', 0);
     };
-
     //hide these layers
     for (var i = 0; i < hides.length; i++) {
         toOSC('/layer'+hides[i]+'/bypassed', 1);

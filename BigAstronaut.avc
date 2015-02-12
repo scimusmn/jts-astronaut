@@ -79,7 +79,7 @@
   <layer layerIndex="0">
     <settings>
       <name value="Loop_Layer_1"/>
-      <bypassed value="1"/>
+      <bypassed value="0"/>
       <opacityAndVolume/>
       <autoPilot>
         <action value="3"/>
@@ -99,7 +99,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
+            <values curValue="176705.37" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -206,7 +206,7 @@
             <nameGiven value="Opacity"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="1" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.330208333" defaultValue="0.5" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -257,7 +257,7 @@
             <nameGiven value="Volume"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="1" startValue="0" stopValue="1"/>
+            <values curValue="0.660416666" defaultValue="1" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -276,6 +276,7 @@
       <name value="Shadow_Layer_3"/>
       <bypassed value="1"/>
       <opacityAndVolume/>
+      <transitionTime curValue="0.000178124815" defaultValue="0" startValue="0" stopValue="10"/>
       <autoPilot>
         <action value="3"/>
       </autoPilot>
@@ -294,7 +295,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -377,7 +378,7 @@
   <layer layerIndex="3">
     <settings>
       <name value="HelmCam_Layer_4"/>
-      <bypassed value="0"/>
+      <bypassed value="1"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -484,7 +485,7 @@
   <layer layerIndex="4">
     <settings>
       <name value="Mask_Layer_5"/>
-      <bypassed value="0"/>
+      <bypassed value="1"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -563,18 +564,17 @@
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
             <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
           </parameter>
-          <parameter paramSubType="2" paramControlType="2" orgDuration="5000.00001"
-                     duration="93.3609959">
+          <parameter paramSubType="2" paramControlType="2" orgDuration="5000" duration="65.612793">
             <name value="Position Y"/>
             <nameGiven value="Position Y"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="0" startValue="-611.850622" stopValue="0"/>
+            <values curValue="-430" defaultValue="0" startValue="-430" stopValue="0"/>
             <pointsOfInterest value="-16384"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="0.0165151529" defaultValue="1" startValue="0.0001"
                          stopValue="10"/>
-            <direction value="0"/>
+            <direction value="1"/>
             <playmode value="0"/>
             <playmodeAway value="1"/>
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
@@ -642,7 +642,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="154710.705" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="176699.889" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -718,7 +718,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="269.552037" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1746.60226" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -800,7 +800,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1413.74298" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1752.08327" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -882,7 +882,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="269.552037" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1746.44524" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -921,7 +921,7 @@
                     uniqueId="A101" name="Add Subtract">
               <mixer value="1984084"/>
               <bypassed value="0"/>
-              <folded value="1"/>
+              <folded value="0"/>
               <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
                            revision="5588" id="1"/>
               <parameter>
@@ -929,7 +929,7 @@
                 <nameGiven value="Opacity"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="0.975265018" defaultValue="1" startValue="0" stopValue="1"/>
+                <values curValue="0.954216867" defaultValue="1" startValue="0" stopValue="1"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -944,7 +944,7 @@
                 <nameGiven value="R"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="0.660777385" defaultValue="0.5" startValue="0" stopValue="1"/>
+                <values curValue="0.684337349" defaultValue="0.5" startValue="0" stopValue="1"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -959,7 +959,7 @@
                 <nameGiven value="G"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="0.544169611" defaultValue="0.5" startValue="0" stopValue="1"/>
+                <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -974,7 +974,7 @@
                 <nameGiven value="B"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="0" defaultValue="0.5" startValue="0" stopValue="1"/>
+                <values curValue="0.192771084" defaultValue="0.5" startValue="0" stopValue="1"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -987,6 +987,7 @@
             </effect>
             <effect uniquePresetId="10000" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLBrightnessContrast.bundle/Contents/MacOS/AVFFGLBrightnessContrast"
                     uniqueId="A102" name="Bright.Contrast">
+              <bypassed value="0"/>
               <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
                            revision="5588" id="1"/>
               <parameter>
@@ -996,12 +997,12 @@
               <parameter>
                 <name value="param1"/>
                 <nameGiven value="Brightness"/>
-                <values curValue="0.459363958" defaultValue="0.5" startValue="0" stopValue="1"/>
+                <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
               </parameter>
               <parameter>
                 <name value="param2"/>
                 <nameGiven value="Contrast"/>
-                <values curValue="0.533568905" defaultValue="0.5" startValue="0" stopValue="1"/>
+                <values curValue="0.491566265" defaultValue="0.5" startValue="0" stopValue="1"/>
               </parameter>
             </effect>
           </effects>
@@ -1048,7 +1049,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="274.776944" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1746.44524" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1066,6 +1067,11 @@
                     </properties>
                   </modifier>
                 </modifiers>
+              </parameter>
+              <parameter>
+                <name value="Scale"/>
+                <nameGiven value="Scale"/>
+                <values curValue="50" defaultValue="100" startValue="0" stopValue="1000"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
