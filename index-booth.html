@@ -119,14 +119,14 @@
       var countdownCount;
       var countdownTimer;
       var recordLockout = false;
-      var visorTransition = 4.75; //Time visor requires to raise or lower
+      var visorTransition = 4; //Time visor requires to raise or lower
       var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
-      var playbackRate = 0.5;
-      var captureLength = 10;
+      var playbackRate = 1;
+      var captureLength = 30;
       var ssTimeoutDelay = 60*5;
       var ssTimeout = {};
-      var captureWidth = 960;
-      var captureHeight = 768;
+      var captureWidth = 640;//960;
+      var captureHeight = 480;//768;
       var captureOptions = {
                                 type: 'video',
                                 video: video,

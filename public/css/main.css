@@ -151,8 +151,8 @@ video{
 
 /* - Playback Window - */
 #playback_screen{
-  width:960px;
-  height:768px;
+  width:640px;
+  height:480px;
 }
 
 /* - Name Tag - */
