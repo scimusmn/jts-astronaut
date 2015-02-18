@@ -94,12 +94,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="25000000" duration="5000">
+          <parameter>
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="447813.174" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="242942.039" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -186,12 +186,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="25000000" duration="5000">
+          <parameter>
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="8.629507" defaultValue="0" startValue="0" stopValue="5000"/>
+            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -416,12 +416,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter orgDuration="25000000" duration="5000">
+          <parameter>
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="2295.70479" defaultValue="0" startValue="0" stopValue="5000"/>
+            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -752,7 +752,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="447802.168" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="242931.509" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -802,7 +802,7 @@
           <source type="syphon" couldContainVideo="1" name="cefclient - My Output"
                   uiid="info.v002.Syphon.747F161B-6A91-494E-B892-19A318646DA3"
                   shortName="cefclient - My Output" description="syphon server"/>
-          <provider transparent="1" newlyCreated="0" width="648" height="488">
+          <provider transparent="1" newlyCreated="0" width="644" height="483">
             <settings>
               <parameter paramType="110">
                 <name value="Server"/>
@@ -834,7 +834,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2140.04863" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="3953.52447" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -916,7 +916,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="4530.13178" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="1738.91268" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -936,14 +936,9 @@
                 </modifiers>
               </parameter>
               <parameter>
-                <name value="Opacity"/>
-                <nameGiven value="Opacity"/>
-                <values curValue="0.8" defaultValue="1" startValue="0" stopValue="1"/>
-              </parameter>
-              <parameter>
                 <name value="Scale"/>
                 <nameGiven value="Scale"/>
-                <values curValue="80" defaultValue="100" startValue="0" stopValue="1000"/>
+                <values curValue="65" defaultValue="100" startValue="0" stopValue="1000"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
@@ -1013,7 +1008,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2833.18031" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="3964.55493" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1162,7 +1157,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="3233.59087" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="3964.05449" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
