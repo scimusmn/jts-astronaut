@@ -2,6 +2,18 @@
 body{
   font-family: 'allerregular';
   background: black;
+
+  /* disable text highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* disable touch feedback flash */
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+
 }
 h1,h3,h3{
   font-family: 'allerbold';
