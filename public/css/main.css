@@ -4,7 +4,7 @@ body{
   background: black;
 }
 h1,h3,h3{
-  font-family: 'Courier';
+  font-family: 'allerbold';
 }
 
 .screen {
@@ -50,12 +50,36 @@ video{
   height:1024px;
 }
 
+#intake_screen {
+  color:#000;
+}
+
+#intake_screen .es {
+  color:#777;
+}
+
+#intake_screen .popup-content.back h1 {
+  line-height: 50%;
+}
+
+#intake_screen .popup-content.back h1.es {
+  line-height: 100%;
+}
+
+#intake_screen .popup-content.back {
+  line-height: 70%;
+}
+
 #intake_screen #count{
   font-size: 5em;
   color: white;
   z-index: 3;
   left: -1px;
   top: -10px;
+}
+
+#intake_screen #btn_submitname{
+  width: 300px;
 }
 
 .button {
@@ -141,6 +165,7 @@ video{
   width: 66%;
   height: 80%;
   font-size: 3em;
+  text-transform:uppercase;
 }
 
 .effect-blur {
@@ -179,12 +204,12 @@ video{
 }
 
 #nametag_screen h1.fit4{
-  font-size: 677px;
+  font-size: 678px;
   line-height: 845px;
 }
 
 #nametag_screen h1.fit5{
-  font-size: 450px;
+  font-size: 544px;
   line-height: 825px;
 }
 

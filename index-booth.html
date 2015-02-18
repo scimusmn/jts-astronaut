@@ -36,19 +36,20 @@
 
       <div id="enter-name" class="popup" >
         <div class="popup-content front">
-          <h3>What is your astronaut name?</h3>
+          <br/><br/>
           <div>
 
-            <input id="nameinput" size="16" type="text" placeholder="Your name here" maxlength="15">
-            <div id="btn_submitname" class="button"><h2>GO</h2></div>
+            <input id="nameinput" size="16" type="text" placeholder="NAME / NOMBRE" maxlength="15">
+            <br/>
+            <div id="btn_submitname" class="button"><h2>Next / Siguiente</h2></div>
           </div>
         </div>
         <div class="popup-content back">
-          <h1>Thank you!</h1>
-          <h3>Your video will play shortly.</h3>
-          <!-- <h3>Your video will play in <span id="getready-count">XXX</span> seconds.</h3> -->
-          <h3>#BIGASTRONAUT</h3>
-          <!-- <img src="../img/get-ready.png" width="240"/> -->
+          <br/>
+          <h1>Prepare for launch.</h1>
+          <h1 class="es">Prepárate para el lanzamiento.</h1>
+          <h2>Have your camera ready.</h3>
+          <h2 class="es">Ten tu cámara lista.</h3>
         </div>
       </div>
 
@@ -120,13 +121,13 @@
       var countdownTimer;
       var recordLockout = false;
       var visorTransition = 4; //Time visor requires to raise or lower
-      var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
+      var minWaitTime = 15; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 1;
-      var captureLength = 30;
+      var captureLength = 25;
       var ssTimeoutDelay = 60*5;
       var ssTimeout = {};
-      var captureWidth = 640;//960;
-      var captureHeight = 480;//768;
+      var captureWidth = 640;
+      var captureHeight = 480;
       var captureOptions = {
                                 type: 'video',
                                 video: video,
