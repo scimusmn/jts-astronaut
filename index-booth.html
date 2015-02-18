@@ -119,7 +119,7 @@
       var countdownCount;
       var countdownTimer;
       var recordLockout = false;
-      var visorTransition = 5.5; //Time visor requires to raise or lower
+      var visorTransition = 4.75; //Time visor requires to raise or lower
       var minWaitTime = 20; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 0.5;
       var captureLength = 10;
@@ -302,7 +302,7 @@
         var href = location.href.replace( location.href.split('/').pop(), '' );
         href = href.replace( href.split('/')[3], '' );
         href = href.slice(0, - 1);
-        href = href + 'uploads/' + fileName;
+        href = href + '/uploads/' + fileName;
 
         console.log('Video file path: ' + href);
 

@@ -5,7 +5,7 @@
   <generalInfo name="BigAstronaut" desc="Display comp for astronaut helmet projection."
                width="640" height="480" deckCount="1" decksClosed="0" filePathType="0"/>
   <deckInfo>
-    <deck id="294065094" orderId="0" name="video" numClips="5" closed="0">
+    <deck id="294065094" orderId="0" name="video" numClips="6" closed="0">
       <settings id="294065094">
         <name value="video"/>
       </settings>
@@ -79,7 +79,7 @@
   <layer layerIndex="0">
     <settings>
       <name value="Loop_Layer_1"/>
-      <bypassed value="0"/>
+      <bypassed value="1"/>
       <opacityAndVolume/>
       <autoPilot>
         <action value="3"/>
@@ -99,7 +99,7 @@
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="176705.37" defaultValue="0" startValue="0" stopValue="480046.713"/>
+            <values curValue="189512.254" defaultValue="0" startValue="0" stopValue="480046.713"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -206,7 +206,7 @@
             <nameGiven value="Opacity"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0.330208333" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="1" defaultValue="0.5" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -378,7 +378,7 @@
   <layer layerIndex="3">
     <settings>
       <name value="HelmCam_Layer_4"/>
-      <bypassed value="1"/>
+      <bypassed value="0"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -386,6 +386,25 @@
       <autoPilot>
         <action value="3"/>
       </autoPilot>
+      <ui>
+        <propertySectionsState value="0">
+          <choices>
+            <choice index="0" value="110" name="Dashboard" isEnabled="1" isActive="0"/>
+            <choice index="1" value="123" name="Video Info" isEnabled="1" isActive="1"/>
+            <choice index="2" value="121" name="Video FX" isEnabled="1" isActive="1"/>
+            <choice index="3" value="122" name="Video Transform" isEnabled="1" isActive="0"/>
+            <choice index="4" value="124" name="Video Mask" isEnabled="1" isActive="0"/>
+            <choice index="5" value="133" name="Audio Info" isEnabled="1" isActive="1"/>
+            <choice index="6" value="131" name="Audio FX" isEnabled="1" isActive="1"/>
+            <choice index="7" value="132" name="Audio Transform" isEnabled="1" isActive="1"/>
+            <choice index="8" value="140" name="Source" isEnabled="1" isActive="1"/>
+            <choice index="9" value="150" name="Transport" isEnabled="1" isActive="1"/>
+            <choice index="10" value="160" name="Cue points" isEnabled="1" isActive="0"/>
+            <choice index="11" value="170" name="Beatlooper" isEnabled="1" isActive="0"/>
+            <choice index="12" value="180" name="Auto Pilot" isEnabled="1" isActive="0"/>
+          </choices>
+        </propertySectionsState>
+      </ui>
     </settings>
     <videoLayer>
       <settings renderPassOrder="0,1,2">
@@ -397,12 +416,12 @@
           <mixer value="1984087" index="2" selected="0"/>
         </mixers>
         <parameters>
-          <parameter>
+          <parameter orgDuration="25000000" duration="5000">
             <name value="Position"/>
             <nameGiven value="Position"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="1" defaultValue="0" startValue="0" stopValue="1"/>
+            <values curValue="979.760962" defaultValue="0" startValue="0" stopValue="5000"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -417,7 +436,7 @@
             <nameGiven value="Opacity"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="1" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <values curValue="0.982091713" defaultValue="0.5" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -459,6 +478,96 @@
           </parameter>
         </parameters>
       </settings>
+      <effects>
+        <effect uniquePresetId="27255208" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLAddSubtract.bundle/Contents/MacOS/AVFFGLAddSubtract"
+                uniqueId="A101" name="Add Subtract">
+          <mixer value="1984084"/>
+          <bypassed value="0"/>
+          <folded value="0"/>
+          <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
+                       revision="5588" id="1"/>
+          <parameter>
+            <name value="Opacity"/>
+            <nameGiven value="Opacity"/>
+            <textValue value=""/>
+            <extended value="0"/>
+            <values curValue="0.954216867" defaultValue="1" startValue="0" stopValue="1"/>
+            <pointsOfInterest value="0"/>
+            <jumpToPointsOfInterest value="-1"/>
+            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <direction value="3"/>
+            <playmode value="1"/>
+            <playmodeAway value="0"/>
+            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
+            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+          </parameter>
+          <parameter>
+            <name value="param1"/>
+            <nameGiven value="R"/>
+            <textValue value=""/>
+            <extended value="0"/>
+            <values curValue="0.684337349" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <pointsOfInterest value="0"/>
+            <jumpToPointsOfInterest value="-1"/>
+            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <direction value="3"/>
+            <playmode value="1"/>
+            <playmodeAway value="0"/>
+            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
+            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+          </parameter>
+          <parameter>
+            <name value="param2"/>
+            <nameGiven value="G"/>
+            <textValue value=""/>
+            <extended value="0"/>
+            <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <pointsOfInterest value="0"/>
+            <jumpToPointsOfInterest value="-1"/>
+            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <direction value="3"/>
+            <playmode value="1"/>
+            <playmodeAway value="0"/>
+            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
+            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+          </parameter>
+          <parameter>
+            <name value="param3"/>
+            <nameGiven value="B"/>
+            <textValue value=""/>
+            <extended value="0"/>
+            <values curValue="0.192771084" defaultValue="0.5" startValue="0" stopValue="1"/>
+            <pointsOfInterest value="0"/>
+            <jumpToPointsOfInterest value="-1"/>
+            <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+            <direction value="3"/>
+            <playmode value="1"/>
+            <playmodeAway value="0"/>
+            <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
+            <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+          </parameter>
+        </effect>
+        <effect uniquePresetId="10000" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLBrightnessContrast.bundle/Contents/MacOS/AVFFGLBrightnessContrast"
+                uniqueId="A102" name="Bright.Contrast">
+          <bypassed value="0"/>
+          <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
+                       revision="5588" id="1"/>
+          <parameter>
+            <name value="Opacity"/>
+            <nameGiven value="Opacity"/>
+          </parameter>
+          <parameter>
+            <name value="param1"/>
+            <nameGiven value="Brightness"/>
+            <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
+          </parameter>
+          <parameter>
+            <name value="param2"/>
+            <nameGiven value="Contrast"/>
+            <values curValue="0.491566265" defaultValue="0.5" startValue="0" stopValue="1"/>
+          </parameter>
+        </effect>
+      </effects>
     </videoLayer>
     <audioLayer>
       <settings>
@@ -468,7 +577,7 @@
             <nameGiven value="Volume"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="0" defaultValue="1" startValue="0" stopValue="1"/>
+            <values curValue="0.110621704" defaultValue="1" startValue="0" stopValue="1"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -485,7 +594,7 @@
   <layer layerIndex="4">
     <settings>
       <name value="Mask_Layer_5"/>
-      <bypassed value="1"/>
+      <bypassed value="0"/>
       <solo value="0"/>
       <group value="-1"/>
       <opacityAndVolume/>
@@ -539,7 +648,7 @@
             <nameGiven value="Scale"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="89.0410959" defaultValue="100" startValue="0" stopValue="1000"/>
+            <values curValue="68" defaultValue="100" startValue="0" stopValue="1000"/>
             <pointsOfInterest value="0"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -564,17 +673,17 @@
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
             <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
           </parameter>
-          <parameter paramSubType="2" paramControlType="2" orgDuration="5000" duration="65.612793">
+          <parameter paramSubType="2" paramControlType="2" orgDuration="5000" duration="57.8308106">
             <name value="Position Y"/>
             <nameGiven value="Position Y"/>
             <textValue value=""/>
             <extended value="0"/>
-            <values curValue="-430" defaultValue="0" startValue="-430" stopValue="0"/>
+            <values curValue="34" defaultValue="0" startValue="-345" stopValue="34"/>
             <pointsOfInterest value="-16384"/>
             <jumpToPointsOfInterest value="-1"/>
             <speedFactor curValue="0.0165151529" defaultValue="1" startValue="0.0001"
                          stopValue="10"/>
-            <direction value="1"/>
+            <direction value="0"/>
             <playmode value="0"/>
             <playmodeAway value="1"/>
             <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
@@ -615,7 +724,7 @@
   <track/>
   <track/>
   <decks>
-    <deck id="294065094" orderId="0" name="video" numClips="5" closed="0">
+    <deck id="294065094" orderId="0" name="video" numClips="6" closed="0">
       <clip uniqueId="74597193" layerIndex="0" trackIndex="0">
         <settings fileId="3327652">
           <name value="loop"/>
@@ -626,13 +735,14 @@
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/video/loop.mov"
+          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/exhibits/Desktop/jts-astronaut/public/video/loop.mov"
                   shortName="loop.mov" ext=".mov"/>
           <settings name="loop" desc="DXV 2.2 Normal Quality, No Alpha&#13;&#10;1280x720&#13;&#10;29.97 FPS, 00:08:00:047"
                     fileId="3327652" renderPassOrder="0,1,2">
             <aScale value="0"/>
             <SMPTEOffsetMilliseconds value="00:00:00.00"/>
             <playbackSettings>
+              <timelineMode value="1"/>
               <beats curValue="1024" defaultValue="4" startValue="1" stopValue="10000"/>
             </playbackSettings>
             <parameters>
@@ -642,7 +752,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="176699.889" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="189501.175" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -687,11 +797,12 @@
           <source type="syphon" couldContainVideo="1" name="cefclient - My Output"
                   uiid="info.v002.Syphon.747F161B-6A91-494E-B892-19A318646DA3"
                   shortName="cefclient - My Output" description="syphon server"/>
-          <provider transparent="1" newlyCreated="0" width="1788" height="1580">
+          <provider transparent="1" newlyCreated="0" width="895" height="675">
             <settings>
               <parameter paramType="110">
                 <name value="Server"/>
                 <nameGiven value="Server"/>
+                <choices value="1"/>
               </parameter>
               <parameter paramType="110">
                 <name value="Alpha Type"/>
@@ -718,7 +829,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1746.60226" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="676.891467" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -740,7 +851,7 @@
               <parameter>
                 <name value="Scale"/>
                 <nameGiven value="Scale"/>
-                <values curValue="45" defaultValue="100" startValue="0" stopValue="1000"/>
+                <values curValue="90" defaultValue="100" startValue="0" stopValue="1000"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
@@ -753,7 +864,7 @@
               <parameter>
                 <name value="Anchor Y"/>
                 <nameGiven value="Anchor Y"/>
-                <values curValue="57.8258824" defaultValue="0" startValue="-8192" stopValue="8192"/>
+                <values curValue="50" defaultValue="0" startValue="-8192" stopValue="8192"/>
               </parameter>
             </parameters>
           </settings>
@@ -770,7 +881,7 @@
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/img/face-shadow.png"
+          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/exhibits/Desktop/jts-astronaut/public/img/face-shadow.png"
                   shortName="face-shadow.png" ext=".png"/>
           <provider transparent="1">
             <settings>
@@ -800,7 +911,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1752.08327" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4647.02447" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -835,7 +946,7 @@
               <parameter>
                 <name value="Anchor Y"/>
                 <nameGiven value="Anchor Y"/>
-                <values curValue="-20" defaultValue="0" startValue="-8192" stopValue="8192"/>
+                <values curValue="-10" defaultValue="0" startValue="-8192" stopValue="8192"/>
               </parameter>
             </parameters>
           </settings>
@@ -843,23 +954,32 @@
         <audioClip/>
       </clip>
       <clip uniqueId="74597191" layerIndex="3" trackIndex="0">
-        <settings fileId="103144406">
-          <name value="lobby"/>
-          <nameGiven value="lobby"/>
+        <settings fileId="-346222698">
+          <name value="Intensity Shuttle Thunderbolt 1"/>
+          <nameGiven value="Intensity Shuttle Thunderbolt 1"/>
           <desc value="empty clip"/>
           <autoPilot>
             <action value="-1"/>
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/img/lobby.jpg"
-                  shortName="lobby.jpg" ext=".jpg"/>
+          <source type="captureDevice" couldContainVideo="1" name="Intensity Shuttle Thunderbolt 1"
+                  shortName="Intensity Shuttle Thunderbolt 1" id="Intensity Shuttle Thunderbolt 1"/>
           <provider transparent="1">
             <settings>
+              <parameter paramType="0">
+                <name value="Deinterlace"/>
+                <nameGiven value="Deinterlace"/>
+              </parameter>
               <parameter paramType="110">
-                <name value="Alpha Type"/>
-                <nameGiven value="Alpha Type"/>
-                <choices value="1"/>
+                <name value="Connection"/>
+                <nameGiven value="Connection"/>
+                <choices value="2"/>
+              </parameter>
+              <parameter paramType="110">
+                <name value="Format"/>
+                <nameGiven value="Format"/>
+                <choices value="0"/>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Duration"/>
@@ -868,8 +988,9 @@
               </parameter>
             </settings>
           </provider>
-          <settings name="lobby" desc="JPG&#13;&#10;841x629&#13;&#10;" fileId="103144406"
-                    renderPassOrder="0,1,2">
+          <settings name="Intensity Shuttle Thunderbolt 1" desc="Live Feed&#13;&#10;720x486&#13;&#10;"
+                    fileId="-346222698" renderPassOrder="0,1,2">
+            <aScale value="0"/>
             <SMPTEOffsetMilliseconds value="00:00:00.00"/>
             <playbackSettings>
               <timelineMode value="3"/>
@@ -882,7 +1003,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1746.44524" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="2484.4385" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -901,10 +1022,76 @@
                   </modifier>
                 </modifiers>
               </parameter>
-              <parameter>
-                <name value="Scale"/>
-                <nameGiven value="Scale"/>
-                <values curValue="99.4791667" defaultValue="100" startValue="0" stopValue="1000"/>
+              <parameter paramControlType="2">
+                <name value="Position X"/>
+                <nameGiven value="Position X"/>
+              </parameter>
+              <parameter paramControlType="2">
+                <name value="Position Y"/>
+                <nameGiven value="Position Y"/>
+              </parameter>
+            </parameters>
+          </settings>
+        </videoClip>
+        <audioClip/>
+      </clip>
+      <clip uniqueId="5598571" layerIndex="3" trackIndex="1">
+        <settings fileId="103144406">
+          <name value="lobby"/>
+          <nameGiven value="lobby"/>
+          <desc value="empty clip"/>
+          <autoPilot>
+            <action value="-1"/>
+          </autoPilot>
+        </settings>
+        <videoClip>
+          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/exhibits/Desktop/jts-astronaut/public/img/lobby.jpg"
+                  shortName="lobby.jpg" ext=".jpg"/>
+          <provider transparent="1">
+            <settings>
+              <parameter paramType="110">
+                <name value="Alpha Type"/>
+                <nameGiven value="Alpha Type"/>
+                <choices value="2"/>
+              </parameter>
+              <parameter paramControlType="2">
+                <name value="Duration"/>
+                <nameGiven value="Duration"/>
+              </parameter>
+            </settings>
+          </provider>
+          <settings name="lobby" desc="JPG&#13;&#10;841x629&#13;&#10;" fileId="103144406"
+                    renderPassOrder="0,1,2">
+            <SMPTEOffsetMilliseconds value="00:00:00.00"/>
+            <playbackSettings>
+              <timelineMode value="3"/>
+              <beats curValue="8" defaultValue="4" startValue="1" stopValue="10000"/>
+            </playbackSettings>
+            <parameters>
+              <parameter paramType="10" paramSubType="2" paramControlType="1" orgDuration="5000"
+                         duration="5000">
+                <name value="Position"/>
+                <nameGiven value="Position"/>
+                <textValue value=""/>
+                <extended value="0"/>
+                <values curValue="3774.67197" defaultValue="0" startValue="0" stopValue="5000"/>
+                <pointsOfInterest value="0"/>
+                <jumpToPointsOfInterest value="-1"/>
+                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
+                <direction value="0"/>
+                <playmode value="1"/>
+                <playmodeAway value="0"/>
+                <linkMultiplier curValue="8" defaultValue="1" startValue="1" stopValue="4096"/>
+                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
+                <modifiers>
+                  <modifier type="4" index="1000">
+                    <properties>
+                      <easeIn value="0"/>
+                      <easeOut value="1"/>
+                      <option value="2"/>
+                    </properties>
+                  </modifier>
+                </modifiers>
               </parameter>
               <parameter paramControlType="2">
                 <name value="Position X"/>
@@ -916,96 +1103,6 @@
               </parameter>
             </parameters>
           </settings>
-          <effects>
-            <effect uniquePresetId="27255208" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLAddSubtract.bundle/Contents/MacOS/AVFFGLAddSubtract"
-                    uniqueId="A101" name="Add Subtract">
-              <mixer value="1984084"/>
-              <bypassed value="0"/>
-              <folded value="0"/>
-              <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
-                           revision="5588" id="1"/>
-              <parameter>
-                <name value="Opacity"/>
-                <nameGiven value="Opacity"/>
-                <textValue value=""/>
-                <extended value="0"/>
-                <values curValue="0.954216867" defaultValue="1" startValue="0" stopValue="1"/>
-                <pointsOfInterest value="0"/>
-                <jumpToPointsOfInterest value="-1"/>
-                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-                <direction value="3"/>
-                <playmode value="1"/>
-                <playmodeAway value="0"/>
-                <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-              </parameter>
-              <parameter>
-                <name value="param1"/>
-                <nameGiven value="R"/>
-                <textValue value=""/>
-                <extended value="0"/>
-                <values curValue="0.684337349" defaultValue="0.5" startValue="0" stopValue="1"/>
-                <pointsOfInterest value="0"/>
-                <jumpToPointsOfInterest value="-1"/>
-                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-                <direction value="3"/>
-                <playmode value="1"/>
-                <playmodeAway value="0"/>
-                <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-              </parameter>
-              <parameter>
-                <name value="param2"/>
-                <nameGiven value="G"/>
-                <textValue value=""/>
-                <extended value="0"/>
-                <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
-                <pointsOfInterest value="0"/>
-                <jumpToPointsOfInterest value="-1"/>
-                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-                <direction value="3"/>
-                <playmode value="1"/>
-                <playmodeAway value="0"/>
-                <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-              </parameter>
-              <parameter>
-                <name value="param3"/>
-                <nameGiven value="B"/>
-                <textValue value=""/>
-                <extended value="0"/>
-                <values curValue="0.192771084" defaultValue="0.5" startValue="0" stopValue="1"/>
-                <pointsOfInterest value="0"/>
-                <jumpToPointsOfInterest value="-1"/>
-                <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
-                <direction value="3"/>
-                <playmode value="1"/>
-                <playmodeAway value="0"/>
-                <linkMultiplier curValue="1" defaultValue="1" startValue="1" stopValue="4096"/>
-                <linkModifier curValue="0" defaultValue="0" startValue="0" stopValue="1"/>
-              </parameter>
-            </effect>
-            <effect uniquePresetId="10000" fileName="/Applications/Resolume Arena 4.1.11/plugins/vfx/AVFFGLBrightnessContrast.bundle/Contents/MacOS/AVFFGLBrightnessContrast"
-                    uniqueId="A102" name="Bright.Contrast">
-              <bypassed value="0"/>
-              <versionInfo name="Resolume Arena" majorVersion="4" minorVersion="1" microVersion="11"
-                           revision="5588" id="1"/>
-              <parameter>
-                <name value="Opacity"/>
-                <nameGiven value="Opacity"/>
-              </parameter>
-              <parameter>
-                <name value="param1"/>
-                <nameGiven value="Brightness"/>
-                <values curValue="0.501204819" defaultValue="0.5" startValue="0" stopValue="1"/>
-              </parameter>
-              <parameter>
-                <name value="param2"/>
-                <nameGiven value="Contrast"/>
-                <values curValue="0.491566265" defaultValue="0.5" startValue="0" stopValue="1"/>
-              </parameter>
-            </effect>
-          </effects>
         </videoClip>
         <audioClip/>
       </clip>
@@ -1019,7 +1116,7 @@
           </autoPilot>
         </settings>
         <videoClip>
-          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/tnordberg/Documents/SMM_Dev_Projects/jts-astronaut/public/img/visor.png"
+          <source type="file" couldContainVideo="1" couldContainAudio="0" name="/Users/exhibits/Desktop/jts-astronaut/public/img/visor.png"
                   shortName="visor.png" ext=".png"/>
           <provider transparent="1">
             <settings>
@@ -1049,7 +1146,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="1746.44524" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4646.7275" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
