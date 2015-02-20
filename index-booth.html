@@ -124,8 +124,8 @@
       var minWaitTime = 15; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 1;
       var captureLength = 25;
-      var ssTimeoutDelay = 60*5;
-      var ssTimeout = {};
+      var reloadTimeoutDelay = 60*3.5;
+      var reloadTimeout = {};
       var captureWidth = 640;
       var captureHeight = 480;
       var captureOptions = {
@@ -145,15 +145,7 @@
       var getReadyTimer = {};
       var getReadyCount = 0;
 
-      $("#record-video").click( function(){
-
-          if (recordLockout==true) return;
-          recordLockout = true;
-
-          startRecordButtonTween();
-          setTimeout(startVidRecording, 250);
-
-      });
+      $("#record-video").click( onRecordClicked );
       $("#btn_submitname").click( function(){
         nameSubmitted();
       });
@@ -195,6 +187,20 @@
         }
       }
 
+      function onRecordClicked(){
+        resetReload();
+        if (recordLockout==true) return;
+        recordLockout = true;
+        startRecordButtonTween();
+        setTimeout(startVidRecording, 250);
+      }
+
+      initCamera();
+      function initCamera(){
+        startVidRecording();
+        resetReload();
+      }
+
       function startVidRecording() {
 
         if (!cameraStream) {
@@ -234,14 +240,15 @@
             video.width = captureWidth;
             video.height = captureHeight;
             recorder = window.RecordRTC(stream, captureOptions);
-            startTimedRecording();
+            // startTimedRecording();
 
           };
 
         }, function() {
 
           //Error callback...
-          alert('Camera access denied.');
+          // alert('Camera access denied.');
+          console.log('Camera access denied.');
 
         });
 
@@ -335,7 +342,7 @@
           cueVisitorSequence(minWaitTime);
         }
 
-        clearSS();
+        clearReload();
 
         //NOTE: This is not a highly accurate wait estimation, just using "Will be ready shortly" for now.
         // var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
@@ -398,33 +405,38 @@
         } else {
 
           //No one in queue, keep visor down until timeout occurs.
-          resetSS();
+          resetReload();
 
         }
 
       };
 
-      function resetSS() {
+      function resetReload() {
 
-        clearSS();
+        clearReload();
 
-        ssTimeout = setTimeout(function() {
+        reloadTimeout = setTimeout(function() {
 
-          if (cur_source == 'visor'){
+          if (cur_source == 'visor' && visitorQueue.length == 0){
+
             //Raise visor with looping video
-            vidSource('loop');
             resolumeControl('lower');
+            resolumeControl('toggle-loop');
+
+            //CHANGE NOTE: We are showing screensaver, then forcing refreshing the page.
+            location.reload();
+
           } else {
-            clearSS();
+            clearReload();
           }
 
-        }, ssTimeoutDelay*1000)
+        }, reloadTimeoutDelay*1000)
 
       }
 
-      function clearSS() {
+      function clearReload() {
 
-        if(ssTimeout) clearTimeout(ssTimeout);
+        if(reloadTimeout) clearTimeout(reloadTimeout);
 
         if (cur_source == 'loop'){
           vidSource('visor');
@@ -444,7 +456,6 @@
       /* ---------- */
 
       initUI();
-      $('img').attr('draggable', false);
 
       function initUI(){
 
@@ -454,6 +465,10 @@
         TweenLite.set([$(".back"), $(".front")], {backfaceVisibility:"hidden"});
 
         $("#enter-name").hide();
+
+        $('img').attr('draggable', false);
+
+        TweenMax.set( $( "#facemask" ), { css: { opacity:0  } } );
 
       }
 
