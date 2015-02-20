@@ -3,7 +3,7 @@
 from sarge import run
 
 import time
-source_dir = '/Users/bkennedy/ws/jts-astronaut'
+source_dir = '/Users/exhibits/Desktop/jts-astronaut'
 
 def main():
     # We want to start while the other startup script runs
