@@ -8,7 +8,7 @@ source_dir = '/Users/exhibits/Desktop/jts-astronaut'
 def main():
     # We want to start while the other startup script runs
     # the Resolume Arena program
-    time.sleep(20)
+    time.sleep(70)
     run('node node-booth.js', cwd=source_dir)
 
 if __name__ == "__main__":

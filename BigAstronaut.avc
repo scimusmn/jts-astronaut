@@ -732,7 +732,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="147848.459" defaultValue="0" startValue="0" stopValue="480046.713"/>
+                <values curValue="314860.985" defaultValue="0" startValue="0" stopValue="480046.713"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -782,7 +782,7 @@
           <source type="syphon" couldContainVideo="1" name="cefclient - My Output"
                   uiid="info.v002.Syphon.747F161B-6A91-494E-B892-19A318646DA3"
                   shortName="cefclient - My Output" description="syphon server"/>
-          <provider transparent="1" newlyCreated="0" width="640" height="483">
+          <provider transparent="1" newlyCreated="0" width="800" height="600">
             <settings>
               <parameter paramType="110">
                 <name value="Server"/>
@@ -814,7 +814,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2860.83883" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="2218.44522" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -847,9 +847,14 @@
                 <nameGiven value="Position Y"/>
               </parameter>
               <parameter>
+                <name value="Anchor X"/>
+                <nameGiven value="Anchor X"/>
+                <values curValue="66" defaultValue="0" startValue="-8192" stopValue="8192"/>
+              </parameter>
+              <parameter>
                 <name value="Anchor Y"/>
                 <nameGiven value="Anchor Y"/>
-                <values curValue="50" defaultValue="0" startValue="-8192" stopValue="8192"/>
+                <values curValue="85" defaultValue="0" startValue="-8192" stopValue="8192"/>
               </parameter>
             </parameters>
           </settings>
@@ -896,7 +901,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2866.39091" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4860.98513" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -984,7 +989,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="11440.8801" defaultValue="0" startValue="0" stopValue="34401.0333"/>
+                <values curValue="8967.33466" defaultValue="0" startValue="0" stopValue="34401.0333"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1035,7 +1040,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="542760" defaultValue="0" startValue="0" stopValue="1631999"/>
+                <values curValue="425972" defaultValue="0" startValue="0" stopValue="1631999"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
@@ -1185,7 +1190,7 @@
                 <nameGiven value="Position"/>
                 <textValue value=""/>
                 <extended value="0"/>
-                <values curValue="2866.51599" defaultValue="0" startValue="0" stopValue="5000"/>
+                <values curValue="4699.64529" defaultValue="0" startValue="0" stopValue="5000"/>
                 <pointsOfInterest value="0"/>
                 <jumpToPointsOfInterest value="-1"/>
                 <speedFactor curValue="1" defaultValue="1" startValue="0.0001" stopValue="10"/>
