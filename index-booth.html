@@ -124,7 +124,7 @@
       var minWaitTime = 13; // Time guaranteed to visitor prepare after submission.
       var playbackRate = 1;
       var captureLength = 15;
-      var reloadTimeoutDelay = 60*2.5;
+      var reloadTimeoutDelay = 60*2;
       var reloadTimeout = {};
       var captureWidth = 640;
       var captureHeight = 480;
@@ -142,8 +142,8 @@
       var recordedFileName = '';
       var nameIsSubmitted = false;
       var nameEntryTimeout = {};
-      var getReadyTimer = {};
-      var getReadyCount = 0;
+      var videoCreationTimeout = {};
+
 
       $("#record-video").click( onRecordClicked );
       $("#btn_submitname").click( function(){
@@ -191,17 +191,20 @@
         resetReload();
         if (recordLockout==true) return;
         recordLockout = true;
+        console.log('onRecordClicked()');
         startRecordButtonTween();
         setTimeout(startVidRecording, 250);
       }
 
       initCamera();
       function initCamera(){
+        console.log('initCamera()');
         startVidRecording();
-        // resetReload();
       }
 
       function startVidRecording() {
+
+        console.log('startVidRecording()', cameraStream);
 
         if (!cameraStream) {
 
@@ -274,6 +277,9 @@
       }
 
       function stopVidRecording() {
+
+        console.log('stopVidRecording', recorder);
+
         if (recorder){
 
             recorder.stopRecording(function(url) {
@@ -287,10 +293,18 @@
                         }
                     };
 
+                    console.log("create-video-file", videoDataURL);
                     socket.emit('create-video-file', data);
 
-                    //Wait to hear back from node that file was created...
-                    //TODO: Show spinner until we hear back?
+                    //Now wait to hear back from node that file was successfully created...
+
+                    //HOWEVER, if we are waiting longer than 15 seconds for the video to be created, hard refresh the page.
+                    videoCreationTimeout = setTimeout(function() {
+
+                      console.log("ERROR: Node never returned a video. Reloading page.")
+                      location.reload();
+
+                    }, 15*1000);
 
                 });
 
@@ -306,6 +320,8 @@
       function onVideoFileReady(fileName){
 
         console.log('onVideoFileReady', fileName);
+
+        clearTimeout(videoCreationTimeout);
 
         //base url
         var href = location.href.replace( location.href.split('/').pop(), '' );
@@ -343,10 +359,6 @@
         }
 
         clearReload();
-
-        //NOTE: This is not a highly accurate wait estimation, just using "Will be ready shortly" for now.
-        // var wait = Math.ceil(minWaitTime + (delay_totalSequence*(visitorQueue.length-1)));
-        // getReadyCountdown(wait);
 
       }
 
@@ -474,6 +486,8 @@
 
       function startRecordButtonTween() {
 
+        console.log('startRecordButtonTween()');
+
         $( "#count" ).html(''+captureLength);
         TweenMax.set( $( "#count" ), { css: { scale:0.4, opacity:0  } } );
         TweenMax.set( $( "#record-video" ), { css: { scale:1  } } );
@@ -502,6 +516,7 @@
 
       function closeRecordButtonTween() {
 
+        console.log('closeRecordButtonTween()');
         TweenMax.to( $( "#count" ), 0.4, { css: { opacity:0 }, delay:0.0, ease:Power2.easeOut});
         TweenMax.to( $( "#record-video" ), 0.5, { css: { scale:1 }, delay:0.1, ease:Power2.easeOut});
         TweenMax.to( $( "#circle" ), 0.5, { css: { scale:0.5 }, delay:0.0, ease:Power2.easeIn});
@@ -541,28 +556,8 @@
         newVisitor(nameEntered, recordedVideoPath, recordedFileName);
 
         //Flip Popup
-        TweenLite.set($( "#getready-count" ), {opacity:0});
         TweenLite.to($( "#enter-name .popup-content" ), 0.8, {delay:0.1, rotationX:-180, ease:Power2.easeOut});
         setTimeout(returnToCameraView, 5000);
-
-      }
-
-      function getReadyCountdown(countstart) {
-
-        getReadyCount = countstart;
-        TweenMax.to( $( "#getready-count" ), 0.5, { css: { opacity:1 }, delay:1, ease:Power2.easeIn});
-
-        $("#getready-count").html(''+getReadyCount);
-        getReadyTimer = setInterval( function() {
-
-          getReadyCount--;
-          $("#getready-count").html(''+getReadyCount);
-
-        }, 1000);
-
-        setTimeout(function() {
-          TweenMax.to( $( "#getready-count" ), 4.5, { css: { opacity:0 }, ease:Power2.easeIn});
-        }, 4000);
 
       }
 
@@ -576,8 +571,6 @@
           $( "#enter-name" ).hide();
           //Reset flipped state
           TweenLite.set($( "#enter-name .popup-content" ), {rotationX:0});
-          //Clear get ready timer
-          clearInterval(getReadyTimer);
 
         }});
         $( "#intake_video" ).removeClass('effect-blur');
