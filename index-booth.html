@@ -145,10 +145,9 @@
       var videoCreationTimeout = {};
 
 
-      $("#record-video").click( onRecordClicked );
-      $("#btn_submitname").click( function(){
-        nameSubmitted();
-      });
+      $("#feed-overlay").click( onRecordClicked );
+      $("#btn_submitname").click( nameSubmitted );
+
       $("#nameinput").keyup(function (e) {
         if (e.keyCode == 13) { //capture return key
           nameSubmitted();
@@ -541,7 +540,7 @@
         //Timeout if no name submitted within 30 seconds
         nameEntryTimeout = setTimeout(function() {
           nameSubmitted();
-        }, 30000)
+        }, 30000);
 
       }
 

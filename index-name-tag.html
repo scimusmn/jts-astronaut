@@ -15,7 +15,7 @@
   </head>
   <body>
     <div id="nametag_screen" class="screen">
-      <h1 id="name">ABCDEFGLM</h1>
+      <h1 id="name">  </h1>
     </div>
 
     <script type="text/javascript">
@@ -31,13 +31,11 @@
 
       socket.on('new-name', function(data) {
           console.log('new-name', data);
-          visitorMode = true;
           displayName(""+data.nameString, data.captureLength/data.playbackRate);
       });
 
       socket.on('error', function() { console.error(arguments) });
       socket.on('message', function() { console.log(arguments) });
-
 
       /* Display Name */
       function displayName(nameStr, displayDuration) {
@@ -59,32 +57,15 @@
 
           $("#name").stop().fadeTo("slow",0);
 
+          //After fade out, reload page just to prevent any memory leaks over time.
+          setTimeout(function(){
+            location.reload();
+          }, 2*1000);
+
         }, Math.ceil(displayDuration*1000));
 
       }
 
-      //Individual coloring to assist screen alignment
-      var myColors = ["#625673", "#1C8C81", "#9EF291", "#DCF28C", "#F2AF5C"];
-      function colorizeCharacters(){
-
-        $('h1').each(function(){
-
-          var $el = $(this),
-          text = $el.text(),
-          len = text.length,
-          coLen = myColors.length,
-          newCont = '';
-
-          for(var i=0; i<len; i++){
-            newCont += '<span style="background:'+ myColors[i%coLen] +'">'+ text.charAt(i) +'</span>';
-          }
-
-          $el.html(newCont);
-
-        });
-        colorizeCharacters();
-
-      }
 
     </script>
 
