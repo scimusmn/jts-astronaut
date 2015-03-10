@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Video Booth</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/booth.css">
+    <link rel="stylesheet" href="../css/fonts/Aller/stylesheet.css">
+
+    <!-- JS -->
+    <script src="../js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="../js/vendor/recordrtc/RecordRTC.js"></script>
+    <script src="../js/vendor/jquery-circle-progress/dist/circle-progress.js"></script>
+    <script src="../js/vendor/gsap/src/minified/TweenMax.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/booth.js"></script>
+
+  </head>
+  <body>
+    <div id="intake_screen" class="screen">
+
+      <video id="intake_video" class="mirrored" autoplay="" loop="" muted=""></video>
+
+      <div id="feed-overlay" class="overlay centered">
+
+        <img id="facemask" src="../img/face-mask.png" class="centered"/>
+        <img id="face" src="../img/face-outline.png" class="centered"/>
+
+        <div id="record-video" class="button">
+          <div id="circle" class="centered"></div>
+          <img id="redbtn" src="../img/record-red.png" class="centered"/>
+        </div>
+
+      </div>
+
+      <div id="enter-name" class="popup" >
+        <div class="popup-content front">
+          <br/>
+          <br/>
+          <div>
+            <input id="nameinput" size="16" type="text" placeholder="NAME / NOMBRE" maxlength="15">
+            <br/>
+            <div id="btn_submitname" class="button"><h2>Next / Siguiente</h2></div>
+          </div>
+        </div>
+        <div class="popup-content back">
+          <br/>
+          <h1>Prepare for launch.</h1>
+          <h1 class="es">Prepárate para el lanzamiento.</h1>
+          <h2>Have your camera ready.</h3>
+          <h2 class="es">Ten tu cámara lista.</h3>
+        </div>
+      </div>
+
+      <div id="recording-border">
+      </div>
+
+    </div>
+
+    <!-- Dev Panel -->
+    <div class="dev-panel" style="display:none">
+      <label for='camSource_booth'>Booth video source: </label><select id='camSource_booth'></select>
+      <br/>
+      <br/>
+      <label for='resolume'>Resolume: </label>
+      <button id="raise">Raise Visor</button>
+      <button id="lower">Lower Visor</button>
+      <br>
+      <button id="fade-out">Fade Out</button>
+      <button id="fade-in">Fade In</button>
+      <br>
+      <button id="toggle-visor">Show Visor</button>
+      <button id="toggle-booth">Show Booth</button>
+      <button id="toggle-loop">Show Loop</button>
+    </div>
+
+  </body>
+</html>

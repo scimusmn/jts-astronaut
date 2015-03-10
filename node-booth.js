@@ -16,13 +16,13 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 //Serve client-side files
 app.get('/booth', function (request, response){
-    response.sendFile(__dirname + '/index-booth.html');
+    response.sendFile(__dirname + '/booth.html');
 });
 app.get('/name-tag', function (request, response){
-    response.sendFile(__dirname + '/index-name-tag.html');
+    response.sendFile(__dirname + '/name-tag.html');
 });
 app.get('/playback', function (request, response){
-    response.sendFile(__dirname + '/index-playback.html');
+    response.sendFile(__dirname + '/playback.html');
 });
 
 
