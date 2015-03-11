@@ -179,6 +179,14 @@ $(document).ready(function(){
 
         if (recorder){
 
+            //Before attempting to create video file. Start timeout timer.
+            //If waiting longer than 5 seconds, assume there was a video write error, and hard refresh entire page.
+            videoCreationTimeout = setTimeout(function() {
+
+              location.reload();
+
+            }, 5*1000);
+
             recorder.stopRecording(function(url) {
 
                 recorder.getDataURL(function(videoDataURL) {
@@ -194,14 +202,6 @@ $(document).ready(function(){
                     socket.emit('create-video-file', data);
 
                     //Wait to hear back from node that file was successfully created...
-
-                    //HOWEVER, if waiting longer than 8 seconds, assume there was a video write error, and hard refresh entire page.
-                    videoCreationTimeout = setTimeout(function() {
-
-                      console.log("ERROR: Node never returned a video. Reloading page.")
-                      location.reload();
-
-                    }, 8*1000);
 
                 });
 
