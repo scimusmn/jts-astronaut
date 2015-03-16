@@ -242,7 +242,7 @@ function toOSC(oscAddress, val) {
 var opts = {
     logDirectory:__dirname +'/logs',
     fileNamePattern:'roll-<DATE>.log',
-    dateFormat:'YYYY.MM.DD'
+    dateFormat:'YYYY.MM.DD-HH'
 };
 
 var log = require('simple-node-logger').createRollingFileLogger( opts );
