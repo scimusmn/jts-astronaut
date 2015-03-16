@@ -15,13 +15,14 @@ $(document).ready(function(){
       onVideoFileReady(fileName);
     });
 
-    socket.on('error', function() { console.error(arguments) });
-    socket.on('message', function() { console.log(arguments) });
-
     //Outgoing messages...
+    function logMessage(message){
+        socket.emit('log-message', {message:'booth.js--> '+message});
+    }
+
     function exportVisitor() {
 
-        console.log('exportVisitor');
+        logMessage('exportVisitor() '+ visitorQueue[0].nameString + ', '+ visitorQueue[0].videoURL);
         socket.emit('play-visitor', {nameString: visitorQueue[0].nameString, videoURL: visitorQueue[0].videoURL, captureLength:captureLength, playbackRate:playbackRate });
 
     }
@@ -132,7 +133,7 @@ $(document).ready(function(){
 
         }, function() {
 
-          // alert('Camera access denied.');
+            logMessage('ERROR: Camera access denied.');
 
         });
 
@@ -177,17 +178,20 @@ $(document).ready(function(){
 
     function stopVidRecording() {
 
+        logMessage('stopVidRecording() '+ recorder);
+
         if (recorder){
 
             //Before attempting to create video file. Start timeout timer.
-            //If waiting longer than 5 seconds, assume there was a video write error, and hard refresh entire page.
+            //If waiting longer than 6 seconds, assume there was a video write error, and hard refresh entire page.
             videoCreationTimeout = setTimeout(function() {
-
-              location.reload();
-
-            }, 5*1000);
+                logMessage('ERROR: Completed videoCreationTimeout. Reloading page.');
+                location.reload();
+            }, 6*1000);
 
             recorder.stopRecording(function(url) {
+
+                logMessage('recorder.stopRecording()');
 
                 recorder.getDataURL(function(videoDataURL) {
 
@@ -198,10 +202,10 @@ $(document).ready(function(){
                         }
                     };
 
-                    console.log("create-video-file", videoDataURL);
+                    logMessage('socket.emit(create-video-file)');
                     socket.emit('create-video-file', data);
 
-                    //Wait to hear back from node that file was successfully created...
+                    //...Wait to hear back from node that file was successfully created...
 
                 });
 
@@ -215,6 +219,8 @@ $(document).ready(function(){
     };
 
     function onVideoFileReady(fileName){
+
+        logMessage('onVideoFileReady() '+ fileName);
 
         clearTimeout(videoCreationTimeout);
 
@@ -299,7 +305,7 @@ $(document).ready(function(){
         URL.revokeObjectURL(visitorQueue[0].videoURL);
         visitorQueue.shift();
 
-        console.log('visitorSequenceFinished() Queue length:',visitorQueue.length);
+        logMessage('visitorSequenceFinished() Queue length: ' + visitorQueue.length);
 
         if (visitorQueue.length > 0){
 
@@ -326,6 +332,7 @@ $(document).ready(function(){
             resolumeControl('toggle-loop');
 
             //After sending signal to show screensaver, force refresh the page.
+            logMessage('resetReload() -> reloadTimeout completed. Reloading page.');
             location.reload();
 
           } else {

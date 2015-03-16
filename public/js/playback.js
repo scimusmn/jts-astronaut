@@ -13,9 +13,9 @@ $(document).ready(function(){
       startVideoPlayback(data.videoURL, data.playbackRate);
     });
 
-    socket.on('error', function() { console.error(arguments) });
-    socket.on('message', function() { console.log(arguments) });
-
+    function logMessage(message){
+        socket.emit('log-message', {message:'playback.js--> '+message});
+    }
 
     /* Video Playback */
     var videoOut = document.getElementById('playback_video');

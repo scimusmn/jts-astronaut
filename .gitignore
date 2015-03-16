@@ -3,3 +3,4 @@ public/js/vendor/*
 public/video/*
 work/
 *.webm
+*.log

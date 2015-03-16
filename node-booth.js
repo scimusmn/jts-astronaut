@@ -25,7 +25,6 @@ app.get('/playback', function (request, response){
     response.sendFile(__dirname + '/playback.html');
 });
 
-
 function sendName(data) {
 
     // check that string is not empty or full of spaces
@@ -47,6 +46,8 @@ function sendVideo(data) {
 
 function writeToDisk(dataURL, fileName) {
 
+    logMessage('writeToDisk() Attempting: ' + fileName);
+
     var filePath = './public/uploads/' + fileName;
 
     //Write Blob data into file
@@ -56,19 +57,21 @@ function writeToDisk(dataURL, fileName) {
     //TODO: Should this be asynchronous? Let's see if this stalls UI
     fs.writeFileSync(filePath, fileBuffer);
 
-    console.log('written to disk. filePath', filePath);
+    logMessage('writeToDisk() Completed: '+ filePath);
 }
 
 function deleteFromDisk(fileName) {
+
+    logMessage('deleteFromDisk() Attempting: '+fileName);
 
     var fullPath = './public/uploads/' + fileName;
 
     fs.unlink(fullPath, function (err) {
         // if (err) throw err;
         if (err){
-            console.log('ERROR! Could not delete video '+fileName+',  '+err);
+            logMessage('deleteFromDisk() ERROR! Could not delete video '+fileName+',  '+err);
         }else{
-            console.log('successfully deleted '+fileName);
+            logMessage('deleteFromDisk() Success: '+fileName);
         }
 
     });
@@ -80,7 +83,11 @@ io.sockets.on('connection', function(socket) {
     socket.emit('handshake', { message: '' });
 
     socket.on('handshake-response', function(data){
-        console.log('handshake complete with client: ', data.clientId);
+        logMessage('Handshake complete with client: ' + data.clientId);
+    });
+
+    socket.on('log-message', function(data){
+        logMessage(data.message);
     });
 
     socket.on('play-visitor', function(data){
@@ -92,7 +99,7 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('create-video-file', function (data) {
 
-        console.log('create video!');
+        logMessage("socket.on('create-video-file')");
 
         //Generate universally unique identifier for filename
         var fileName = uuid.v4();
@@ -140,7 +147,7 @@ io.sockets.on('connection', function(socket) {
 
 http.listen(app.get('port'), function(){
 
-    console.log('Listening to Node server..');
+    logMessage('Listening to Node server..');
 
 });
 
@@ -225,9 +232,23 @@ function toOSC(oscAddress, val) {
         args: [val]
     });
 
-    console.log('sending OSC message:', oscAddress, val);
     return udp.send(buf, 0, buf.length, port_osc, "localhost");
 
 }
 
+/**
+* Logging - starts new log every hour
+*/
+var opts = {
+    logDirectory:__dirname +'/logs',
+    fileNamePattern:'roll-<DATE>.log',
+    dateFormat:'YYYY.MM.DD'
+};
+
+var log = require('simple-node-logger').createRollingFileLogger( opts );
+
+function logMessage(message){
+    log.info(message);
+    console.log(message);
+}
 

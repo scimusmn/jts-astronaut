@@ -13,8 +13,9 @@ $(document).ready(function(){
       displayName(""+data.nameString, data.captureLength/data.playbackRate);
     });
 
-    socket.on('error', function() { console.error(arguments) });
-    socket.on('message', function() { console.log(arguments) });
+    function logMessage(message){
+        socket.emit('log-message', {message:'name-tag.js--> '+message});
+    }
 
     /* Display Name */
     function displayName(nameStr, displayDuration) {
