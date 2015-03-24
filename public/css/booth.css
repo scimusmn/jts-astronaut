@@ -90,7 +90,8 @@ video{
 }
 
 #intake_screen #btn_submitname{
-  width: 300px;
+  width: 480px;
+  line-height: 333%;
 }
 
 .button {
@@ -161,10 +162,6 @@ video{
   text-align: center;
 }
 
-.popup-content.back #getready-count{
-  font-size: 1.5em;
-}
-
 .popup-content .button{
   background: #aaa;
   width: 20%;
@@ -186,7 +183,7 @@ video{
 
 #intake_screen #recording-border{
 
-  border-top:32px solid;
+  border-top:30px solid;
   border-color: rgba(0,0,0,0);
   width:1280px;
   height:992px;

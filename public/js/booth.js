@@ -50,9 +50,9 @@ $(document).ready(function(){
     var countdownTimer;
 
     var visorTransition = 2; //Time visor requires to raise or lower
-    var minWaitTime = 12; // Time guaranteed to visitor prepare after submission.
+    var minWaitTime = 5; // Time guaranteed to visitor prepare after submission.
     var playbackRate = 1;
-    var captureLength = 15;
+    var captureLength = 10;
     var reloadTimeoutDelay = 60*2;
     var captureWidth = 640;
     var captureHeight = 480;
@@ -77,10 +77,15 @@ $(document).ready(function(){
     $("#feed-overlay").click( onRecordClicked );
     $("#btn_submitname").click( nameSubmitted );
 
-    $("#nameinput").keyup(function (e) {
-    if (e.keyCode == 13) { //capture return key
-      nameSubmitted();
-    }
+    $("#nameinput").keydown(function (e) {
+        if (e.keyCode == 13) { //capture return key
+          nameSubmitted();
+        }
+        if (e.keyCode == 192) { //simulate backspace
+            $('#nameinput').trigger({type: 'keydown', key: 'Backspace'});
+            e.preventDefault();
+            e.stopPropagation();
+        }
     });
     $(".dev-panel button").click( function(){
       resolumeControl( $(this).attr('id') );
