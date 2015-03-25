@@ -442,10 +442,20 @@ $(document).ready(function(){
 
         nameIsSubmitted = false;
 
-        //Timeout if no name submitted within 30 seconds
+        //Timeout if no text entered within 10 seconds
         nameEntryTimeout = setTimeout(function() {
-          nameSubmitted();
-        }, 30*1000);
+            var nameEntered = $("#nameinput").val();
+            if (nameEntered == ''){
+                //User is not entering name, assume they've walked away
+                nameSubmitted();
+            }else {
+                //User has started entering name, allow an extra 15 secs
+                clearInterval(nameEntryTimeout);
+                nameEntryTimeout = setTimeout(function() {
+                   nameSubmitted();
+                }, 15*1000);
+            }
+        }, 10*1000);
 
     }
 
