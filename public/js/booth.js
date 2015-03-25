@@ -49,7 +49,6 @@ $(document).ready(function(){
     var countdownCount;
     var countdownTimer;
 
-    var visorTransition = 2; //Time visor requires to raise or lower
     var minWaitTime = 5; // Time guaranteed to visitor prepare after submission.
     var playbackRate = 1;
     var captureLength = 10;
@@ -249,10 +248,9 @@ $(document).ready(function(){
     /* --- QUEUE --- */
     /* ------------- */
 
-    var delay_visor = visorTransition; //Should match duration of visor transition
+    var delay_visor = 2; //Should match duration of visor transition
     var delay_fade = 0.9; //Time to fade in/out comp
-    var delay_playback = (captureLength/playbackRate) - (delay_fade*2);
-    var delay_totalSequence = delay_visor+delay_playback+(delay_fade*4); //Total of visor open/close sequence
+    var delay_playback = (captureLength/playbackRate) - delay_fade;
     var cur_source = 'visor';
 
     function newVisitor(nameEntered, recordedURL, recordedFilename){
@@ -274,18 +272,24 @@ $(document).ready(function(){
           vidSource('visor');
         }
 
-        setTimeout(function(){
+        setTimeout(function(){ //delay_begin
           resolumeControl('raise');
-          setTimeout(function() {
+
+          setTimeout(function() { //delay_visor
             vidSource('booth');
-            setTimeout(function() {
+
+            setTimeout(function() { //delay_fade
               exportVisitor();
-              setTimeout(function() {
+
+              setTimeout(function() { //delay_playback
                 vidSource('visor');
-                setTimeout(function() {
+
+                setTimeout(function() { //delay_fade
                   resolumeControl('lower');
-                  setTimeout(function() {
+
+                  setTimeout(function() { // delay_visor
                     visitorSequenceFinished();
+
                   }, delay_visor*1000);
                 }, delay_fade*1000);
               }, delay_playback*1000);
