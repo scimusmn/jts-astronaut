@@ -81,7 +81,9 @@ $(document).ready(function(){
     });
 
     var timeout = false;
-    $("#btn_submitname").click( nameSubmitted(timeout) );
+    $("#btn_submitname").click( function() {
+        nameSubmitted(timeout);
+    });
 
     $("#nameinput").keydown(function (e) {
         if (e.keyCode == 13) { //capture return key
