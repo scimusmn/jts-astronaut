@@ -73,12 +73,19 @@ $(document).ready(function(){
     var nameEntryTimeout = {};
     var videoCreationTimeout = {};
 
-    $("#feed-overlay").click( onRecordClicked );
-    $("#btn_submitname").click( nameSubmitted );
+    $("#feed-overlay").click( function(e) {
+        var eventProperties = {};
+        eventProperties.x = e.clientX;
+        eventProperties.y = e.clientY;
+        onRecordClicked(eventProperties);
+    });
+
+    var timeout = false;
+    $("#btn_submitname").click( nameSubmitted(timeout) );
 
     $("#nameinput").keydown(function (e) {
         if (e.keyCode == 13) { //capture return key
-          nameSubmitted();
+          nameSubmitted(timeout);
         }
         if (e.keyCode == 192) { //simulate backspace
             $('#nameinput').trigger({type: 'keydown', key: 'Backspace'});
@@ -381,10 +388,15 @@ $(document).ready(function(){
 
     }
 
-    function onRecordClicked(){
+    function onRecordClicked(eventProperties){
+
         resetReload();
         if (recordLockout==true) return;
         recordLockout = true;
+
+        // Track the record event
+        sendKeenEvent('recording', eventProperties);
+
         startRecordButtonTween();
         setTimeout(startVidRecording, 250);
     }
@@ -446,34 +458,66 @@ $(document).ready(function(){
 
         nameIsSubmitted = false;
 
-        //Timeout if no text entered within 10 seconds
+        /**
+         * Name submission timeout
+         *
+         * If the user hasn't submitter a name after 10 seconds and the
+         * name field is empty, submit an empty string.
+         *
+         * If there is any data in the name field give them another 15 seconds.
+         */
         nameEntryTimeout = setTimeout(function() {
+
             var nameEntered = $("#nameinput").val();
-            if (nameEntered == ''){
-                //User is not entering name, assume they've walked away
-                nameSubmitted();
-            }else {
-                //User has started entering name, allow an extra 15 secs
+            /**
+             * User has not entered a name, assume they've walked away.
+             * Submit a blank name so that the video will show up on the
+             * helmet.
+             *
+             * Record a timeout event, so we know how often this is happening.
+             */
+            var timeout = false;
+            var eventProperties = {};
+            eventProperties.name = nameEntered;
+            if (nameEntered == '') {
+                timeout = true;
+                nameSubmitted(timeout);
+            }
+
+            // User has started entering name, allow an extra 15 secs
+            else {
                 clearInterval(nameEntryTimeout);
                 nameEntryTimeout = setTimeout(function() {
-                   nameSubmitted();
-                }, 15*1000);
+                    // If the user still hasn't submitted a name, send it
+                    // through as-is.
+                    timeout = true;
+                    nameSubmitted(timeout);
+                }, 15 * 1000);
             }
-        }, 10*1000);
+
+        }, 10 * 1000);
 
     }
 
-    function nameSubmitted(){
+    function nameSubmitted(timeout){
 
         clearInterval(nameEntryTimeout);
         if (nameIsSubmitted == true) return;
         nameIsSubmitted = true;
 
-        //Push into visitor queue
+        // Name value
         var nameEntered = $("#nameinput").val();
+        var eventProperties = {};
+        eventProperties.name = nameEntered;
+        eventProperties.timeout = timeout;
+
+        // Send Keen event
+        sendKeenEvent('name', eventProperties);
+
+        //Push into visitor queue
         newVisitor(nameEntered, recordedVideoPath, recordedFileName);
 
-        //Flip Popup
+        //Flip popup
         TweenLite.to($( "#enter-name .popup-content" ), 0.8, {delay:0.1, rotationX:-180, ease:Power2.easeOut});
         setTimeout(returnToCameraView, 5000);
 
@@ -495,6 +539,53 @@ $(document).ready(function(){
 
         recordLockout = false;
 
+    }
+
+    /**
+     * Track an event with keen.io
+     */
+    function sendKeenEvent(eventType, eventProperties) {
+        var collectionEvent;
+        /**
+         * Track the record event and also pass along click X & Y, to see
+         * where visitors are clicking. This will help us understand how
+         * the design is working.
+         */
+        if (eventType == 'recording') {
+            collectionEvent = {
+                event: 'recording',
+                clickX: eventProperties.x,
+                clickY: eventProperties.y
+            };
+        }
+
+        /**
+         * Track the name submission, along with:
+         *  - name value
+         *  - if the name entry timed out
+         */
+        if (eventType == 'name') {
+            collectionEvent = {
+                event: 'name',
+                name: eventProperties.name,
+                timeout: eventProperties.timeout
+            };
+        }
+
+        // Add the timestamp to the event
+        collectionEvent.keen = {
+            timestamp: new Date().toISOString()
+        }
+
+        // Send data, with some basic error reporting
+        keenClient.addEvent(eventType, collectionEvent, function(err, res){
+            if (err) {
+                console.log('Keen - ' + collectionEvent.event + ' submission failed');
+            }
+            else {
+                console.log('Keen - ' + collectionEvent.event + ' event sent successfully');
+            }
+        });
     }
 
     //Init
