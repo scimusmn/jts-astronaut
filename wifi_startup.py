@@ -17,7 +17,7 @@ def main():
     # Wait enough time for the node instance to load
     time.sleep(30)
     cef_cmd = 'open -a CefWithSyphon.app \
-        --args --url=http://169.254.67.178:7770/playback'
+        --args --url=http://172.20.10.4:7770/playback'
     run(cef_cmd, cwd='/Users/exhibits/Desktop/jts-astronaut')
     time.sleep(5)
     # Launch Stele
