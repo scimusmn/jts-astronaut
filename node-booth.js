@@ -6,6 +6,7 @@ var io = require('socket.io')(http);
 var fs = require("fs");
 var uuid = require('node-uuid');
 var profanity = require('profanity-util');
+var swearwords = require('./smm-profanities.json');
 
 var port_node = 7770;
 var port_osc = 7770;
@@ -29,7 +30,7 @@ function sendName(data) {
 
     // check that string is not empty or full of spaces
     if (/\S/.test(data.nameString)) {
-        data.nameString = profanity.purify(data.nameString, { replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
+        data.nameString = profanity.purify(data.nameString, { forbiddenList: swearwords, replace: 'true', replacementsList: [ 'SCIENCE' ] })[0];
     } else {
         data.nameString = "I<3SPACE!";
     }
