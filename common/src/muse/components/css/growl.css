@@ -1,0 +1,36 @@
+
+:host {
+  --font-size: 1.5em;
+  --padding-size: 0;
+  --font-color: #555;
+  --background-color: #fff;
+  --border-radius: .25em;
+
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  color: var(--font-color);
+
+  position: absolute;
+  left: 110vw;
+  bottom: 10vh;
+  width: 50vw;
+  height: 3em;
+  padding-left: 1em;
+  text-align: left;
+  display: block;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0px 4px 4px rgba(0,0,0,.2);
+  box-sizing: border-box;
+  line-height: 3em;
+
+  transition: left .5s ease;
+}
+
+:host([alert]) {
+  left: 40vw;
+}
+
+:host(.warn) {
+  color: #700;
+}

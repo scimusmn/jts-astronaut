@@ -1,0 +1,6 @@
+[submodule "common/src/muse"]
+	path = common/src/muse
+	url = https://github.com/heidgera/Muse
+[submodule "piFig"]
+	path = piFig
+	url = https://github.com/heidgera/piFig

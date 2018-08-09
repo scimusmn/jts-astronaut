@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"></meta>
+  <head>
+    <title>Booth</title>
+    <script src="../../common/src/muse/main.js" main="./src/app.js"></script>
+  	<link rel="stylesheet" href="css/style.css"></link>
+  </head>
+  <body>
+    <cam-era id='mainCam'></cam-era>
+    <div id="feed-overlay" class="overlay">
+
+      <!-- <img id="facemask" src="img/face-mask.png" class="centered"/>
+      <img id="face" src="img/face-outline.png" class="centered"/> -->
+      <div id='face-outline'></div>
+      <div id='face-shadow'></div>
+
+      <div id='guidance'>Touch screen<br />to start recording</div>
+
+      <div id='backdrop'>
+        <div id="record-video" class="button">
+          <div id="outer-circle" ></div>
+          <div id='center-icon'></div>
+          <progress-ring progress="0"></progress-ring>
+        </div>
+      </div>
+
+    </div>
+    <muse-card id='nameCard'>
+      <div>Enter your name:</div>
+      <input id='nameEntry' type='text' maxlength='20' placeholder="Name / Nombre"></input><br />
+      <but-ton id='submit'>Submit</but-ton>
+    </muse-card>
+    <muse-card id='alert'>Your video will appear on the Helmet in 5 seconds
+    </muse-card>
+    <key-board></key-board>
+  </body>
+</html>

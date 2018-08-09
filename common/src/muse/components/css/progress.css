@@ -1,0 +1,29 @@
+:host {
+  --fill: transparent;
+  --stroke-color: white;
+  --stroke: 1vh;
+  --radius: 5vh;
+  --norm-rad: calc(var(--radius) - var(--stroke) / 2);
+  --circ: calc(var(--norm-rad) * 2 * 3.1415);
+  width: calc(var(--radius) * 2);
+  height: calc(var(--radius) * 2);
+}
+
+svg {
+  width: calc(var(--radius) * 2);
+  height: calc(var(--radius) * 2);
+}
+
+circle {
+  stroke: var(--stroke-color);
+  stroke-dasharray: var(--circ);
+  cx: var(--radius);
+  cy: var(--radius);
+  r: var(--norm-rad);
+  fill: var(--fill);
+  stroke-width: var(--stroke);
+  stroke-dashoffset:;
+  transition: stroke-dashoffset linear .5s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}

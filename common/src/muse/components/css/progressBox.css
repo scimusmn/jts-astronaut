@@ -1,0 +1,28 @@
+:host {
+  --fill: transparent;
+  --stroke-color: white;
+  --stroke: 1vh;
+  --width: 100vw;
+  --height: 100vh;
+  /* --norm-rad: calc(var(--radius) - var(--stroke) / 2); */
+  --peri: calc(var(--width) * 2  + var(--height) * 2);
+  --begin-offset: 0;
+  width: var(--width);
+  height: var(--height);
+}
+
+svg {
+  width: var(--width);
+  height: var(--height);
+}
+
+rect {
+  width: var(--width);
+  height: var(--height);
+  stroke: var(--stroke-color);
+  stroke-dasharray: var(--peri);
+  fill: var(--fill);
+  stroke-width: var(--stroke);
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset linear .5s;
+}

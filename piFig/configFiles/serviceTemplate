@@ -1,0 +1,10 @@
+[Unit]
+Description=${DESCRIPTION_TEXT}
+
+[Service]
+ExecStart=+${START_COMMAND}
+Restart=on-abnormal
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

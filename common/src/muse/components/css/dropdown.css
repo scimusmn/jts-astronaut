@@ -1,0 +1,114 @@
+:host {
+  --font-size: 1em;
+  --padding-size: .5em;
+  --font-color: #fff;
+  --background-color: #77f;
+  --tray-background: var(--background-color);
+  --tray-font: var(--font-color);
+  --border-radius: .125em;
+  --min-width: 5em;
+  --max-width: 10em;
+
+  display: inline-block;
+  position: relative;
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 2px rgba(0,0,0,.5);
+  color: var(--font-color);
+  /*padding: var(--padding-size);*/
+  text-align: center;
+
+  padding: var(--padding-size);
+}
+
+drop-opt {
+  height: var(--font-size);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+:host([mobile]) ::slotted(drop-opt) {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+::slotted(drop-opt) {
+  display: block;
+  text-align: right;
+  padding: var(--padding-size);
+  background-color: var(--tray-background);
+  transition: filter .5s;
+}
+
+::slotted(drop-opt[selected]) {
+  filter: brightness(.8);
+}
+
+::slotted(drop-opt:hover) {
+  filter: brightness(.8);
+}
+
+slot::slotted(drop-opt)::before {
+  content: '✓';
+  float: left;
+}
+
+:host([open]) .tray {
+  height: auto;
+  display: block;
+  z-index: 1000;
+}
+
+:host([mobile]) .tray {
+  font-size: 1.5em;
+}
+
+.tray {
+  color: var(--tray-font);
+  /*padding: var(--padding-size);*/
+  font-size: var(--font-size);
+  /*line-height: calc(var(--font-size) * 1.5);*/
+  max-height: calc(var(--font-size) * 15);
+  min-width: 100%;
+  box-sizing: border-box;
+  background-color: var(--tray-background);
+
+  overflow-y: auto;
+  white-space: nowrap;
+  border-radius: var(--border-radius);
+  position: absolute;
+  margin-left: calc(-1 * var(--padding-size));
+  margin-top: calc(-1 * var(--padding-size));
+  box-shadow: 0px 2px 2px rgba(0,0,0,.5);
+  height: auto;
+  display: none;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: .5em;
+}
+
+::-webkit-scrollbar-button:vertical:decrement:start {
+    display: none;
+}
+
+::-webkit-scrollbar-button:vertical:increment:end {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,.1);
+  /*border: 1px solid #aaa;*/
+  border-radius: .25em;
+  background-clip: content-box;
+}

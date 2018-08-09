@@ -1,0 +1,45 @@
+
+#numpad {
+  position: absolute;
+  bottom:0;
+  margin: 0;
+  padding: .1em;
+  padding-top: 1em;
+  font-size: 1em;
+  list-style: none;
+  width: 100%;
+  height:27vmax;
+  background-color: #fff;
+  border-top: solid 1px #777;
+  text-align: center;
+  --key-size: 25vmin;
+}
+#numpad span:not(.svgIcon) {
+  display: inline-block;
+  margin: 0 5px 5px 0;
+  width: var(--key-size);
+  height: calc(20% - 5px);
+  line-height: 6vmax;
+  text-align: center;
+  color: #777;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: .25em;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+#numpad span:active {
+  background-color: #07f;
+  color: #000;
+}
+
+#numpad .delSymbol {
+  pointer-events: none;
+  font-size: 2em;
+  --svg-src: url('assets/delete.svg');
+}
+
+
+.lastitem {
+/*margin-right: 0;*/
+}

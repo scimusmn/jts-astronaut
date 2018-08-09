@@ -1,0 +1,72 @@
+
+:host {
+  --font-size: 2em;
+  --padding-size: 0;
+  --font-color: #fff;
+  --background-color: #55f;
+  --menu-height: 2em;
+  --transition-style: all 0s ease;
+  --shadow-style: 0px 1px 4px rgba(0,0,0,.5);
+  --right-tray-size: 4em;
+
+  position: relative;
+  width: 100%;
+  height: var(--menu-height);
+  display: block;
+  box-shadow: var(--shadow-style);
+  text-align: left;
+
+  font-size: var(--font-size);
+  background-color: var(--background-color);
+  padding: var(--padding-size);
+  color: var(--font-color);
+}
+
+div {
+  position: absolute;
+  display: block;
+  top: 0;
+  line-height: var(--menu-height);
+  height: var(--menu-height);
+  text-align: left;
+}
+
+.right {
+  right: .5em;
+  width: 50%;
+  text-align: right;
+}
+
+.left {
+  left: .5em;
+}
+
+.titleDiv {
+  position: relative;
+  padding-right: var(--right-tray-size);
+  left: 2em;
+}
+
+span.title {
+  line-height: normal;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: -.2em;
+}
+
+::slotted(*) {
+  line-height: normal;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: -.2em;
+}
+
+::slotted([slot='left']) {
+  width: 1em;
+  height: 1em;
+}
+
+slot {
+  width: auto;
+  height: 100%;
+}

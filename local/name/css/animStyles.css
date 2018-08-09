@@ -1,0 +1,13 @@
+body {
+  --half-time: all .5s linear .5s;
+  --start-time: all .5s linear 0s;
+}
+
+@keyframes fadeCycle {
+  0%   { opacity: .5; }
+  100% { opacity: 1; }
+}
+
+.graphCont[state='loseFocus'] :-webkit-any(flip-book, .graphTap) {
+  transition: var(--start-time);
+}

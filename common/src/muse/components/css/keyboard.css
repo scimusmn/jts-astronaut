@@ -1,0 +1,120 @@
+
+:host {
+  font-family: Helvetica;
+  font-size: .9em;
+  font-weight: lighter;
+  position: absolute;
+  bottom:0;
+  margin: 0;
+  padding: .1em;
+  padding-top: 1em;
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-top: solid 1px #777;
+  --key-size: 5.75%;
+  --key-height: calc(20% - 5px);
+}
+:host li {
+  position: relative;
+  float: left;
+  margin: 0 5px 5px 0;
+  width: var(--key-size);
+  height: var(--key-height);
+  line-height: 40px;
+  text-align: center;
+  color: #777;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: .25em;
+  box-sizing: border-box;
+}
+:host li:active {
+  background-color: #07f;
+  color: #fff;
+}
+
+:host li div {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 200%;
+  width: 100%;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  background-color: #07f;
+  border-radius: .25em;
+  pointer-events: none;
+  display: none;
+}
+
+:host li:active div {
+  display: inline-block;
+}
+
+.capslock, .tab, .left-shift {
+  clear: left;
+}
+:host(.shift) li span.off {
+  display: none;
+}
+:host(.shift) li span.on {
+  display: block;
+}
+
+:host li span.on {
+  display: none;
+}
+:host li span.off {
+  display: block;
+}
+
+:host .tab, :host .delete {
+  width: calc(100% - ((var(--key-size) + 5px) * 13 + 5px));
+}
+:host .capslock, :host .return {
+  width: calc(50% - ((var(--key-size) + 5px) * 5.5 + 5px));
+}
+
+:host(.capslock) .capslock {
+  background-color: #07f;
+  color: #fff;
+}
+
+:host .left-shift, :host .right-shift {
+  width: calc(50% - ((var(--key-size) + 5px) * 5 + 5px));
+}
+
+:host(.shift:not(.capslock)) .left-shift, :host(.shift:not(.capslock)) .right-shift {
+  background-color: #07f;
+  color: #fff;
+}
+
+.svgIcon {
+	display: inline-block;
+	/*margin-top: -5px;*/
+	height: 1em;
+	width: 1em;
+	background-color: currentColor;
+	-webkit-mask-image: var(--svg-src);
+	-webkit-mask-size: contain;
+}
+
+:host .delSymbol {
+  pointer-events: none;
+  font-size: 1.5em;
+  --svg-src: url('assets/delete.svg');
+}
+
+.lastitem {
+margin-right: 0;
+}
+.uppercase .letter {
+text-transform: uppercase;
+}
+:host .space {
+  clear: left;
+  width: calc(100% - 5px);
+}

@@ -1,0 +1,20 @@
+{
+  "name": "MachineConfig",
+  "version": "1.1.0",
+  "description": "Simple configuration monitor for linux",
+  "main": "install.js",
+  "scripts": {
+    "start": "node install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heidgera/piFig.git"
+  },
+  "author": "ajhg",
+  "license": "CC0-1.0",
+  "homepage": "http://re.trof.it",
+  "dependencies": {
+    "drivelist": "^6.2.2",
+    "node-usb-detection": "^1.0.2",
+  }
+}
