@@ -24,7 +24,6 @@
     "googleapis": "^25.0.0",
     "nodemailer": "^4.4.2",
     "path": "^0.12.7",
-    "serialport": "^5.0.0",
     "ws": "^3.1.0"
   }
 }
