@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"></meta>
+  <head>
+    <title>Booth</title>
+    <script src="./common/src/muse/main.js" main="./newMonitor.js"></script>
+  	<style>
+      html, body {
+      	margin: 0;
+      	color: #fff;
+      	font-family: sans-serif;
+      	font-weight: lighter;
+      	width:100vw;
+      	height:100vh;
+      	text-align: center;
+        /* cursor: none; */
+        z-index: -100;
+        overflow: hidden;
+      }
+
+      div {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        display: inline-block;
+        background-color: rgba(170,170,170, .5);
+        width: 50vw;
+        height: 50vh;
+        border-radius: 5vh;
+
+      }
+
+      drop-down {
+        margin: 5vh;
+        --background-color: #39f;
+      }
+
+      but-ton {
+        --background-color: #39f;
+      }
+
+      muse-growl {
+        position: absolute;
+      	z-index: 1000;
+      	font-size: 1em;
+      	width: 100vw;
+      	height: 4em;
+      	line-height: 4em;
+      	left: 0;
+      	top: -5em;
+      	transition: top .5s ease;
+      	border-radius: 0;
+      }
+
+      muse-growl[alert] {
+      	top: 0;
+      }
+
+      muse-growl.warn {
+      	background-color: rgba(128, 0,0,.95);
+      	color: #fff;
+      }
+
+      muse-growl.success {
+      	background-color: rgba(0,128,0,.95);
+      	color: #fff;
+      }
+
+      iframe {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>Select a window for this display</p>
+      <drop-down id='windows' default='Select'></drop-down><br />
+      <but-ton id='save'>Save</but-ton>
+    </div>
+    <iframe id='demo'></iframe>
+    <muse-growl id='growl'></muse-growl>
+  </body>
+</html>

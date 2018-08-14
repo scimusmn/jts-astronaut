@@ -22,12 +22,12 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+const fs = require('fs');
 
 global.appRoot = path.resolve(__dirname);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let booth, playback, name1, name2;
 let windows = {};
 
 var createWindow = (info)=> {
@@ -53,11 +53,15 @@ var createWindow = (info)=> {
 
   temp.setMenu(null);
 
-  temp.loadURL(url.format({
-    pathname: info.URL,
-    protocol: 'file:',
-    slashes: true,
-  }));
+  if (info.file) {
+    temp.loadURL(url.format({
+      pathname: path.join(__dirname, info.file),
+      protocol: 'file:',
+      slashes: true,
+    }));
+  } else {
+    temp.loadURL(info.url);
+  }
 
   temp.webContents.session.clearCache(function () {
     //some callback.
@@ -74,62 +78,62 @@ var createWindow = (info)=> {
   return temp;
 };
 
-var winData = [
-  {
-    label: 'booth',
-    displayId: '69733248',
-    url: path.join(__dirname, 'local/booth/index.html'),
-  },
-  {
-    label: 'playback',
-    displayId: '724059286',
-    url: path.join(__dirname, 'local/playback/index.html'),
-  },
-  {
-    label: 'name_1',
-    displayId: '724059286',
-    url: path.join(__dirname, 'local/name/index.html'),
-    size: { width: 192, height: 108 },
-    position: { x: 0, y: 200 },
-  },
-  {
-    label: 'name_2',
-    displayId: '724059286',
-    url: path.join(__dirname, 'local/name/index.html'),
-    size: { width: 192, height: 108 },
-    position: { x: 192, y: 200 },
-  },
-  {
-    label: 'name_3',
-    displayId: '724059286',
-    url: path.join(__dirname, 'local/name/index.html'),
-    size: { width: 192, height: 108 },
-    position: { x: 384, y: 200 },
-  },
-];
+var createWindowForDisplay = (display, wind)=> {
+  windows[wind.label] = createWindow({
+    fullscreen: wind.fullscreen,
+    devTools: config.showDevTools,
+    size: wind.size || display.size,
+    location: (wind.position) ? {
+      x: display.bounds.x + wind.position.x,
+      y: display.bounds.y + wind.position.y,
+    } : display.bounds,
+    title: wind.label,
+    file: wind.file,
+    url: wind.url,
+  });
+};
+
+var DISPLAY_BINDING_PATH = appDataDir + 'windowBindings.json';
 
 function makeWindows() {
 
+  var binds = {};
+  if (fs.existsSync(DISPLAY_BINDING_PATH)) {
+    binds = JSON.parse(fs.readFileSync(DISPLAY_BINDING_PATH));
+
+    for (var winLabel in binds) {
+      if (binds.hasOwnProperty(winLabel)) {
+        var wind = config.windows.find(wind=>wind.label == winLabel);
+        if (wind) {
+          wind.displayId = binds[winLabel];
+        }
+      }
+    }
+  }
+
   var displays = electron.screen.getAllDisplays();
 
-  // displays.forEach((disp)=> {
-  //   console.log(disp);
-  // });
-
-  winData.forEach(wind=> {
-    let display = displays.find(display => display.id == wind.displayId);
-
-    if (display) windows[wind.label] = createWindow({
-      fullscreen: false,
-      devTools: config.showDevTools,
-      size: wind.size || display.size,
-      location: (wind.position) ? {
-        x: display.bounds.x + wind.position.x,
-        y: display.bounds.y + wind.position.y,
-      } : display.bounds,
-      title: wind.label,
-      URL: wind.url,
-    });
+  displays.forEach(display=> {
+    if (config.windows.find(wind=>wind.displayId && display.id == wind.displayId)) {
+      config.windows.forEach(wind=> {
+        if (display.id == wind.displayId) createWindowForDisplay(display, wind);
+      });
+    } else {
+      windows[display.id] = createWindow({
+        fullscreen: false,
+        devTools: false,
+        size: {
+          width: display.size.width / 2,
+          height: display.size.height / 2,
+        },
+        location: {
+          x: display.bounds.x + display.size.width / 4,
+          y: display.bounds.y + display.size.height / 4,
+        },
+        title: display.id,
+        file: './newMonitor.html',
+      });
+    }
   });
 
   ipcMain.on('interwindow', (evt, arg)=> {
@@ -139,30 +143,34 @@ function makeWindows() {
 
   ipcMain.on('list-windows', (evt, arg)=> {
     evt.sender.send('window-list', {
-      windows: winData,
+      windows: config.windows,
       self: evt.sender.label,
     });
   });
 
+  ipcMain.on('window-select', (evt, arg)=> {
+    windows[evt.sender.label].close();
+
+    var display = displays.find(disp=> disp.id == evt.sender.label);
+    var wind = config.windows.find(wind=>wind.label == arg.window);
+
+    binds[wind.label] = evt.sender.label;
+
+    fs.writeFileSync(DISPLAY_BINDING_PATH, JSON.stringify(binds));
+
+    createWindowForDisplay(display, wind);
+  });
+
   electron.screen.on('display-added', (evt, display)=> {
 
-    var wind = winData.find(win => display.id == win.displayId);
-
-    if (wind && !windows[wind.label]) {
-      windows[wind.label] = createWindow({
-        fullscreen: false,
-        devTools: config.showDevTools,
-        size: display.size,
-        location: display.bounds,
-        title: wind.label,
-        URL: wind.url,
-      });
-    }
+    config.windows.forEach(wind=> {
+      if (display.id == wind.displayId) createWindowForDisplay(display, wind);
+    });
   });
 
   electron.screen.on('display-removed', (evt, display)=> {
 
-    var wind = winData.find(win => display.id == win.displayId);
+    var wind = config.windows.find(win => display.id == win.displayId);
 
     if (windows[wind.label]) windows[wind.label].close();
 
