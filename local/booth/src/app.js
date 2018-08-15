@@ -114,7 +114,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
       window.lastURL = dataURL;
 
-      URL.revokeObjectURL(window.lastURL);
+      µ('cam-era')[0].clear();
 
       if (config.automate) {
         µ('#nameEntry').value = 'Name ' + (cycleCount++);
