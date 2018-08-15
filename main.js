@@ -9,7 +9,7 @@ window.appDataDir = (process.platform != 'linux') ?  './ForBoot/appData' :
                 (process.arch == 'x64') ? '/usr/local/appData' :
                 '/boot/appData';
 
-const config = require(appDataDir + '/config.js');
+global.config = require(appDataDir + '/config.js');
 
 if (config.preventStartup) process.exit(0);
 

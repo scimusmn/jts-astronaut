@@ -4,7 +4,7 @@ var remote = require('electron').remote;
 
 var process = remote.process;
 
-var dataDir = remote.getGlobal('appDataDir');
+var config = remote.getGlobal('config');
 
 //remote.getCurrentWindow().closeDevTools();
 
@@ -15,10 +15,9 @@ var obtains = [
   'µ/components/',
   './src/swearFilter.js',
   'electron',
-  `${dataDir}/config.js`,
 ];
 
-obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: comm }, config)=> {
+obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: comm })=> {
 
   console.log(config);
 
