@@ -183,7 +183,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     });
 
     if (config.automate) {
-      timedRecord();
+      setTimeout(timedRecord, 5000);
     }
   };
 
