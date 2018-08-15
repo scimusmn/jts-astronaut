@@ -35,6 +35,7 @@ var createWindow = (info)=> {
 
   var temp = new BrowserWindow({
     fullscreen: info.fullscreen,
+    alwaysOnTop: info.alwaysOnTop,
     width: size.width,
     height: size.height,
     x: info.location.x,
@@ -81,6 +82,7 @@ var createWindow = (info)=> {
 var createWindowForDisplay = (display, wind)=> {
   windows[wind.label] = createWindow({
     fullscreen: wind.fullscreen,
+    alwaysOnTop: wind.alwaysOnTop,
     devTools: config.showDevTools,
     size: wind.size || display.size,
     location: (wind.position) ? {

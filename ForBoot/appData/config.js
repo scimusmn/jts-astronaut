@@ -5,18 +5,21 @@ module.exports = {
     {
       label: 'booth',
       fullscreen: true,
+      alwaysOnTop: false,
       //displayId: '69733248',
       file: 'local/booth/index.html',
     },
     {
       label: 'playback',
       fullscreen: true,
+      alwaysOnTop: true,
       //displayId: '724059286',
       file: 'local/playback/index.html',
     },
     {
       label: 'name_1',
       fullscreen: true,
+      alwaysOnTop: true,
       //displayId: '724059286',
       //url: 'http://localhost/index.html' //use for web protocol
       file: 'local/name/index.html',
@@ -26,6 +29,7 @@ module.exports = {
     {
       label: 'name_2',
       fullscreen: true,
+      alwaysOnTop: true,
       //displayId: '724059286',
       file: 'local/name/index.html',
       //size: { width: 192, height: 108 },
@@ -34,6 +38,7 @@ module.exports = {
     {
       label: 'name_3',
       fullscreen: true,
+      alwaysOnTop: true,
       //displayId: '724059286',
       file: 'local/name/index.html',
       //size: { width: 192, height: 108 },
