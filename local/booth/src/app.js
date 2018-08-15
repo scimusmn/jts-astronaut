@@ -73,6 +73,10 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
           });
         }
       }, 5000);
+
+      if (config.automate) {
+        setTimeout(timedRecord, 2000);
+      }
     };
 
     var lastURL;
@@ -110,6 +114,11 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       µ('cam-era')[0].classList.add('blur');
 
       lastURL = dataURL;
+
+      if (config.automate) {
+        µ('#nameEntry').value = 'Name ' + (cycleCount++);
+        setTimeout(µ('#submit').onclick, 2000);
+      }
     };
 
     var recordTO;
@@ -172,6 +181,10 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     process.on('SIGINT', ()=> {
       process.nextTick(function () { process.exit(0); });
     });
+
+    if (config.automate) {
+      timedRecord();
+    }
   };
 
   provide(exports);
