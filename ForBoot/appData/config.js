@@ -1,6 +1,7 @@
 module.exports = {
   showDevTools: false,
   preventStartup: false,
+  automate: true,
   windows: [
     {
       label: 'booth',

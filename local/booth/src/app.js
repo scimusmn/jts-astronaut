@@ -157,9 +157,11 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     };
 
     document.onkeyup = (e)=> {
-      if (e.which == 27) {
+      if (e.which == 27 && e.getModifierState('Control')) {
         var electron = require('electron');
         process.kill(process.pid, 'SIGINT');
+      } else if (e.which == 13) {
+        µ('#submit').onclick();
       } else if (e.which == 73 && e.getModifierState('Control') &&  e.getModifierState('Shift')) {
         remote.getCurrentWindow().toggleDevTools();
       }
