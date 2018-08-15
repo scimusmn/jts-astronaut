@@ -62,6 +62,7 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
 
     comm.on('prev-width', (evt, data)=> {
       //set offset here
+      console.log(data.width);
       textOffset = data.width;
 
       µ('#nameText').style.left = '-' + textOffset + 'px';
