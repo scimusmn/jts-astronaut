@@ -160,7 +160,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     };
 
     document.onkeyup = (e)=> {
-      if (e.which == 27 && e.getModifierState('Control')) {
+      if (e.which == 27 && e.getModifierState('Alt')) {
         var electron = require('electron');
         process.kill(process.pid, 'SIGINT');
       } else if (e.which == 13) {
