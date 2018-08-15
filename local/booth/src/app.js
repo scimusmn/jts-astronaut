@@ -31,7 +31,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
   var dir = 1;
   var val = 0;
 
-  var recordTime = 4;
+  var recordTime = 15;
 
   exports.app.start = ()=> {
 
@@ -47,7 +47,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     µ('#nameCard').onHide = ()=> {
       µ('#alert').show = true;
-      var name = µ('#nameEntry').value.substr(0,20);
+      var name = µ('#nameEntry').value.substr(0, 20);
       µ('#nameEntry').value = '';
       alertTO = setTimeout(()=> {
         µ('#alert').show = false;
