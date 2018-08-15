@@ -71,7 +71,9 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
 
     comm.on('window-list', (evt, data)=> {
       if (data.self == 'name_1') {
-        sendWidth(2);
+        setTimeout(()=> {
+          sendWidth(2);
+        }, 2000);
       }
     });
 
