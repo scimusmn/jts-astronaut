@@ -101,6 +101,8 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       console.log(data);
     });
 
+    var cycleCount = 0;
+
     µ('#mainCam').onRecordEnd = (dataURL)=> {
       recording = false;
 
