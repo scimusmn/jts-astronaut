@@ -19,10 +19,6 @@ var obtains = [
 
 obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: comm })=> {
 
-  console.log(config);
-
-  console.log('Found swear: ' + swears.filter(`bi'][' ch`));
-
   exports.app = {};
 
   var sent = false;
