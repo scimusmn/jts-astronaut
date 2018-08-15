@@ -40,7 +40,6 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
     });
 
     µ('#playback').onended = ()=> {
-      µ('#playback').src = null;
       for (var i = 0; i < 3; i++) {
         comm.send('interwindow', {
           target: 'name_' + (i + 1),
@@ -50,6 +49,9 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
           },
         });
       }
+
+      URL.revokeObjectURL(µ('#playback').src);
+      µ('#playback').src = null;
     };
 
     document.onkeypress = (e)=> {
