@@ -60,8 +60,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
           },
         });
 
-        URL.revokeObjectURL(lastURL);
-        delete window.lastURL;
+        URL.revokeObjectURL(window.lastURL);
 
         for (var i = 0; i < 3; i++) {
           comm.send('interwindow', {

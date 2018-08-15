@@ -34,6 +34,7 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
         setTimeout(()=> {
           µ('#screen-saver').classList.remove('fade');
         }, data.length * 1000 - 2000);
+        URL.revokeObjectURL(data.url);
       };
 
       µ('#playback').src = data.url;
@@ -50,7 +51,6 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
         });
       }
 
-      URL.revokeObjectURL(µ('#playback').src);
       µ('#playback').src = null;
     };
 
