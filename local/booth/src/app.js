@@ -4,6 +4,8 @@ var remote = require('electron').remote;
 
 var process = remote.process;
 
+var dataDir = remote.getGlobal('appDataDir');
+
 //remote.getCurrentWindow().closeDevTools();
 
 var obtains = [
@@ -13,11 +15,12 @@ var obtains = [
   'µ/components/',
   './src/swearFilter.js',
   'electron',
+  `${dataDir}/config.js`,
 ];
 
-obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: comm })=> {
+obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: comm }, config)=> {
 
-  console.log(swears);
+  console.log(config);
 
   console.log('Found swear: ' + swears.filter(`bi'][' ch`));
 

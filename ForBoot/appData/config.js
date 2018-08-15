@@ -1,5 +1,5 @@
 module.exports = {
-  showDevTools: false,
+  showDevTools: true,
   preventStartup: false,
   automate: true,
   windows: [
