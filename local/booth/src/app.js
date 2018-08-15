@@ -114,6 +114,8 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
       window.lastURL = dataURL;
 
+      URL.revokeObjectURL(window.lastURL);
+
       if (config.automate) {
         µ('#nameEntry').value = 'Name ' + (cycleCount++);
         setTimeout(µ('#submit').onclick, 2000);
