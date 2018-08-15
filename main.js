@@ -47,6 +47,11 @@ var createWindow = (info)=> {
     offscreen: false,
   });
 
+  temp.setBounds({
+    x: info.location.x,
+    y: info.location.y,
+  });
+
   temp.webContents.label = info.title;
 
   if (info.devTools) temp.webContents.openDevTools();
