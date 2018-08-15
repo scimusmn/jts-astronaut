@@ -28,6 +28,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
   var fadeInt;
   var dir = 1;
   var val = 0;
+  window.lastURL = null;
 
   var recordTime = 15;
 
@@ -54,12 +55,13 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
           target: 'playback',
           channel: 'video',
           data: {
-            url: lastURL,
+            url: window.lastURL,
             length: recordTime,
           },
         });
 
         URL.revokeObjectURL(lastURL);
+        delete window.lastURL;
 
         for (var i = 0; i < 3; i++) {
           comm.send('interwindow', {
@@ -76,8 +78,6 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
         setTimeout(timedRecord, 2000);
       }
     };
-
-    var lastURL;
 
     µ('#submit').onclick = ()=> {
       µ('#nameCard').show = false;
@@ -113,7 +113,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
       µ('cam-era')[0].classList.add('blur');
 
-      lastURL = dataURL;
+      window.lastURL = dataURL;
 
       if (config.automate) {
         µ('#nameEntry').value = 'Name ' + (cycleCount++);
