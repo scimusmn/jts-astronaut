@@ -166,6 +166,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       // else if (e.key == 's') µ('#mainCam').stopRecord();
       // else if (e.key == 't') timedRecord();
       if (e.key == '\\') µ('#nameCard').show = µ('key-board')[0].show = !µ('key-board')[0].show;
+      else if (e.key == 'µ') config.automate = !config.automate;
     };
 
     document.onkeyup = (e)=> {
