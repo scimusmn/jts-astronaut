@@ -59,7 +59,7 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
     };
 
     document.onkeyup = (e)=> {
-      if (e.which == 27) {
+      if (e.which == 27 && e.getModifierState('Shift') || e.which == 81 && e.getModifierState('Control')) {
         var electron = require('electron');
         process.kill(process.pid, 'SIGINT');
       } else if (e.which == 73 && e.getModifierState('Control') &&  e.getModifierState('Shift')) {
