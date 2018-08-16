@@ -2,6 +2,8 @@
 
 var remote = require('electron').remote;
 
+var config = remote.getGlobal('config');
+
 var process = remote.process;
 
 var obtains = [
@@ -26,15 +28,11 @@ obtain(obtains, (comps, { ipcRenderer: comm })=> {
 
     var windows = null;
 
-    comm.send('list-windows', {});
-
-    comm.on('window-list', (evt, data)=> {
-      windows = data.windows;
-      data.windows.forEach(wind=> {
-        let newOpt = µ('+drop-opt', µ('#windows'));
-        newOpt.textContent = wind.label;
-        newOpt.value = wind.label;
-      });
+    windows = config.windows;
+    config.windows.forEach(wind=> {
+      let newOpt = µ('+drop-opt', µ('#windows'));
+      newOpt.textContent = wind.label;
+      newOpt.value = wind.label;
     });
 
     µ('#windows').onSelect = (node, index)=> {
