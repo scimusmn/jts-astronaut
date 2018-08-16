@@ -156,9 +156,9 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     µ('#guidance').onclick = timedRecord;
 
-    µ('input')[0].onkeypress = (e)=> {
-      console.log(e.key);
-    };
+    // µ('input')[0].onkeypress = (e)=> {
+    //   console.log(e.key);
+    // };
 
     document.onkeypress = (e)=> {
       //if (e.key == ' ') console.log('Space pressed'), hardware.digitalWrite(13, 1);
@@ -166,9 +166,13 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       // else if (e.key == 's') µ('#mainCam').stopRecord();
       // else if (e.key == 't') timedRecord();
       if (e.key == '\\') µ('#nameCard').show = µ('key-board')[0].show = !µ('key-board')[0].show;
-      else if (e.key == 'µ') {
-        config.automate = !config.automate;
-        if (config.automate) timedRecord();
+    };
+
+    document.onkeydown = e=> {
+      if (e.which == 38) {
+        if (config.automate = !config.automate) {
+          timedRecord();
+        }
       }
     };
 
