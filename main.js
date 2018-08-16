@@ -140,14 +140,8 @@ function makeWindows() {
 
   ipcMain.on('interwindow', (evt, arg)=> {
     arg.data.from = evt.sender.label;
+    arg.data.self = arg.target;
     if (windows[arg.target]) windows[arg.target].webContents.send(arg.channel, arg.data);
-  });
-
-  ipcMain.on('list-windows', (evt, arg)=> {
-    evt.sender.send('window-list', {
-      windows: config.windows,
-      self: evt.sender.label,
-    });
   });
 
   ipcMain.on('window-select', (evt, arg)=> {
