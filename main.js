@@ -80,7 +80,7 @@ var createWindow = (info)=> {
 };
 
 var createWindowForDisplay = (display, wind)=> {
-  windows[wind.label] = createWindow({
+  if (!windows[wind.label]) windows[wind.label] = createWindow({
     fullscreen: wind.fullscreen,
     alwaysOnTop: wind.alwaysOnTop,
     devTools: config.showDevTools,
@@ -114,6 +114,27 @@ function makeWindows() {
   }
 
   var displays = electron.screen.getAllDisplays();
+
+  var refixWindows = ()=> {
+    config.windows.forEach(win=> {
+      if (windows[win.label]) {
+        var disp = displays.find(disp=>disp.id == win.displayId);
+        if (disp) {
+          var size = win.size || disp.size;
+          var pos = (win.position) ? {
+            x: disp.bounds.x + win.position.x,
+            y: disp.bounds.y + win.position.y,
+          } : disp.bounds;
+          windows[win.label].setBounds({
+            x: pos.x,
+            y: pos.y,
+            width: size.width,
+            height: size.height,
+          });
+        }
+      }
+    });
+  };
 
   displays.forEach(display=> {
     if (config.windows.find(wind=>wind.displayId && display.id == wind.displayId)) {
@@ -162,6 +183,8 @@ function makeWindows() {
     config.windows.forEach(wind=> {
       if (display.id == wind.displayId) createWindowForDisplay(display, wind);
     });
+
+    refixWindows();
   });
 
   electron.screen.on('display-removed', (evt, display)=> {
@@ -171,6 +194,9 @@ function makeWindows() {
     if (windows[wind.label]) windows[wind.label].close();
 
     windows[wind.label] = null;
+
+    refixWindows();
+
   });
 
 }
