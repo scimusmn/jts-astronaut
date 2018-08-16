@@ -83,6 +83,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     };
 
     µ('#submit').onclick = ()=> {
+      clearTimeout(advanceTO);
       µ('#nameCard').show = false;
 
       µ('cam-era')[0].classList.remove('blur');
