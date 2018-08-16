@@ -38,8 +38,12 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     var recording = false;
 
+    var advanceTO = null;
+
     µ('#nameCard').onShow = ()=> {
       µ('input')[0].focus();
+
+      advanceTO = setTimeout(µ('#submit').onclick, 60000);
     };
 
     var alertTO;
