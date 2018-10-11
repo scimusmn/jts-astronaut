@@ -36,4 +36,34 @@ choco install -y nodejs git yarn
 npm install -g --production windows-build-tools
 ```
 
+#### Setting up automatic startup:
+
+  1. Open Windows Menu
+  2. Type `run`
+  3. Enter `shell:startup`
+  4. Drop in [startup.bat](https://github.com/scimusmn/jts-astronaut/blob/075dda0483d733c5f653a319380e0bd311ee5984/startup.bat)
+
+#### Setup auto-login:
+
+  1. Open Windows Menu
+  2. Type `run`
+  3. Enter `netplwiz`
+  4. Uncheck ‘users must enter a username and password’
+  
+#### Disable Windows Update Service:
+
+  1. Open Windows Menu
+  2. Type `run`
+  3. Enter `services.msc`
+  4. Find 'Windows 10 Update Facilitation Service'
+  5. Right click on it and select `Properties`
+  6. Under the 'General' tab, click the 'Startup Type' dropdown menu and select `Disabled`
+  
+#### Install ELO Touch Drivers:
+
+  Download and install from [this page](http://support.elotouch.com/Download/Drivers/DriverDownload/driverdownload.aspx?str=80)
+  
+#### Install the Powerchute software for the APC Battery Backup:
+  Download and install from [this link](ftp://restrict:Kop$74!@ftp.apc.com/restricted/software/pcpe/302/windows/PCPEInstaller.exe)
+
 ## Notes
