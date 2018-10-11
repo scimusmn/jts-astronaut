@@ -48,7 +48,7 @@ npm install -g --production windows-build-tools
   1. Open Windows Menu
   2. Type `run`
   3. Enter `netplwiz`
-  4. Uncheck ‘users must enter a username and password’
+  4. Uncheck `Users must enter a username and password to use this computer`
   
 #### Disable Windows Update Service:
 
