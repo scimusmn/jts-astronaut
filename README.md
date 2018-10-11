@@ -55,9 +55,9 @@ npm install -g --production windows-build-tools
   1. Open Windows Menu
   2. Type `run`
   3. Enter `services.msc`
-  4. Find 'Windows 10 Update Facilitation Service'
+  4. Find `Windows 10 Update Facilitation Service`
   5. Right click on it and select `Properties`
-  6. Under the 'General' tab, click the 'Startup Type' dropdown menu and select `Disabled`
+  6. Under the `General` tab, click the `Startup Type` dropdown menu and select `Disabled`
   
 #### Install ELO Touch Drivers:
 
