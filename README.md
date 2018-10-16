@@ -64,6 +64,6 @@ npm install -g --production windows-build-tools
   Download and install from [this page](http://support.elotouch.com/Download/Drivers/DriverDownload/driverdownload.aspx?str=80)
   
 #### Install the Powerchute software for the APC Battery Backup:
-  Download and install from: ftp://restrict:Kop$74!@ftp.apc.com/restricted/software/pcpe/302/windows/PCPEInstaller.exe
+  Download and install from APC.
 
 ## Notes
