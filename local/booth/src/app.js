@@ -30,29 +30,45 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
   var recordTime = 15;
 
+  //create the function used when the application starts.
   exports.app.start = ()=> {
 
     console.log('started');
 
+    //flag for tracking the recording state.
     var recording = false;
 
     var advanceTO = null;
 
+    // set the function that is called when the name request card is shown.
     µ('#nameCard').onShow = ()=> {
+      // focus the input text box, so text is entered there.
       µ('input')[0].focus();
 
+      // automatically submit the name form if idle for 60 seconds.
       advanceTO = setTimeout(µ('#submit').onclick, 60000);
     };
 
     var alertTO;
 
+    // when the name request card is hidden...
     µ('#nameCard').onHide = ()=> {
+
+      // show the 'watch the helmet' alert bar
       µ('#alert').show = true;
+
+      // capture the first 20 characters of the name from the name entry text field.
       var name = µ('#nameEntry').value.substr(0, 20);
+
+      // clear the name entry field.
       µ('#nameEntry').value = '';
+
+      // set a timeout to post the video to the helmet. After 5 seconds...
       alertTO = setTimeout(()=> {
+        // hide the alert card.
         µ('#alert').show = false;
 
+        // send the video to the playback window
         comm.send('interwindow', {
           target: 'playback',
           channel: 'video',
@@ -62,8 +78,10 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
           },
         });
 
+        // revoke the video url from this window, once it's passed to the playback.
         URL.revokeObjectURL(window.lastURL);
 
+        // send the name to each of the nametag windows, after swear filtering
         for (var i = 0; i < 3; i++) {
           comm.send('interwindow', {
             target: 'name_' + (i + 1),
@@ -75,19 +93,27 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
         }
       }, 5000);
 
+      // if we're automating, start another record after 2 seconds.
       if (config.automate) {
         setTimeout(timedRecord, 2000);
       }
     };
 
+    // when the submit button is click in the name entry window...
     µ('#submit').onclick = ()=> {
+      // clear the 60 second automatic advance timeout.
       clearTimeout(advanceTO);
+
+      // hide the name entry card.
       µ('#nameCard').show = false;
 
+      //manage some classes for CSS animations
       µ('cam-era')[0].classList.remove('blur');
       µ('#face-outline').classList.remove('shadowed');
-      µ('key-board')[0].show = false;
       µ('#guidance').classList.remove('hide');
+
+      //hide the keyboard.
+      µ('key-board')[0].show = false;
 
     };
 
