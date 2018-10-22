@@ -27,8 +27,10 @@ cam-era {
   left: 0;
   right: 0;
   margin: auto;
-  width:auto;
-  height: 100vh;
+  top: -30vh;
+  width:100vw;
+  height: auto;
+  transform: rotateY(180deg);
 }
 
 .overlay {

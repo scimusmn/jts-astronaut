@@ -6,8 +6,6 @@ var process = remote.process;
 
 var config = remote.getGlobal('config');
 
-//remote.getCurrentWindow().closeDevTools();
-
 var obtains = [
   'µ/components/camera.js',
   'µ/components/progress.js',

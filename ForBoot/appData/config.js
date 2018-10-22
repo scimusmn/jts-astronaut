@@ -6,7 +6,7 @@ module.exports = {
     {
       label: 'booth',
       fullscreen: true,
-      alwaysOnTop: true,
+      alwaysOnTop: false,
       //displayId: '69733248',
       file: 'local/booth/index.html',
     },

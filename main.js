@@ -144,14 +144,14 @@ function makeWindows() {
     } else {
       windows[display.id] = createWindow({
         fullscreen: false,
-        devTools: false,
+        devTools: config.showDevTools,
         size: {
-          width: display.size.width / 2,
-          height: display.size.height / 2,
+          width: display.size.width,
+          height: display.size.height,
         },
         location: {
-          x: display.bounds.x + Math.floor(display.size.width / 4),
-          y: display.bounds.y + Math.floor(display.size.height / 4),
+          x: display.bounds.x,
+          y: display.bounds.y,
         },
         title: display.id,
         file: './newMonitor.html',
