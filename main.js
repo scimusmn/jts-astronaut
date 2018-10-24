@@ -23,6 +23,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+const { execSync } = require('child_process');
 
 global.appRoot = path.resolve(__dirname);
 
@@ -95,7 +96,21 @@ var createWindowForDisplay = (display, wind)=> {
   });
 };
 
-var DISPLAY_BINDING_PATH = appDataDir + 'windowBindings.json';
+var isWin = process.platform === 'win32';
+
+var DISPLAY_BINDING_PATH = appDataDir + '/windowBindings.json';
+
+if (process.platform === 'win32') {
+  execSync(`${appDataDir}/MultiMonitorTool.exe /sxml ${appDataDir}/displayInfo.xml`);
+
+  var parser = new require('xml2js').Parser();
+  fs.readFile(`${appDataDir}/displayInfo.xml`, function (err, data) {
+      parser.parseString(data, function (err, result) {
+          console.dir(result);
+          console.log('Done');
+        });
+    });
+}
 
 function makeWindows() {
 

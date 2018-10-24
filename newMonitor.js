@@ -1,67 +1,41 @@
 'use strict';
 
-var remote = require('electron').remote;
+var { remote, ipcRenderer: comm } = require('electron');
 
 var config = remote.getGlobal('config');
 
 var process = remote.process;
 
-var obtains = [
-  'µ/components/',
-  'electron',
-];
+var µ = query=>document.querySelector(query);
 
-obtain(obtains, (comps, { ipcRenderer: comm })=> {
+document.addEventListener('DOMContentLoaded', function (event) {
+  console.log('here');
+  var windows = null;
 
-  exports.app = {};
+  windows = config.windows;
+  config.windows.forEach(wind=> {
+    let newOpt = document.createElement('option');
+    newOpt.textContent = wind.label;
+    newOpt.value = wind.label;
+    µ('#windowOpts').appendChild(newOpt);
+  });
 
-  exports.app.start = ()=> {
-
-    // comm.send('interwindow', {
-    //   target: 'playback',
-    //   channel: 'video',
-    //   data: {
-    //     url: lastURL,
-    //     length: recordTime,
-    //   },
-    // });
-
-    var windows = null;
-
-    windows = config.windows;
-    config.windows.forEach(wind=> {
-      let newOpt = µ('+drop-opt', µ('#windows'));
-      newOpt.textContent = wind.label;
-      newOpt.value = wind.label;
-    });
-
-    µ('#windows').onSelect = (node, index)=> {
-      µ('#demo').src = windows[index].file;
-    };
-
-    µ('#save').onclick = ()=> {
-      if (µ('#windows').value) {
-        comm.send('window-select', {
-          window: µ('#windows').value,
-        });
-      } else {
-        µ('#growl').message('Please select a window', 'warn');
-      }
-    };
-
-    document.onkeypress = (e)=> {
-    };
-
-    document.onkeyup = (e)=> {
-      if (e.which == 73 && e.getModifierState('Control') &&  e.getModifierState('Shift')) {
-        remote.getCurrentWindow().toggleDevTools();
-      }
-    };
-
-    process.on('SIGINT', ()=> {
-      process.nextTick(function () { process.exit(0); });
-    });
+  µ('#windows').onchange = ()=> {
+    var wnd = config.windows.find(wind=>wind.label == µ('#windows').value);
+    µ('#demo').src = wnd.file;
   };
 
-  provide(exports);
+  µ('#save').onmousedown = ()=> {
+    if (µ('#windows').value) {
+      comm.send('window-select', {
+        window: µ('#windows').value,
+      });
+    } else {
+      //µ('#growl').message('Please select a window', 'warn');
+    }
+  };
+
+  process.on('SIGINT', ()=> {
+    process.nextTick(function () { process.exit(0); });
+  });
 });

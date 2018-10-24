@@ -2,7 +2,8 @@
 <html lang="en">
 <meta charset="utf-8"></meta>
   <head>
-    <script src="./common/src/muse/main.js" main="./newMonitor.js"></script>
+    <title>Booth</title>
+    <script src="./newMonitor.js"></script>
   	<style>
       html, body {
       	margin: 0;
@@ -11,14 +12,14 @@
       	font-weight: lighter;
       	width:100vw;
       	height:100vh;
-		font-size: 2em;
       	text-align: center;
+        font-size: 2em;
         /* cursor: none; */
         z-index: -100;
         overflow: hidden;
       }
 
-      div {
+      .main {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -33,40 +34,23 @@
 
       }
 
-      drop-down {
+      optgroup {
+        font-size: 1em;
         margin: 5vh;
         --background-color: #39f;
       }
 
-      but-ton {
-        --background-color: #39f;
+      .button {
+        display: inline-block;
+        border-radius: 1vh;
+        width: 25%;
+        padding: 1vh;
+        background-color: #39f;
+        user-select: none;
       }
 
-      muse-growl {
-        position: absolute;
-      	z-index: 1000;
-      	font-size: 1em;
-      	width: 100vw;
-      	height: 4em;
-      	line-height: 4em;
-      	left: 0;
-      	top: -5em;
-      	transition: top .5s ease;
-      	border-radius: 0;
-      }
-
-      muse-growl[alert] {
-      	top: 0;
-      }
-
-      muse-growl.warn {
-      	background-color: rgba(128, 0,0,.95);
-      	color: #fff;
-      }
-
-      muse-growl.success {
-      	background-color: rgba(0,128,0,.95);
-      	color: #fff;
+      .button:active {
+        background-color: #17d;
       }
 
       iframe {
@@ -76,10 +60,14 @@
     </style>
   </head>
   <body>
-    <div>
+    <div class='main'>
       <p>Select a window for this display</p>
-      <drop-down id='windows' default='Select'></drop-down><br />
-      <but-ton id='save'>Save</but-ton>
+      <select id='windows' default='Select'>
+        <optgroup id='windowOpts'>
+          <option value="" selected disabled hidden>Choose window here</option>
+        </optgroup>
+      </select><br /><br />
+      <div class='button' id='save'>Save</div>
     </div>
     <iframe id='demo'></iframe>
     <muse-growl id='growl'></muse-growl>

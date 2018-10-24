@@ -87,7 +87,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
             target: 'name_' + (i + 1),
             channel: 'nametag',
             data: {
-              name: swears.filter(name) || 'i<3space',
+              name: swears.filter(name) || 'i <3 space',
             },
           });
         }
