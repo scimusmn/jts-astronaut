@@ -5,7 +5,7 @@ var ipcMain = electron.ipcMain;
 
 if (!window) var window = global;
 
-window.appDataDir = (process.platform != 'linux') ?  './ForBoot/appData' :
+window.appDataDir = (process.platform != 'linux') ?  `${__dirname}/ForBoot/appData` :
                 (process.arch == 'x64') ? '/usr/local/appData' :
                 '/boot/appData';
 
@@ -23,7 +23,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 
 global.appRoot = path.resolve(__dirname);
 
@@ -100,19 +100,31 @@ var isWin = process.platform === 'win32';
 
 var DISPLAY_BINDING_PATH = appDataDir + '/windowBindings.json';
 
-if (process.platform === 'win32') {
-  execSync(`${appDataDir}/MultiMonitorTool.exe /sxml ${appDataDir}/displayInfo.xml`);
+var displayInfo = [];
 
-  var parser = new require('xml2js').Parser();
-  fs.readFile(`${appDataDir}/displayInfo.xml`, function (err, data) {
-      parser.parseString(data, function (err, result) {
-          console.dir(result);
-          console.log('Done');
+var parser = new require('xml2js').Parser();
+
+var refreshDisplayInfoList = (cb)=>{
+  if (process.platform === 'win32') {
+    exec(`${__dirname}/utils/MultiMonitorTool.exe /sxml ${appDataDir}/displayInfo.xml`,()=>{
+      fs.readFile(`${appDataDir}/displayInfo.xml`, 'utf16le', function (err, data) {
+          parser.parseString(data, function (err, result) {
+              displayInfo = result.monitors_list && result.monitors_list.item;
+              displayInfo.forEach(disp=>{
+                disp.hash = require('./utils/hash.js').hash(disp.name[0]);
+                //var cur = displays.find(dsp=>dsp.id == disp.hash);
+              });
+              if(cb) cb(displayInfo);
+            });
         });
     });
+  } else {
+    cb();
+  }
 }
 
 function makeWindows() {
+  var displays = electron.screen.getAllDisplays();
 
   var binds = {};
   if (fs.existsSync(DISPLAY_BINDING_PATH)) {
@@ -128,33 +140,49 @@ function makeWindows() {
     }
   }
 
-  var displays = electron.screen.getAllDisplays();
-
   var refixWindows = ()=> {
     config.windows.forEach(win=> {
       if (windows[win.label]) {
-        var disp = displays.find(disp=>disp.id == win.displayId);
-        if (disp) {
-          var size = win.size || disp.size;
-          var pos = (win.position) ? {
-            x: disp.bounds.x + win.position.x,
-            y: disp.bounds.y + win.position.y,
-          } : disp.bounds;
-          windows[win.label].setBounds({
-            x: pos.x,
-            y: pos.y,
-            width: size.width,
-            height: size.height,
+        refreshDisplayInfoList((disps)=>{
+          var disp = displays.find(disp=>{
+            var dispId = disp.id;
+            if(disps){
+              var info = disps.find(dsp=>dsp.hash == disp.id);
+              if(info) dispId = info.monitor_id[0];
+            }
+            return dispId == win.displayId
           });
-        }
+          if (disp) {
+            var size = win.size || disp.size;
+            var pos = (win.position) ? {
+              x: disp.bounds.x + win.position.x,
+              y: disp.bounds.y + win.position.y,
+            } : disp.bounds;
+            windows[win.label].setBounds({
+              x: pos.x,
+              y: pos.y,
+              width: size.width,
+              height: size.height,
+            });
+          }
+        });
       }
     });
   };
 
   displays.forEach(display=> {
-    if (config.windows.find(wind=>wind.displayId && display.id == wind.displayId)) {
+
+    var monitorID = display.id;
+
+    if(process.platform === 'win32'){
+      var match = displayInfo.find(disp=>display.id == disp.hash);
+      if(match) monitorID = match.monitor_id[0];
+      console.log(monitorID);
+    }
+
+    if (config.windows.find(wind=>wind.displayId && monitorID == wind.displayId)) {
       config.windows.forEach(wind=> {
-        if (display.id == wind.displayId) createWindowForDisplay(display, wind);
+        if (monitorID == wind.displayId) createWindowForDisplay(display, wind);
       });
     } else {
       windows[display.id] = createWindow({
@@ -181,30 +209,62 @@ function makeWindows() {
   });
 
   ipcMain.on('window-select', (evt, arg)=> {
-    windows[evt.sender.label].close();
+    var senderId = evt.sender.label;
+    windows[senderId].close();
 
-    var display = displays.find(disp=> disp.id == evt.sender.label);
+    var display = displays.find(disp=> disp.id == senderId);
     var wind = config.windows.find(wind=>wind.label == arg.window);
 
-    binds[wind.label] = evt.sender.label;
+    refreshDisplayInfoList((disps)=>{
+      if(disps){
+        var match = disps.find(disp=>display.id == disp.hash);
+        if(match) senderId = match.monitor_id[0];
+      }
 
-    fs.writeFileSync(DISPLAY_BINDING_PATH, JSON.stringify(binds));
+      binds[wind.label] = senderId;
 
-    createWindowForDisplay(display, wind);
+      fs.writeFileSync(DISPLAY_BINDING_PATH, JSON.stringify(binds));
+
+      createWindowForDisplay(display, wind);
+    })
+
   });
 
   electron.screen.on('display-added', (evt, display)=> {
+    var monitorID = display.id;
+    console.log("Monitor added: "+ monitorID);
 
-    config.windows.forEach(wind=> {
-      if (display.id == wind.displayId) createWindowForDisplay(display, wind);
+    refreshDisplayInfoList((disps)=>{
+      if(displayInfo){
+        var match = displayInfo.find(disp=>display.id == disp.hash);
+        if(match) monitorID = match.monitor_id[0];
+      }
+
+      //console.log(monitorID);
+
+      console.log('I think the added monitor was: '+monitorID);
+
+      config.windows.forEach(wind=> {
+        if (monitorID == wind.displayId) createWindowForDisplay(display, wind);
+      });
+
     });
 
     refixWindows();
   });
 
   electron.screen.on('display-removed', (evt, display)=> {
+    var monitorID = display.id;
+    console.log('monitor removed: '+ monitorID);
 
-    var wind = config.windows.find(win => display.id == win.displayId);
+    if(displayInfo){
+      var match = displayInfo.find(disp=>display.id == disp.hash);
+      if(match) monitorID = match.monitor_id[0];
+    }
+
+    console.log('I think the removed monitor was: '+monitorID);
+
+    var wind = config.windows.find(win => monitorID == win.displayId);
 
     if (windows[wind.label]) windows[wind.label].close();
 
@@ -219,7 +279,9 @@ function makeWindows() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', makeWindows);
+app.on('ready', ()=>{
+  refreshDisplayInfoList(makeWindows);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

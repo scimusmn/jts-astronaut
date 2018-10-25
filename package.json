@@ -22,8 +22,12 @@
     "express-fileupload": "^0.4.0",
     "google-auth-library": "^1.2.1",
     "googleapis": "^25.0.0",
+    "node-int64": "^0.4.0",
     "nodemailer": "^4.4.2",
+    "non-crypto-hash": "^0.1.2",
     "path": "^0.12.7",
-    "ws": "^3.1.0"
+    "uint32": "^0.2.1",
+    "ws": "^3.1.0",
+    "xml2js": "^0.4.19"
   }
 }

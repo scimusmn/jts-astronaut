@@ -13,7 +13,7 @@
       	width:100vw;
       	height:100vh;
       	text-align: center;
-        font-size: 2em;
+        font-size: 5vw;
         /* cursor: none; */
         z-index: -100;
         overflow: hidden;
@@ -34,10 +34,26 @@
 
       }
 
-      optgroup {
+      div.select select{
+        background: transparent;
+        border: none;
         font-size: 1em;
-        margin: 5vh;
-        --background-color: #39f;
+        border-radius: .25em;
+        background-color: #39f;
+        color: #fff;
+      }
+
+      div.select select:active{
+        background: transparent;
+        border: none;
+        font-size: 1em;
+        border-radius: .25em;
+        background-color: #17d;
+        color: #fff;
+      }
+
+      div.select option:hover {
+        background-color: #17d;
       }
 
       .button {
@@ -62,11 +78,13 @@
   <body>
     <div class='main'>
       <p>Select a window for this display</p>
-      <select id='windows' default='Select'>
-        <optgroup id='windowOpts'>
-          <option value="" selected disabled hidden>Choose window here</option>
-        </optgroup>
-      </select><br /><br />
+      <div class='select'>
+        <select id='windows'>
+          <optgroup id='windowOpts'>
+            <option value="" selected disabled hidden>Choose window here</option>
+          </optgroup>
+        </select>
+      </div><br/>
       <div class='button' id='save'>Save</div>
     </div>
     <iframe id='demo'></iframe>
