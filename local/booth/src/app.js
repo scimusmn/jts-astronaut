@@ -63,6 +63,22 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       // clear the name entry field.
       µ('#nameEntry').value = '';
 
+      var cmds = name.split(':');
+
+      if(cmds[0] == 'nextShutdown'){
+        if(cmds[1] && cmds[1] == 'delay'){
+          comm.send('nextShutdown', {
+            delayHours: parseInt(cmds[2])
+          });
+        } else if(cmds[1] && cmds[1] == 'cancelNext'){
+          comm.send('nextShutdown', {
+            cancelNext: true
+          });
+        }
+      } else if(cmds[0] == 'shutdown' && cmds[1] && cmds[1] == 'now'){
+        comm.send('shutdown', true);
+      }
+
       // set a timeout to post the video to the helmet. After 5 seconds...
       alertTO = setTimeout(()=> {
         // hide the alert card.
@@ -114,6 +130,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
       //hide the keyboard.
       µ('key-board')[0].show = false;
+
 
     };
 
@@ -180,6 +197,15 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
         }, 500);
       }
     };
+
+    µ('progress-ring')[0].onclick = ()=>{
+      if(recording){
+        clearInterval(updateInt);
+        µ('progress-ring')[0].progress = 0;
+        µ('#mainCam').stopRecord();
+        µ('#center-icon').textContent = '';
+      }
+    }
 
     µ('#record-video').onclick = timedRecord;
 

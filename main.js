@@ -24,6 +24,24 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const { exec } = require('child_process');
+var scheduler = require('./scheduler.js');
+
+console.log('Scheduling shutdowns')
+scheduler.recurEvent(()=>{
+  exec('shutdown /s');
+}, JSON.parse(fs.readFileSync(`${appDataDir}/shutdownSchedule.json`)));
+
+var now = new Date();
+
+// scheduler.recurEvent(()=>{
+//   console.log('fired');
+// }, {
+//   weekly:[
+//     [now.getDay(),now.getHours(), now.getMinutes(), now.getSeconds()+5]
+//   ]
+// })
+
+//console.log(scheduler.nextEvent());
 
 global.appRoot = path.resolve(__dirname);
 
@@ -207,6 +225,17 @@ function makeWindows() {
     arg.data.self = arg.target;
     if (windows[arg.target]) windows[arg.target].webContents.send(arg.channel, arg.data);
   });
+
+  ipcMain.on('nextShutdown', (evt, arg)=> {
+    if(arg.delayHours) scheduler.nextEvent().delay([0,0,0,arg.delayHours]);
+    else if(arg.cancelNext) scheduler.nextEvent().cancelNext();
+    evt.sender.send('nextShutdown',scheduler.nextEvent());
+  });
+
+  ipcMain.on('shutdown', (evt, arg)=> {
+    exec('shutdown /s');
+  });
+
 
   ipcMain.on('window-select', (evt, arg)=> {
     var senderId = evt.sender.label;
