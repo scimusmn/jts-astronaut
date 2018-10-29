@@ -130,6 +130,7 @@ var refreshDisplayInfoList = (cb)=>{
               displayInfo = result.monitors_list && result.monitors_list.item;
               displayInfo.forEach(disp=>{
                 disp.hash = require('./utils/hash.js').hash(disp.name[0]);
+                disp.id = disp.monitor_serial_number[0] || disp.monitor_id[0];
                 //var cur = displays.find(dsp=>dsp.id == disp.hash);
               });
               if(cb) cb(displayInfo);
@@ -166,7 +167,7 @@ function makeWindows() {
             var dispId = disp.id;
             if(disps){
               var info = disps.find(dsp=>dsp.hash == disp.id);
-              if(info) dispId = info.monitor_id[0];
+              if(info) dispId = info.id;
             }
             return dispId == win.displayId
           });
@@ -194,7 +195,7 @@ function makeWindows() {
 
     if(process.platform === 'win32'){
       var match = displayInfo.find(disp=>display.id == disp.hash);
-      if(match) monitorID = match.monitor_id[0];
+      if(match) monitorID = match.id;
       console.log(monitorID);
     }
 
@@ -247,7 +248,7 @@ function makeWindows() {
     refreshDisplayInfoList((disps)=>{
       if(disps){
         var match = disps.find(disp=>display.id == disp.hash);
-        if(match) senderId = match.monitor_id[0];
+        if(match) senderId = match.id;
       }
 
       binds[wind.label] = senderId;
@@ -266,7 +267,7 @@ function makeWindows() {
     refreshDisplayInfoList((disps)=>{
       if(displayInfo){
         var match = displayInfo.find(disp=>display.id == disp.hash);
-        if(match) monitorID = match.monitor_id[0];
+        if(match) monitorID = match.id;
       }
 
       //console.log(monitorID);
@@ -288,7 +289,7 @@ function makeWindows() {
 
     if(displayInfo){
       var match = displayInfo.find(disp=>display.id == disp.hash);
-      if(match) monitorID = match.monitor_id[0];
+      if(match) monitorID = match.id;
     }
 
     console.log('I think the removed monitor was: '+monitorID);
