@@ -59,7 +59,7 @@ var handleWeek = (cb, week)=>{
   var now = new Date();
   week.forEach(entry=>{
     var next = new Date();
-    var dayOff = ((now.getDay()-entry[0])%7 + 7)%7;
+    var dayOff = ((entry[0]-now.getDay())%7 + 7)%7;
     next.setDate(now.getDate()+dayOff);
     next.setHours.apply(next,entry.slice(1));
     if(next-now < 0) next.setDate(next.getDate()+7);
