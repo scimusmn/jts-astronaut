@@ -1,6 +1,7 @@
 module.exports = {
   showDevTools: false,
   preventStartup: false,
+  recordTime: 15,
   automate: false,
   windows: [
     {

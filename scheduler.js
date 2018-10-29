@@ -25,11 +25,17 @@ class ScheduleEvent {
     console.log('Event scheduled for ' + this.next.toLocaleString());
   }
 
-  //// this is not perfect, it will permenantly keep the delayed time.
+  //// this is not perfect, it will permenantly keep the delayed time, but doesn't matter for shutdowns
   delay(arr){
     clearTimeout(this.TO);
     var nextArr = asArray(this.next).map((item,ind)=>item+(arr[ind]||0));
     this.schedule(this.cb, dateFromArray(nextArr), this.recur);
+  }
+
+  setTime(arr){
+    clearTimeout(this.TO);
+    this.next.setHours.apply(this.next,arr);
+    this.schedule(this.cb, this.next, this.recur);
   }
 
   cancel(){
@@ -53,7 +59,11 @@ class ScheduleEvent {
 
 exports.Event = ScheduleEvent;
 
-exports.nextEvent =()=>exports.events.sort((a,b)=>a.timeRemaining - b.timeRemaining)[0];
+exports.nextEvent =()=>{
+  exports.events.sort((a,b)=>a.timeRemaining - b.timeRemaining);
+  console.log(exports.events[0]);
+  return exports.events[0];
+}
 
 var handleWeek = (cb, week)=>{
   var now = new Date();

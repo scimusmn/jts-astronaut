@@ -227,16 +227,13 @@ function makeWindows() {
     if (windows[arg.target]) windows[arg.target].webContents.send(arg.channel, arg.data);
   });
 
-  ipcMain.on('nextShutdown', (evt, arg)=> {
-    if(arg.delayHours) scheduler.nextEvent().delay([0,0,0,arg.delayHours]);
-    else if(arg.cancelNext) scheduler.nextEvent().cancelNext();
-    evt.sender.send('nextShutdown',scheduler.nextEvent());
-  });
-
   ipcMain.on('shutdown', (evt, arg)=> {
-    exec('shutdown /s');
+    if(arg.delay) scheduler.nextEvent().delay([0,0,0].concat(arg.delay.map(i=>parseInt(i))));
+    else if(arg.setTime) scheduler.nextEvent().setTime(arg.setTime.map(i=>parseInt(i)));
+    else if(arg.cancelNext) scheduler.nextEvent().cancelNext();
+    else if(arg.now) exec('shutdown /s');
+    evt.sender.send('nextShutdown',scheduler.nextEvent().next);
   });
-
 
   ipcMain.on('window-select', (evt, arg)=> {
     var senderId = evt.sender.label;

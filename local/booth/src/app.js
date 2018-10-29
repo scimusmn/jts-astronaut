@@ -28,7 +28,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
   var val = 0;
   window.lastURL = null;
 
-  var recordTime = 15;
+  var recordTime = config.recordTime;
 
   //create the function used when the application starts.
   exports.app.start = ()=> {
@@ -54,60 +54,66 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     // when the name request card is hidden...
     µ('#nameCard').onHide = ()=> {
 
-      // show the 'watch the helmet' alert bar
-      µ('#alert').show = true;
-
       // capture the first 20 characters of the name from the name entry text field.
-      var name = µ('#nameEntry').value.substr(0, 20);
+      var name = µ('#nameEntry').value;
 
       // clear the name entry field.
       µ('#nameEntry').value = '';
 
+      //check if there are any commands in the name
       var cmds = name.split(':');
 
-      if(cmds[0] == 'nextShutdown'){
-        if(cmds[1] && cmds[1] == 'delay'){
-          comm.send('nextShutdown', {
-            delayHours: parseInt(cmds[2])
-          });
-        } else if(cmds[1] && cmds[1] == 'cancelNext'){
-          comm.send('nextShutdown', {
-            cancelNext: true
-          });
-        }
-      } else if(cmds[0] == 'shutdown' && cmds[1] && cmds[1] == 'now'){
-        comm.send('shutdown', true);
-      }
-
-      // set a timeout to post the video to the helmet. After 5 seconds...
-      alertTO = setTimeout(()=> {
-        // hide the alert card.
-        µ('#alert').show = false;
-
-        // send the video to the playback window
-        comm.send('interwindow', {
-          target: 'playback',
-          channel: 'video',
-          data: {
-            url: window.lastURL,
-            length: recordTime,
-          },
+      if(cmds[0] == 'shutdown' && cmds[1]){
+        var data = (cmds[2]&&cmds.slice(2))||true;
+        comm.send('shutdown', {
+          [cmds[1]]: data,
         });
+      } else {
+        // show the 'watch the helmet' alert bar
+        µ('#alert').show = true;
 
-        // revoke the video url from this window, once it's passed to the playback.
-        URL.revokeObjectURL(window.lastURL);
+        var delayTime = 5000;
 
-        // send the name to each of the nametag windows, after swear filtering
-        for (var i = 0; i < 3; i++) {
+        var alertTime = Date.now() + delayTime;
+
+        µ('#alert').textContent = `Your video will appear on the Helmet in ${delayTime/1000} seconds`;
+
+        var updateAlert = setInterval(()=> {
+          var updateTime = Math.ceil((alertTime - Date.now()) / 1000);
+          µ('#alert').textContent = `Your video will appear on the Helmet in ${updateTime} seconds`
+        }, 1000);
+
+        // set a timeout to post the video to the helmet. After 5 seconds...
+        alertTO = setTimeout(()=> {
+          // hide the alert card.
+          µ('#alert').show = false;
+          clearInterval(updateAlert);
+
+          // send the video to the playback window
           comm.send('interwindow', {
-            target: 'name_' + (i + 1),
-            channel: 'nametag',
+            target: 'playback',
+            channel: 'video',
             data: {
-              name: swears.filter(name) || 'i <3 space',
+              url: window.lastURL,
+              length: recordTime,
             },
           });
-        }
-      }, 5000);
+
+          // revoke the video url from this window, once it's passed to the playback.
+          URL.revokeObjectURL(window.lastURL);
+
+          // send the name to each of the nametag windows, after swear filtering
+          for (var i = 0; i < 3; i++) {
+            comm.send('interwindow', {
+              target: 'name_' + (i + 1),
+              channel: 'nametag',
+              data: {
+                name: swears.filter(name.substr(0, 20)) || 'i <3 space',
+              },
+            });
+          }
+        }, delayTime);
+      }
 
       // if we're automating, start another record after 2 seconds.
       if (config.automate) {
@@ -133,6 +139,21 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
 
     };
+
+    comm.on('nextShutdown', (evt, data)=> {
+      µ('#alert').show = true;
+
+      var options = {
+         year: '2-digit', month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit'
+      }
+
+      var sdTime = new Date(data);
+      µ('#alert').textContent = `Next shutdown scheduled for ${sdTime.toLocaleDateString("en-US", options)}`;
+
+      alertTO = setTimeout(()=>{
+        µ('#alert').show = false;
+      }, 5000);
+    });
 
     comm.send('list-windows', {});
 
@@ -170,7 +191,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     var recordTO;
     var updateInt;
-    var time;
+    var startTime;
 
     var timedRecord = ()=> {
       if (!recording) {
@@ -181,7 +202,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
         µ('#guidance').classList.add('hide');
         µ('#mainCam').record();
 
-        time = (new Date()).getTime();
+        startTime = (new Date()).getTime();
 
         recordTO = setTimeout(()=> {
           clearInterval(updateInt);
@@ -191,15 +212,15 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
         }, recordTime * 1000);
 
         updateInt = setInterval(()=> {
-          µ('#center-icon').textContent = recordTime - Math.floor(((new Date()).getTime() - time) / 1000);
+          µ('#center-icon').textContent = recordTime - Math.floor(((new Date()).getTime() - startTime) / 1000);
           µ('#center-icon').textContent = µ('#center-icon').textContent.padStart(2, '0');
-          µ('progress-ring')[0].progress = ((new Date()).getTime() - time) / (recordTime * 1000);
+          µ('progress-ring')[0].progress = ((new Date()).getTime() - startTime) / (recordTime * 1000);
         }, 500);
       }
     };
 
     µ('progress-ring')[0].onclick = ()=>{
-      if(recording){
+      if(recording && Date.now()-startTime > 4000){
         clearInterval(updateInt);
         µ('progress-ring')[0].progress = 0;
         µ('#mainCam').stopRecord();
