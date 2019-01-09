@@ -1,0 +1,219 @@
+/*@font-face {
+    font-family: roboto;
+}*/
+
+html, body {
+	margin: 0;
+	color: #ddd;
+	font-family: sans-serif;
+	font-weight: lighter;
+	width:100vw;
+	height:100vh;
+	text-align: center;
+  cursor: none;
+  z-index: -100;
+  overflow: hidden;
+}
+
+body {
+  background-color: #2a2a2a;
+	--input-height: 40vh;
+}
+
+cam-era {
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: -30vh;
+  width:100vw;
+  height: auto;
+  transform: rotateY(180deg);
+}
+
+.overlay {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	top:0;
+}
+
+#facemask {
+	opacity: 50%;
+	/* width: 100vw;
+	height: 100vh; */
+}
+
+#face {
+	opacity: 50%;
+	/* width: 100vw;
+	height: 100vh; */
+}
+
+#face-outline {
+	display: inline-block;
+	top: 0;
+	left: 0;
+	width: 50vh;
+  height: 75vh;
+  border-radius: 75% 75% 80% 80% / 75% 75% 100% 100%;
+  border: 3vh solid rgba(255,255,255,.25);
+  /* transform: rotate(-45deg); */
+  margin-top: 20px;
+	transition: all 1s ease;
+	box-shadow: 0 0 0 0 rgba(0,0,0, .7);
+}
+
+#face-outline.shadowed {
+	border: 3vh solid rgba(255,255,255,.5);
+	box-shadow: 0 0 10vw 100vw rgba(0,0,0, .7);
+}
+
+#guidance {
+	position: absolute;
+  top:0;
+  left: 0;
+	font-size: 10vh;
+	line-height: 10vh;
+	padding-top: 40vh;
+	width: 100vw;
+	height: 100vh;
+	color: rgba(255,255,255,.9);
+	background-color: rgba(0,0,0,.75);
+	opacity: 1;
+	transition: all ease 1s;
+}
+
+#guidance.hide {
+	opacity: 0;
+
+}
+
+#record-video {
+	position: absolute;
+	left: calc(50vw - 5vh);
+	bottom: 5vh;
+	width: 10vh;
+	height: 10vh;
+}
+
+#outer-circle {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 10vh;
+	height: 10vh;
+	border-radius: 100%;
+	border: 1vh solid rgba(255,255,255,.75);
+	background-color: rgba(0,0,0,.25);
+	box-sizing: border-box;
+}
+
+.blur {
+	filter: blur(5px);
+}
+
+#center-icon {
+	position: absolute;
+	margin: 2.5vh;
+	width: 5vh;
+	height:5vh;
+	border-radius: 2.5vh;
+	background-color: rgba(200,0,0,.75);
+
+	transition: all ease .5s;
+}
+
+.active #center-icon {
+	border-radius: 1vh;
+	margin: 2vh;
+	width: 6vh;
+	height:6vh;
+	background-color: rgba(150,0,0,.75);
+	line-height: 6vh;
+	font-size: 4vh;
+	font-family: monospace;
+}
+
+progress-ring {
+	position: absolute;
+	--radius: 5vh;
+	--stroke: .75vh;
+	--stroke-color: rgba(0,0,0,.5);
+	z-index: 100;
+	left: 0;
+	top: 0;
+}
+
+key-board {
+	position: absolute;
+	bottom: calc(-1 * var(--input-height) - 3vw);
+	/* bottom: 0; */
+	left: 0;
+	font-size: 1.5em;
+	width: 100vw;
+	height: calc(var(--input-height) - 1em);
+	background-color: rgba(255,255,255,.90);
+	transition: bottom .5s ease;
+}
+
+key-board[show] {
+	bottom: 0;
+}
+
+muse-card {
+	position: absolute;
+	display: inline-block;
+	left: 0;
+	top: calc(-1 * (100vh - var(--input-height)));
+	height: calc(100vh - var(--input-height));
+	width: 100vw;
+	background-color: rgba(255,255,255,.9);
+	/* filter: blur(10px); */
+	/* backdrop-filter: blur(10px); */
+	transition: all ease .5s;
+	font-size: 3em;
+	padding-top: 5vh;
+}
+
+muse-card[show] {
+	top: 0;
+}
+
+muse-card * {
+	margin-top: 4vh;
+}
+
+#alert {
+	height: 15vh;
+	font-size: 5vh;
+	background-color: rgba(255,255,255,.75);
+}
+
+muse-card input {
+	width: 50vw;
+	font-size: 1em;
+  padding: .5em;
+  box-sizing: border-box;
+  border-radius: .1em;
+  border: solid 1px rgba(0,0,0, .2);
+}
+
+muse-card but-ton {
+	display: inline-block;
+}
+
+progress-box {
+	position: absolute;
+	--width: calc(100vw);
+	--height: calc(100vh);
+	--stroke: 2vh;
+	--stroke-color: rgba(255,0,0,.5);
+	z-index: 100;
+	left: 0;
+	top: 0;
+	pointer-events: none;
+}

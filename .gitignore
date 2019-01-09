@@ -1,8 +1,3 @@
 node_modules/
-# Don't include our keen.io api keys in the public repo
-public/js/keen.js
-public/js/vendor/*
-public/video/*
-work/
-*.webm
-*.log
+ForBoot/appData/displayInfo.xml
+ForBoot/appData/windowBindings.json

@@ -1,0 +1,3 @@
+Get-pnpdevice -Class Monitor -Status OK | ForEach-Object { Get-PnpDeviceProperty -InstanceId $_.InstanceId -KeyName 'DEVPKEY_Device_Address'}
+
+Get-PnpDevice -Class Monitor -Status OK | select InstanceId

@@ -1,24 +1,33 @@
 {
-  "name": "jts-astronaut",
-  "version": "1.0.0",
-  "description": "Display system for large astronaut.",
-  "main": "index.js",
+  "name": "TemplateProject",
+  "version": "1.1.0",
+  "description": "Simple template for electron apps",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron main.js"
   },
-  "keywords": [
-    "big",
-    "astronaut"
-  ],
-  "author": "SMM",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heidgera/Electron_Template.git"
+  },
+  "author": "ajhg",
+  "license": "CC0-1.0",
+  "homepage": "http://re.trof.it",
+  "devDependencies": {
+    "electron": "2.0.7"
+  },
   "dependencies": {
-    "bower": "^1.3.12",
-    "express": "^4.10.7",
-    "node-uuid": "^1.4.2",
-    "osc-min": "^0.2.0",
-    "profanity-util": "0.0.2",
-    "simple-node-logger": "^0.92.18",
-    "socket.io": "^1.2.1"
+    "body-parser": "^1.18.2",
+    "express": "^4.15.4",
+    "express-fileupload": "^0.4.0",
+    "google-auth-library": "^1.2.1",
+    "googleapis": "^25.0.0",
+    "node-int64": "^0.4.0",
+    "nodemailer": "^4.4.2",
+    "non-crypto-hash": "^0.1.2",
+    "path": "^0.12.7",
+    "uint32": "^0.2.1",
+    "ws": "^3.1.0",
+    "xml2js": "^0.4.19"
   }
 }

@@ -1,9 +1,0 @@
-{
-  "name": "jts_astronaut",
-  "dependencies": {
-    "jquery": "~2.1.3",
-    "recordrtc": "*",
-    "jquery-circle-progress": "~1.1.2",
-    "gsap": "~1.15.0"
-  }
-}
