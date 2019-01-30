@@ -2,6 +2,7 @@ module.exports = {
   showDevTools: false,
   preventStartup: false,
   recordTime: 15,
+  defaultName: 'i <3 space',
   automate: false,
   windows: [
     {

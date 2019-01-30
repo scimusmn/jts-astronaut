@@ -63,8 +63,8 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       //check if there are any commands in the name
       var cmds = name.split(':');
 
-      if(cmds[0] == 'shutdown' && cmds[1]){
-        var data = (cmds[2]&&cmds.slice(2))||true;
+      if (cmds[0] == 'shutdown' && cmds[1]) {
+        var data = (cmds[2] && cmds.slice(2)) || true;
         comm.send('shutdown', {
           [cmds[1]]: data,
         });
@@ -76,11 +76,11 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
         var alertTime = Date.now() + delayTime;
 
-        µ('#alert').textContent = `Your video will appear on the Helmet in ${delayTime/1000} seconds`;
+        µ('#alert').textContent = `Your video will appear on the Helmet in ${delayTime / 1000} seconds`;
 
         var updateAlert = setInterval(()=> {
           var updateTime = Math.ceil((alertTime - Date.now()) / 1000);
-          µ('#alert').textContent = `Your video will appear on the Helmet in ${updateTime} seconds`
+          µ('#alert').textContent = `Your video will appear on the Helmet in ${updateTime} seconds`;
         }, 1000);
 
         // set a timeout to post the video to the helmet. After 5 seconds...
@@ -108,7 +108,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
               target: 'name_' + (i + 1),
               channel: 'nametag',
               data: {
-                name: swears.filter(name.substr(0, 20)) || 'i <3 space',
+                name: swears.filter(name.substr(0, 20)) || config.defaultName,
               },
             });
           }
@@ -137,20 +137,19 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       //hide the keyboard.
       µ('key-board')[0].show = false;
 
-
     };
 
     comm.on('nextShutdown', (evt, data)=> {
       µ('#alert').show = true;
 
       var options = {
-         year: '2-digit', month: '2-digit', day: '2-digit', hour:'2-digit', minute: '2-digit'
-      }
+        year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+      };
 
       var sdTime = new Date(data);
-      µ('#alert').textContent = `Next shutdown scheduled for ${sdTime.toLocaleDateString("en-US", options)}`;
+      µ('#alert').textContent = `Next shutdown scheduled for ${sdTime.toLocaleDateString('en-US', options)}`;
 
-      alertTO = setTimeout(()=>{
+      alertTO = setTimeout(()=> {
         µ('#alert').show = false;
       }, 5000);
     });
@@ -219,14 +218,14 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       }
     };
 
-    µ('progress-ring')[0].onclick = ()=>{
-      if(recording && Date.now()-startTime > 4000){
+    µ('progress-ring')[0].onclick = ()=> {
+      if (recording && Date.now() - startTime > 4000) {
         clearInterval(updateInt);
         µ('progress-ring')[0].progress = 0;
         µ('#mainCam').stopRecord();
         µ('#center-icon').textContent = '';
       }
-    }
+    };
 
     µ('#record-video').onclick = timedRecord;
 
