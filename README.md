@@ -1,6 +1,5 @@
 # Giant Astronaut
-
-Video system for the
+Photobooth and projection system for the
 [Giant Astronaut](https://twitter.com/hashtag/GiantAstronaut)
 at the [Science Museum of Minnesota](https://www.smm.org).
 
@@ -36,6 +35,14 @@ choco install -y nodejs git yarn
 npm install -g --production windows-build-tools
 ```
 
+#### Install the application:
+  
+```
+git clone --recurse-submodules https://github.com/scimusmn/jts-astronaut C:\App\jts-astronaut
+yarn
+
+```
+
 #### Setting up automatic startup:
 
   1. Open Windows Menu
@@ -67,3 +74,41 @@ npm install -g --production windows-build-tools
   Download and install from APC.
 
 ## Notes
+
+#### Configuration Options
+
+* __Setting Shutdown Schedule__: The permenant shutdown schedule is set by the [`shutdownSchedule.json`] file in the appData directory. The file is formatted like this:
+    ```
+    {
+      "weekly": [
+        [0,17,30],
+        [1,17,30],
+        [2,17,30],
+        [3,17,30],
+        [4,21,30],
+        [5,21,30],
+        [6,21,30]
+      ]
+    }
+    ```
+
+    The first number in each triplet indicates the day of the week; '0' is Sunday, '1' is Monday, and so on. The second and third numbers represent the hour and minute of the day respectively, represented in 24 hour representation. So, in the example above, the line `[4,21,30]` instructs the computer to shutdown at 9:30PM on Thursdays.
+
+* __Modify the next scheduled shutdown__: It is possible to change when the computer will next shutdown by typing specific commands into the name badge text entry field. Each of these commands is enter in the format `shutdown:{COMMAND}:{VALUE}`. The unique commands are listed below:
+
+    | COMMAND     | VALUE                        | Result  |
+    | ---         | ---                          | ---     |
+    | `delay`     | Time in HH:MM format         | Delays the next shutdown by HH hours and MM minutes  |
+    | `setTime`   | Time in HH:MM format         | Reschedules the next shutdown to HH:MM        |
+    | `cancelNext`| None                         | Cancels the next scheduled shutdown        |
+    | `now`       | None                         | Shutdown the computer immediately. |
+
+* __Setting the record time__:
+
+#### Troubleshooting
+
+* *__Windows are displaying on the wrong display__*: This likely indicates that, for some reason, the display IDs of the monitors have changed. The most common reason for this to happen would be display cables being moved to a different port, but a hard shutdown of the computer can sometimes cause this to happen. To reset the display order of the windows, quit the application, open the 
+
+#### System basics
+
+This system uses EDID information and Windows-specific display names to project the correct window to the correct display. 
