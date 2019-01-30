@@ -7,6 +7,10 @@ at the [Science Museum of Minnesota](https://www.smm.org).
 * [NodeJS](https://nodejs.org/en/)
 * [Electron](https://electronjs.org/)
 
+## Basic Operation
+
+This system acts as a simple video booth for visitors. Visitors are invited to record a short video of themselves at a small kiosk adjacent to the Giant Astronaut sculpture in our main atrium. After they are finished recording, they are prompted to enter their name using an on-screen keyboard. Once they submit their name, their video appears projected onto the inside of the visor of the Astronaut, and their name is displayed on the name badge monitors on the astronaut's chest. If the name entry screen is idle for more than 1 minute, the video will be sent to the projector with the default name, which is `i <3 space`
+
 ## Installation
 
 #### Install chocolatey:
@@ -77,7 +81,7 @@ yarn
 
 #### Configuration Options
 
-* __Setting Shutdown Schedule__: The permenant shutdown schedule is set by the [`shutdownSchedule.json`] file in the appData directory. The file is formatted like this:
+* __Setting Shutdown Schedule__: The permenant shutdown schedule is set by the [`shutdownSchedule.json`](ForBoot/appData/shutdownSchedule.json) file in the appData directory. The file is formatted like this:
     ```
     {
       "weekly": [
@@ -103,12 +107,18 @@ yarn
     | `cancelNext`| None                         | Cancels the next scheduled shutdown        |
     | `now`       | None                         | Shutdown the computer immediately. |
 
-* __Setting the record time__:
+* __Setting the record time__: To set the amount of time that the photobooth records of each visitor, one must modify the [`config.js`](ForBoot/appData/config.js) file in the appData directory. One of the keys in this object is `recordTime`. The value is a float, specifying the time in seconds. By default, it is set to 15 seconds.
 
 #### Troubleshooting
 
-* *__Windows are displaying on the wrong display__*: This likely indicates that, for some reason, the display IDs of the monitors have changed. The most common reason for this to happen would be display cables being moved to a different port, but a hard shutdown of the computer can sometimes cause this to happen. To reset the display order of the windows, quit the application, open the 
+* *__Windows are displaying on the wrong display__*: This likely indicates that, for some reason, the display IDs of the monitors have changed. The most common reason for this to happen would be display cables being moved to a different port, but a hard shutdown of the computer can sometimes cause this to happen. To reset the display order of the windows, quit the application, open the `appData` directory, delete the `windowBindings.json` file, and restart the program. 
 
-#### System basics
+    On startup, if the program can't find the `windowBindings.json` file, it will automatically create a window on each display which asks which window should be displayed. Each of these windows has a dropdown from which to select from 5 different possible windows: 3 name badge monitors (`name_1`, `name_2`, and `name_3`), a booth window, and a playback window. The name badge windows are numbered from left to right, so the leftmost display should be set to display `name_1` and so on. The main touchscreen interface should display the window `booth`, and the projector should be displaying `playback`.
+    
+## Detailed program information
 
-This system uses EDID information and Windows-specific display names to project the correct window to the correct display. 
+The application is written in Javascript and HTML5, and rendered on the monitors using Electron. All 5 monitors are rendered from the same Electron instance, and mapped to the displays according to a combination of [EDID information](https://en.wikipedia.org/wiki/Extended_Display_Identification_Data), [Chromium for Windows display ID conventions](https://chromium.googlesource.com/chromium/src/+/master/ui/display/win/display_info.cc), and information scraped from the registry by [MultiMonitorTool by Nirsoft](https://www.nirsoft.net/utils/multi_monitor_tool.html). This mapping is relatively stable, and will prefer to render no window to a display, rather than display an incorrect window.
+
+Video capture is accomplished by capturing the RTC stream, using a the [RecordRTC library by muaz-khan](https://github.com/muaz-khan/RecordRTC). It temporarily saves the video to a dataURL, and is easily rendered in a standard HTML5 video tag.
+
+Swear filtering for the namebadge names is accomplished with a simple regex expression, which looks for common symbolic and phonetic substitutions for words from the standard [`smm-profanities.json`](local/booth/src/swearFilter.js) list. This is using a greedy expression, so if any part of the name string contains a word from the swear list, the default name is displayed.
