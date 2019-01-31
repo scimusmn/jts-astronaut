@@ -109,6 +109,8 @@ yarn
 
 * __Setting the record time__: To set the amount of time that the photobooth records of each visitor, one must modify the [`config.js`](ForBoot/appData/config.js) file in the appData directory. One of the keys in this object is `recordTime`. The value is a float, specifying the time in seconds. By default, it is set to 15 seconds.
 
+* __Setting the default__: To set the name that appears on the name badge if the entry time times out, or a swear is detected, one must modify the [`config.js`](ForBoot/appData/config.js) file in the appData directory. One of the keys in this object is `defaultName`. The value is a string of the name which will be displayed.
+
 #### Troubleshooting
 
 * *__Windows are displaying on the wrong display__*: This likely indicates that, for some reason, the display IDs of the monitors have changed. The most common reason for this to happen would be display cables being moved to a different port, but a hard shutdown of the computer can sometimes cause this to happen. To reset the display order of the windows, quit the application, open the `appData` directory, delete the `windowBindings.json` file, and restart the program. 
