@@ -11,6 +11,10 @@ at the [Science Museum of Minnesota](https://www.smm.org).
 
 This system acts as a simple video booth for visitors. Visitors are invited to record a short video of themselves at a small kiosk adjacent to the Giant Astronaut sculpture in our main atrium. After they are finished recording, they are prompted to enter their name using an on-screen keyboard. Once they submit their name, their video appears projected onto the inside of the visor of the Astronaut, and their name is displayed on the name badge monitors on the astronaut's chest. If the name entry screen is idle for more than 1 minute, the video will be sent to the projector with the default name, which is `i <3 space`
 
+## Hardware Setup
+
+The application runs on a single Windows machine, capable of output to 5 monitors concurrently. In our specific setup this is a Puget Systems box with a Ti1080 video card installed (? needs verification). The astronaut itself contains 3 monitors and 1 projector (needs specs). To get the video to the astronaut, we are using 4 Extron DVI extenders, which convert the DVI signal to be sent over Cat6 cables. The playback station uses an ELO Touchscreen monitor, which enables the visitor to directly interact with the interface.
+
 ## Installation
 
 #### Install chocolatey:
