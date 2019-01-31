@@ -6,6 +6,7 @@ var process = remote.process;
 
 var config = remote.getGlobal('config');
 
+//include the essential files for the application
 var obtains = [
   'µ/components/camera.js',
   'µ/components/progress.js',
@@ -139,49 +140,55 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     };
 
+    // when we get a message back about the next shutdown
     comm.on('nextShutdown', (evt, data)=> {
+      //pop up a alert message box
       µ('#alert').show = true;
 
       var options = {
         year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
       };
 
+      //make the string to show the new shutdown time
       var sdTime = new Date(data);
       µ('#alert').textContent = `Next shutdown scheduled for ${sdTime.toLocaleDateString('en-US', options)}`;
 
+      //stop showing the alert after 5 seconds
       alertTO = setTimeout(()=> {
         µ('#alert').show = false;
       }, 5000);
     });
 
-    comm.send('list-windows', {});
-
-    comm.on('window-list', (evt, data)=> {
-      console.log(data);
-    });
-
+    //receive messages from the main process
     comm.on('report', (evt, data)=> {
       console.log(data);
     });
 
     var cycleCount = 0;
 
+    //once the camera stops recording, pass in the dataURL of the video
     µ('#mainCam').onRecordEnd = (dataURL)=> {
       recording = false;
 
+      //deactivate the record icon
       µ('#record-video').classList.remove('active');
 
+      //display the keyboard and name entry field.
       µ('key-board')[0].show = true;
       µ('#nameCard').show = true;
 
+      //put the keyboard focus into the nameEntry text area
       µ('#nameEntry').focus();
 
+      //blur the camera image in the background
       µ('cam-era')[0].classList.add('blur');
 
+      //store the video for later use
       window.lastURL = dataURL;
 
       µ('cam-era')[0].clear();
 
+      //if we're automatically recording, set the name field to the number of times we've recorded
       if (config.automate) {
         µ('#nameEntry').value = 'Name ' + (cycleCount++);
         setTimeout(µ('#submit').onclick, 2000);
@@ -192,17 +199,24 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     var updateInt;
     var startTime;
 
+    //function called to start recording
     var timedRecord = ()=> {
+      //only call if we're not recording
       if (!recording) {
         recording = true;
         clearTimeout(recordTO);
+
+        //make the record button active, put the shadow around the face outline,
+        // hide the on screen prompt, and start recording.
         µ('#record-video').classList.add('active');
         µ('#face-outline').classList.add('shadowed');
         µ('#guidance').classList.add('hide');
         µ('#mainCam').record();
 
+        //record the current time
         startTime = (new Date()).getTime();
 
+        //set a timeout to end recording
         recordTO = setTimeout(()=> {
           clearInterval(updateInt);
           µ('progress-ring')[0].progress = 0;
@@ -210,6 +224,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
           µ('#center-icon').textContent = '';
         }, recordTime * 1000);
 
+        //update the progress ring and countdown text every half second
         updateInt = setInterval(()=> {
           µ('#center-icon').textContent = recordTime - Math.floor(((new Date()).getTime() - startTime) / 1000);
           µ('#center-icon').textContent = µ('#center-icon').textContent.padStart(2, '0');
@@ -218,8 +233,10 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       }
     };
 
+    // if the progress ring is click while recording, after more than 4 seconds
     µ('progress-ring')[0].onclick = ()=> {
       if (recording && Date.now() - startTime > 4000) {
+        //stop the recording, and stop updating the recording time left.
         clearInterval(updateInt);
         µ('progress-ring')[0].progress = 0;
         µ('#mainCam').stopRecord();
@@ -227,6 +244,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       }
     };
 
+    // if the record icon, or the prompt is click, start recording
     µ('#record-video').onclick = timedRecord;
 
     µ('#guidance').onclick = timedRecord;
@@ -236,14 +254,12 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
     // };
 
     document.onkeypress = (e)=> {
-      //if (e.key == ' ') console.log('Space pressed'), hardware.digitalWrite(13, 1);
-      // if (e.key == 'r') µ('#mainCam').record();
-      // else if (e.key == 's') µ('#mainCam').stopRecord();
-      // else if (e.key == 't') timedRecord();
+      //toggle the keyboard if the '\' is pressed
       if (e.key == '\\') µ('#nameCard').show = µ('key-board')[0].show = !µ('key-board')[0].show;
     };
 
     document.onkeydown = e=> {
+      //if right arrow is pressed, toggle the autorecorder
       if (e.which == 38) {
         if (config.automate = !config.automate) {
           timedRecord();
@@ -266,6 +282,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
       process.nextTick(function () { process.exit(0); });
     });
 
+    //if we're automating, start recording right away.
     if (config.automate) {
       setTimeout(timedRecord, 5000);
     }

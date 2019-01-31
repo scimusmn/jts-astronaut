@@ -1,14 +1,18 @@
 'use strict';
 const electron = require('electron');
 
+// grab the interprocess communication object.
 var ipcMain = electron.ipcMain;
 
+// alias the global object as window
 if (!window) var window = global;
 
+//save the location of the appData directory.
 window.appDataDir = (process.platform != 'linux') ?  `${__dirname}/ForBoot/appData` :
                 (process.arch == 'x64') ? '/usr/local/appData' :
                 '/boot/appData';
 
+// grab the config file from the appData directory
 global.config = require(appDataDir + '/config.js');
 
 if (config.preventStartup) process.exit(0);
@@ -24,31 +28,26 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const { exec } = require('child_process');
+
+// use the scheduler module to set up the shutdown events.
 var scheduler = require('./scheduler.js');
 
-console.log('Scheduling shutdowns')
-scheduler.recurEvent(()=>{
+console.log('Scheduling shutdowns');
+scheduler.recurEvent(()=> {
   exec('shutdown /s');
 }, JSON.parse(fs.readFileSync(`${appDataDir}/shutdownSchedule.json`)));
 
 var now = new Date();
 
-// scheduler.recurEvent(()=>{
-//   console.log('fired');
-// }, {
-//   weekly:[
-//     [now.getDay(),now.getHours(), now.getMinutes(), now.getSeconds()+5]
-//   ]
-// })
-
-//console.log(scheduler.nextEvent());
-
+// store the current directory as the app root.
 global.appRoot = path.resolve(__dirname);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let windows = {};
 
+// define the create window function. It receives an info object, that contains all
+// of the setup information.
 var createWindow = (info)=> {
   var size = info.size;
 
@@ -67,12 +66,16 @@ var createWindow = (info)=> {
     offscreen: false,
   });
 
+  //set the webContents label to the title for IPC reasons
   temp.webContents.label = info.title;
 
+  // if the info object tells us to open the dev tools, do so
   if (info.devTools) temp.webContents.openDevTools();
 
+  // remove menu bars from the window
   temp.setMenu(null);
 
+  // if the info object specifies a local file to open, do so, otherwise open the defined URL
   if (info.file) {
     temp.loadURL(url.format({
       pathname: path.join(__dirname, info.file),
@@ -83,21 +86,20 @@ var createWindow = (info)=> {
     temp.loadURL(info.url);
   }
 
+  //get rid of any old cached data.
   temp.webContents.session.clearCache(function () {
     //some callback.
   });
 
   temp.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    //booth = null;
-    //playback = null;
+    // do nothing if the window is closed.
   });
 
+  // return the created window.
   return temp;
 };
 
+// calls the createWindow function with the window fullscreen on a specified display
 var createWindowForDisplay = (display, wind)=> {
   if (!windows[wind.label]) windows[wind.label] = createWindow({
     fullscreen: wind.fullscreen,
@@ -114,63 +116,84 @@ var createWindowForDisplay = (display, wind)=> {
   });
 };
 
+// check, and store, if we're using the operating system Windows.
 var isWin = process.platform === 'win32';
 
+// store the path to the display binding file.
 var DISPLAY_BINDING_PATH = appDataDir + '/windowBindings.json';
 
 var displayInfo = [];
 
 var parser = new require('xml2js').Parser();
 
-var refreshDisplayInfoList = (cb)=>{
+//run the MultiMonitorTool, and parse the XML file.
+var refreshDisplayInfoList = (cb)=> {
   if (process.platform === 'win32') {
-    exec(`${__dirname}/utils/MultiMonitorTool.exe /sxml ${appDataDir}/displayInfo.xml`,()=>{
+    exec(`${__dirname}/utils/MultiMonitorTool.exe /sxml ${appDataDir}/displayInfo.xml`, ()=> {
       fs.readFile(`${appDataDir}/displayInfo.xml`, 'utf16le', function (err, data) {
           parser.parseString(data, function (err, result) {
               displayInfo = result.monitors_list && result.monitors_list.item;
-              displayInfo.forEach(disp=>{
+              displayInfo.forEach(disp=> {
+                //get the hash of the display name, which should match one of the display id's
                 disp.hash = require('./utils/hash.js').hash(disp.name[0]);
                 disp.id = disp.monitor_serial_number[0] || disp.monitor_id[0];
                 //var cur = displays.find(dsp=>dsp.id == disp.hash);
               });
-              if(cb) cb(displayInfo);
+              if (cb) cb(displayInfo);
             });
         });
     });
   } else {
     cb();
   }
-}
+};
 
+//create the function that is called by the application when it starts.
 function makeWindows() {
+  //fetch all of the current displays
   var displays = electron.screen.getAllDisplays();
 
   var binds = {};
   if (fs.existsSync(DISPLAY_BINDING_PATH)) {
+    //read in the window binding file.
     binds = JSON.parse(fs.readFileSync(DISPLAY_BINDING_PATH));
 
     for (var winLabel in binds) {
       if (binds.hasOwnProperty(winLabel)) {
+        //if check each of the bindings listed in the file, to see if they match a window name
         var wind = config.windows.find(wind=>wind.label == winLabel);
         if (wind) {
+          //if a window was found with the name from the binding file, set the
+          //display ID to the one listed for that window in the binding file.
           wind.displayId = binds[winLabel];
         }
       }
     }
   }
 
+  //make a function that resets all of the windows to their correct locations
   var refixWindows = ()=> {
+    //for each window in the application
     config.windows.forEach(win=> {
       if (windows[win.label]) {
-        refreshDisplayInfoList((disps)=>{
-          var disp = displays.find(disp=>{
+        // get all of the current displays,
+        refreshDisplayInfoList((disps)=> {
+          //match the display from the electron.screen.getAllDisplays() call to a
+          // display in the displayInfoList. displayInfoList has more identifying
+          //information, so we use that to actually match windows to displays.
+          var disp = displays.find(disp=> {
             var dispId = disp.id;
-            if(disps){
+            if (disps) {
               var info = disps.find(dsp=>dsp.hash == disp.id);
-              if(info) dispId = info.id;
+              if (info) dispId = info.id;
             }
-            return dispId == win.displayId
+
+            return dispId == win.displayId;
           });
+
+          //using the display found in the step above,
+          //we set the position, according to the data from the display and
+          // the info in the config file about each window.
           if (disp) {
             var size = win.size || disp.size;
             var pos = (win.position) ? {
@@ -189,21 +212,29 @@ function makeWindows() {
     });
   };
 
+  //for each of the electron-listed displays
   displays.forEach(display=> {
 
+    //pull out the display id
     var monitorID = display.id;
 
-    if(process.platform === 'win32'){
+    //if we're on windows, correct the monitorID variable so that it matches the
+    // electron-id of the monitor
+    if (process.platform === 'win32') {
       var match = displayInfo.find(disp=>display.id == disp.hash);
-      if(match) monitorID = match.id;
+      if (match) monitorID = match.id;
       console.log(monitorID);
     }
 
+    // if we find a window for 'display'
     if (config.windows.find(wind=>wind.displayId && monitorID == wind.displayId)) {
       config.windows.forEach(wind=> {
+        //create the window for that display
         if (monitorID == wind.displayId) createWindowForDisplay(display, wind);
       });
     } else {
+      //if we don't find a window for the display, create the window selection
+      // interface on that display.
       windows[display.id] = createWindow({
         fullscreen: false,
         devTools: config.showDevTools,
@@ -221,56 +252,71 @@ function makeWindows() {
     }
   });
 
+  //when we receive an 'interwindow' event from a child window
   ipcMain.on('interwindow', (evt, arg)=> {
     arg.data.from = evt.sender.label;
     arg.data.self = arg.target;
+    //forward the message to the window specified in 'target'
     if (windows[arg.target]) windows[arg.target].webContents.send(arg.channel, arg.data);
   });
 
+  //if we receive a shutdown message from a child window,
   ipcMain.on('shutdown', (evt, arg)=> {
-    if(arg.delay) scheduler.nextEvent().delay([0,0,0].concat(arg.delay.map(i=>parseInt(i))));
-    else if(arg.setTime) scheduler.nextEvent().setTime(arg.setTime.map(i=>parseInt(i)));
-    else if(arg.cancelNext) scheduler.nextEvent().cancelNext();
-    else if(arg.now) exec('shutdown /s');
-    evt.sender.send('nextShutdown',scheduler.nextEvent().next);
+    // determine what kind of message it was, and act accordingly.
+    if (arg.delay) scheduler.nextEvent().delay([0, 0, 0].concat(arg.delay.map(i=>parseInt(i))));
+    else if (arg.setTime) scheduler.nextEvent().setTime(arg.setTime.map(i=>parseInt(i)));
+    else if (arg.cancelNext) scheduler.nextEvent().cancelNext();
+    else if (arg.now) exec('shutdown /s');
+    evt.sender.send('nextShutdown', scheduler.nextEvent().next);
   });
 
+  // if we receive a window-select message (meaing, a message telling us what window a display should have)
   ipcMain.on('window-select', (evt, arg)=> {
+    //close the window select interface that sent the message
     var senderId = evt.sender.label;
     windows[senderId].close();
 
+    //get teh reference to the display that sent the message, and the window it's asking for
     var display = displays.find(disp=> disp.id == senderId);
     var wind = config.windows.find(wind=>wind.label == arg.window);
 
-    refreshDisplayInfoList((disps)=>{
-      if(disps){
+    //get the current display list
+    refreshDisplayInfoList((disps)=> {
+      if (disps) {
         var match = disps.find(disp=>display.id == disp.hash);
-        if(match) senderId = match.id;
+        if (match) senderId = match.id;
       }
 
+      //record the display id for the display
       binds[wind.label] = senderId;
 
+      //and write the bindingFile
       fs.writeFileSync(DISPLAY_BINDING_PATH, JSON.stringify(binds));
 
+      //make the new window for the display
       createWindowForDisplay(display, wind);
-    })
+    });
 
   });
 
+  //if we see a display get added to the computer
   electron.screen.on('display-added', (evt, display)=> {
     var monitorID = display.id;
-    console.log("Monitor added: "+ monitorID);
+    console.log('Monitor added: ' + monitorID);
 
-    refreshDisplayInfoList((disps)=>{
-      if(displayInfo){
+    //match the new display to a displayInfo
+    refreshDisplayInfoList((disps)=> {
+      if (displayInfo) {
         var match = displayInfo.find(disp=>display.id == disp.hash);
-        if(match) monitorID = match.id;
+        if (match) monitorID = match.id;
       }
 
       //console.log(monitorID);
 
-      console.log('I think the added monitor was: '+monitorID);
+      //say what we think the monitor was.
+      console.log('I think the added monitor was: ' + monitorID);
 
+      //and make a window for that display, if we find a window for it.
       config.windows.forEach(wind=> {
         if (monitorID == wind.displayId) createWindowForDisplay(display, wind);
       });
@@ -280,23 +326,29 @@ function makeWindows() {
     refixWindows();
   });
 
+  //if a diplay is removed from the computer,
   electron.screen.on('display-removed', (evt, display)=> {
     var monitorID = display.id;
-    console.log('monitor removed: '+ monitorID);
+    console.log('monitor removed: ' + monitorID);
 
-    if(displayInfo){
+    //try to find which displayInfo was removed,
+    if (displayInfo) {
       var match = displayInfo.find(disp=>display.id == disp.hash);
-      if(match) monitorID = match.id;
+      if (match) monitorID = match.id;
     }
 
-    console.log('I think the removed monitor was: '+monitorID);
+    console.log('I think the removed monitor was: ' + monitorID);
 
+    //if there was a window on said monitor
     var wind = config.windows.find(win => monitorID == win.displayId);
 
+    //close it.
     if (windows[wind.label]) windows[wind.label].close();
 
+    //and nullify the reference to the window.
     windows[wind.label] = null;
 
+    //make sure teh rest of the windows are in place
     refixWindows();
 
   });
@@ -306,7 +358,8 @@ function makeWindows() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', ()=>{
+app.on('ready', ()=> {
+  //make allthe windows once the app is ready
   refreshDisplayInfoList(makeWindows);
 });
 
@@ -326,6 +379,3 @@ app.on('activate', function () {
     //createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
