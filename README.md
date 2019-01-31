@@ -47,8 +47,8 @@ npm install -g --production windows-build-tools
   
 ```
 git clone --recurse-submodules https://github.com/scimusmn/jts-astronaut C:\App\jts-astronaut
-yarn
-
+cd C:\App\jts-astronaut
+yarn install
 ```
 
 #### Setting up automatic startup:
@@ -56,7 +56,7 @@ yarn
   1. Open Windows Menu
   2. Type `run`
   3. Enter `shell:startup`
-  4. Drop in [startup.bat](https://github.com/scimusmn/jts-astronaut/blob/075dda0483d733c5f653a319380e0bd311ee5984/startup.bat)
+  4. Drop a shortcut to [startup.bat] into the folder(https://github.com/scimusmn/jts-astronaut/blob/075dda0483d733c5f653a319380e0bd311ee5984/startup.bat)
 
 #### Setup auto-login:
 
