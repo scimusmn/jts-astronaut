@@ -38,6 +38,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
     //flag for tracking the recording state.
     var recording = false;
+    var recordedTime = 0;
 
     var advanceTO = null;
 
@@ -96,7 +97,7 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
             channel: 'video',
             data: {
               url: window.lastURL,
-              length: recordTime,
+              length: recordedTime,
             },
           });
 
@@ -182,6 +183,8 @@ obtain(obtains, (camera, progress, keyboard, { Card }, swears, { ipcRenderer: co
 
       //blur the camera image in the background
       µ('cam-era')[0].classList.add('blur');
+
+      recordedTime = (new Date()).getTime() - startTime;
 
       //store the video for later use
       window.lastURL = dataURL;

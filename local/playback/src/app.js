@@ -33,7 +33,7 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
         µ('#screen-saver').classList.add('fade');
         setTimeout(()=> {
           µ('#screen-saver').classList.remove('fade');
-        }, data.length * 1000 - 2000);
+        }, data.length - 2000);
         URL.revokeObjectURL(data.url);
       };
 
@@ -50,6 +50,8 @@ obtain(obtains, ({ ipcRenderer: comm })=> {
           },
         });
       }
+
+      µ('#screen-saver').play();
 
       µ('#playback').src = null;
     };
